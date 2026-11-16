@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Chat & Kontak — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="chat" data-title="Diskusi Grup & Kontak" data-subtitle="Pesan grup per mata kuliah dan kontak mahasiswa/dosen (P2)">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Diskusi & Kontak</li>
+      </ol>
+    </nav>
+
+    <div class="chat-shell">
+      <!-- Daftar Grup & Kontak -->
+      <aside class="chat-sidebar" aria-label="Daftar Ruang Diskusi">
+        <div class="card-header">
+          <h1 class="card-title" style="font-size:var(--text-base)">Grup & Kontak</h1>
+        </div>
+        <div class="sidebar-section-label" style="color:var(--color-text-muted)">Grup Mata Kuliah</div>
+        <button type="button" class="chat-thread-item is-active" data-thread-name="Grup 07228204 · MANAJEMEN PROYEK 07">
+          <div>
+            <div class="font-semibold text-sm">Grup Manajemen Proyek 07</div>
+            <div class="text-xs text-muted">Gabriel: Kontrak API sudah dicek?</div>
+          </div>
+          <span class="badge badge-primary">2</span>
+        </button>
+        <button type="button" class="chat-thread-item" data-thread-name="Grup 07228239 · TEKNOLOGI KEUANGAN 05">
+          <div>
+            <div class="font-semibold text-sm">Grup Teknologi Keuangan 05</div>
+            <div class="text-xs text-muted">Stephani: Slide Pertemuan 10...</div>
+          </div>
+        </button>
+
+        <div class="sidebar-section-label" style="color:var(--color-text-muted)">Kontak Langsung</div>
+        <button type="button" class="chat-thread-item" data-thread-name="T. BRENDA CHANDRAWATI (Dosen)">
+          <div>
+            <div class="font-semibold text-sm">T. BRENDA CHANDRAWATI</div>
+            <div class="text-xs text-muted">Dosen Pengampu 07228204</div>
+          </div>
+        </button>
+        <button type="button" class="chat-thread-item" data-thread-name="Adonai Shan Matthew (24.N1.0043)">
+          <div>
+            <div class="font-semibold text-sm">Adonai Shan Matthew</div>
+            <div class="text-xs text-muted">Mahasiswa · 24.N1.0043</div>
+          </div>
+        </button>
+      </aside>
+
+      <!-- Area Pesan -->
+      <section class="chat-main" aria-label="Percakapan Aktif">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title" id="active-chat-title">Grup 07228204 · MANAJEMEN PROYEK 07</h2>
+            <span class="text-xs text-muted">33 Anggota · Sinkronisasi polling tiap 5 detik</span>
+          </div>
+          <span class="badge badge-success">Terhubung</span>
+        </div>
+
+        <div class="chat-messages" id="chat-messages-box">
+          <div class="chat-bubble">
+            <div class="text-xs font-bold mb-1">Gabriel Kresnoputero W. B. · 09:42 WIB</div>
+            <div>Teman-teman, untuk Tugas 4 endpoint <code>/auth/login</code> apakah format error-nya wajib memakai key <code>error.code</code>?</div>
+          </div>
+          <div class="chat-bubble">
+            <div class="text-xs font-bold mb-1">T. BRENDA CHANDRAWATI · 09:48 WIB</div>
+            <div>Betul, silakan ikuti struktur envelope <code>{"error":{"code","message","details"}}</code> di dokumen konvensi.</div>
+          </div>
+          <div class="chat-bubble is-me">
+            <div class="text-xs font-bold mb-1">Anda (Dimas Rizky) · 09:51 WIB</div>
+            <div>Siap Pak, terima kasih penjelasannya. Bagian JWT middleware sudah kami sesuaikan.</div>
+          </div>
+        </div>
+
+        <form class="chat-composer" id="chat-form">
+          <label class="sr-only" for="chat-input">Tulis pesan</label>
+          <input class="form-control" id="chat-input" type="text" placeholder="Tulis pesan ke grup mata kuliah...">
+          <button type="submit" class="btn btn-primary">Kirim</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var threads = document.querySelectorAll('.chat-thread-item');
+      var titleEl = document.getElementById('active-chat-title');
+      threads.forEach(function (t) {
+        t.addEventListener('click', function () {
+          threads.forEach(function (x) { x.classList.remove('is-active'); });
+          t.classList.add('is-active');
+          if (titleEl) titleEl.textContent = t.getAttribute('data-thread-name');
+        });
+      });
+
+      var form = document.getElementById('chat-form');
+      var input = document.getElementById('chat-input');
+      var box = document.getElementById('chat-messages-box');
+      if (form && input && box) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var text = input.value.trim();
+          if (!text) return;
+          var bubble = document.createElement('div');
+          bubble.className = 'chat-bubble is-me';
+          bubble.innerHTML = '<div class="text-xs font-bold mb-1">Anda (Dimas Rizky) · Baru saja</div><div></div>';
+          bubble.lastChild.textContent = text;
+          box.appendChild(bubble);
+          input.value = '';
+          box.scrollTop = box.scrollHeight;
+        });
+      }
+    });
+  </script>
+</body>
+</html>

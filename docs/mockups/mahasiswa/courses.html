@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Mata Kuliah — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="courses" data-title="Daftar Mata Kuliah" data-subtitle="Filter semester, jadwal, progress, dan dosen pengampu">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Mata Kuliah</li>
+      </ol>
+    </nav>
+
+    <div class="page-header">
+      <h1>Mata Kuliah Semester Ganjil 2026/2027</h1>
+    </div>
+
+    <!-- Filter Mata Kuliah -->
+    <section class="card card-body">
+      <div class="form-inline-grid form-inline-grid-3">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" for="filter-search">Cari Mata Kuliah / Dosen</label>
+          <input class="form-control" id="filter-search" type="search" placeholder="Ketik kode, nama matkul, atau dosen...">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" for="filter-semester">Semester</label>
+          <select class="form-select" id="filter-semester">
+            <option value="all">Ganjil 2026/2027 (Aktif)</option>
+            <option value="prev">Genap 2025/2026</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" for="filter-day">Hari Kuliah</label>
+          <select class="form-select" id="filter-day">
+            <option value="">Semua Hari</option>
+            <option value="Senin">Senin</option>
+            <option value="Selasa">Selasa</option>
+            <option value="Rabu">Rabu</option>
+            <option value="Kamis">Kamis</option>
+            <option value="Jumat">Jumat</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-3" id="courses-list">
+      <article class="course-visual-card course-card" data-day="Jumat" data-text="07228204 manajemen proyek 07 t brenda chandrawati">
+        <div class="course-banner pattern-mosaic-crimson">
+          <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+        </div>
+        <div class="course-visual-body">
+          <h2 class="course-code-title"><a href="course-detail.html">2026G1 07228204 MANAJEMEN PROYEK 07</a></h2>
+          <div class="course-progress-row">
+            <div class="progress" role="progressbar" aria-label="Progress 07228204" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width:78%"></div>
+            </div>
+            <div class="course-progress-meta">
+              <span>78% selesai</span>
+              <span>Jumat, 13:00 · 3 SKS</span>
+            </div>
+          </div>
+          <div class="course-lecturer-list">
+            <div class="course-lecturer-item">
+              <span class="avatar avatar-md" aria-hidden="true">BC</span>
+              <div>
+                <div class="course-lecturer-name">5811995177 T. BRENDA CHANDRAWATI</div>
+                <div class="course-lecturer-role">Dosen Pengampu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="course-visual-card course-card" data-day="Jumat" data-text="07228239 teknologi keuangan 05 stephani inggrit swastini dewi">
+        <div class="course-banner pattern-squares-gold">
+          <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+        </div>
+        <div class="course-visual-body">
+          <h2 class="course-code-title"><a href="course-detail.html">2026G1 07228239 TEKNOLOGI KEUANGAN 05</a></h2>
+          <div class="course-progress-row">
+            <div class="progress" role="progressbar" aria-label="Progress 07228239" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width:65%"></div>
+            </div>
+            <div class="course-progress-meta">
+              <span>65% selesai</span>
+              <span>Jumat, 07:00 · 3 SKS</span>
+            </div>
+          </div>
+          <div class="course-lecturer-list">
+            <div class="course-lecturer-item">
+              <span class="avatar avatar-md" aria-hidden="true">SD</span>
+              <div>
+                <div class="course-lecturer-name">5812023424 STEPHANI INGGRIT SWASTINI DEWI</div>
+                <div class="course-lecturer-role">Dosen Pengampu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="course-visual-card course-card" data-day="Senin" data-text="07228203 etika profesi 07 yimmy iskandar">
+        <div class="course-banner pattern-hex-obsidian">
+          <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+        </div>
+        <div class="course-visual-body">
+          <h2 class="course-code-title"><a href="course-detail.html">2026G1 07228203 ETIKA PROFESI 07</a></h2>
+          <div class="course-progress-row">
+            <div class="progress" role="progressbar" aria-label="Progress 07228203" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width:50%"></div>
+            </div>
+            <div class="course-progress-meta">
+              <span>50% selesai</span>
+              <span>Senin, 13:00 · 3 SKS</span>
+            </div>
+          </div>
+          <div class="course-lecturer-list">
+            <div class="course-lecturer-item">
+              <span class="avatar avatar-md" aria-hidden="true">YI</span>
+              <div>
+                <div class="course-lecturer-name">5852017158 YIMMY ISKANDAR</div>
+                <div class="course-lecturer-role">Dosen Pengampu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="course-visual-card course-card" data-day="Senin" data-text="07228250 kota cerdas 03 andre kurniawan pamudji">
+        <div class="course-banner pattern-hex-vermilion">
+          <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+        </div>
+        <div class="course-visual-body">
+          <h2 class="course-code-title"><a href="course-detail.html">2026G1 07228250 KOTA CERDAS 03</a></h2>
+          <div class="course-progress-row">
+            <div class="progress" role="progressbar" aria-label="Progress 07228250" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width:90%"></div>
+            </div>
+            <div class="course-progress-meta">
+              <span>90% selesai</span>
+              <span>Senin, 08:00 · 3 SKS</span>
+            </div>
+          </div>
+          <div class="course-lecturer-list">
+            <div class="course-lecturer-item">
+              <span class="avatar avatar-md" aria-hidden="true">AP</span>
+              <div>
+                <div class="course-lecturer-name">5812021403 ANDRE KURNIAWAN PAMUDJI</div>
+                <div class="course-lecturer-role">Dosen Pengampu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.ClarityUI) {
+        document.querySelectorAll('[data-ring]').forEach(function (el) {
+          el.innerHTML = ClarityUI.renderProgressRing(parseInt(el.getAttribute('data-ring'), 10) || 0, 56);
+        });
+      }
+
+      var searchEl = document.getElementById('filter-search');
+      var dayEl = document.getElementById('filter-day');
+      var cards = document.querySelectorAll('.course-card');
+      if (!searchEl || !dayEl) return;
+
+      function applyFilter() {
+        var q = searchEl.value.trim().toLowerCase();
+        var d = dayEl.value;
+        cards.forEach(function (card) {
+          var text = card.getAttribute('data-text') || '';
+          var cDay = card.getAttribute('data-day') || '';
+          var matchText = !q || text.indexOf(q) !== -1;
+          var matchDay = !d || cDay === d;
+          card.style.display = (matchText && matchDay) ? '' : 'none';
+        });
+      }
+
+      searchEl.addEventListener('input', applyFilter);
+      dayEl.addEventListener('change', applyFilter);
+    });
+  </script>
+</body>
+</html>

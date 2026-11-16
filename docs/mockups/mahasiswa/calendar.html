@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalender & Deadline — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="calendar" data-title="Kalender & Deadline" data-subtitle="Jadwal kuliah, tenggat tugas, dan jadwal quiz Desember 2026">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Kalender & Deadline</li>
+      </ol>
+    </nav>
+
+    <div class="page-header">
+      <h1>Desember 2026</h1>
+      <div class="flex flex-wrap">
+        <label class="sr-only" for="cal-filter-course">Filter Mata Kuliah</label>
+        <select class="form-select" id="cal-filter-course" style="width:auto">
+          <option value="all">Semua Mata Kuliah</option>
+          <option value="07228204">07228204 Manajemen Proyek 07</option>
+          <option value="07228239">07228239 Teknologi Keuangan 05</option>
+          <option value="07228203">07228203 Etika Profesi 07</option>
+          <option value="07228250">07228250 Kota Cerdas 03</option>
+        </select>
+        <span class="badge badge-primary">Jadwal Kuliah</span>
+        <span class="badge badge-danger">Deadline Tugas</span>
+        <span class="badge badge-info">Quiz</span>
+      </div>
+    </div>
+
+    <div class="grid grid-sidebar-right">
+      <section class="card card-body">
+        <div class="calendar-grid" role="grid" aria-label="Kalender Desember 2026">
+          <div class="calendar-head-cell">Sen</div>
+          <div class="calendar-head-cell">Sel</div>
+          <div class="calendar-head-cell">Rab</div>
+          <div class="calendar-head-cell">Kam</div>
+          <div class="calendar-head-cell">Jum</div>
+          <div class="calendar-head-cell">Sab</div>
+          <div class="calendar-head-cell">Min</div>
+
+          <div class="calendar-cell is-muted">30</div>
+          <div class="calendar-cell">1</div>
+          <div class="calendar-cell">2<span class="calendar-event-dot badge-primary">Tek. Keuangan 05</span></div>
+          <div class="calendar-cell">3<span class="calendar-event-dot badge-primary">Etika Profesi 07</span></div>
+          <div class="calendar-cell">4<span class="calendar-event-dot badge-primary">Kota Cerdas 03</span></div>
+          <div class="calendar-cell is-today"><strong>5 (Hari ini)</strong><span class="calendar-event-dot badge-info">Quiz 2 Dibuka</span></div>
+          <div class="calendar-cell">6<span class="calendar-event-dot badge-danger">DL Tugas 4 07228204</span></div>
+
+          <div class="calendar-cell">7<span class="calendar-event-dot badge-primary">Etika & Kota Cerdas</span><span class="calendar-event-dot badge-info">Tutup Quiz 2</span></div>
+          <div class="calendar-cell">8<span class="calendar-event-dot badge-warning">DL Tugas 07228239</span></div>
+          <div class="calendar-cell">9<span class="calendar-event-dot badge-primary">Tek. Keuangan 05</span></div>
+          <div class="calendar-cell">10<span class="calendar-event-dot badge-primary">Etika Profesi 07</span></div>
+          <div class="calendar-cell">11<span class="calendar-event-dot badge-primary">Manajemen Proyek 07</span></div>
+          <div class="calendar-cell">12<span class="calendar-event-dot badge-success">DL Tugas 07228203</span></div>
+          <div class="calendar-cell">13</div>
+
+          <div class="calendar-cell">14<span class="calendar-event-dot badge-primary">Kota Cerdas 03</span></div>
+          <div class="calendar-cell">15<span class="calendar-event-dot badge-success">DL Tugas 07228250</span></div>
+          <div class="calendar-cell">16</div>
+          <div class="calendar-cell">17</div>
+          <div class="calendar-cell">18</div>
+          <div class="calendar-cell">19</div>
+          <div class="calendar-cell">20</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-header"><h2 class="card-title">Agenda Terdekat</h2></div>
+        <div class="card-body list-group">
+          <div class="list-item">
+            <div>
+              <span class="badge badge-deadline-h1 mb-1">Mendesak (H-1)</span>
+              <div class="text-sm font-semibold">Tugas 4: REST API Auth & JWT</div>
+              <div class="text-xs text-muted">6 Des 2026 · 23:59 WIB · 07228204</div>
+            </div>
+            <a class="btn btn-sm btn-primary" href="assignment.html">Buka</a>
+          </div>
+          <div class="list-item">
+            <div>
+              <span class="badge badge-info mb-1">Quiz Aktif</span>
+              <div class="text-sm font-semibold">Quiz 2: Autentikasi JWT</div>
+              <div class="text-xs text-muted">Tutup 7 Des 2026 · 23:59 WIB · 07228204</div>
+            </div>
+            <a class="btn btn-sm btn-outline" href="quiz-intro.html">Buka</a>
+          </div>
+          <div class="list-item">
+            <div>
+              <span class="badge badge-deadline-h3 mb-1">Segera (H-3)</span>
+              <div class="text-sm font-semibold">Studi Kasus Sequence & API</div>
+              <div class="text-xs text-muted">8 Des 2026 · 23:59 WIB · 07228239</div>
+            </div>
+            <a class="btn btn-sm btn-outline" href="assignment.html">Buka</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+</body>
+</html>

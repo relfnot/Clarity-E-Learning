@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Mahasiswa — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="dashboard" data-title="Dashboard Mahasiswa" data-subtitle="Ringkasan perkuliahan, tugas minggu ini, nilai & progress">
+  <div id="page-content" class="stack">
+    <div class="page-header">
+      <h1>Selamat Datang, Dimas Rizky</h1>
+      <div class="flex flex-wrap">
+        <a class="btn btn-outline" href="attendance.html">Isi Presensi</a>
+        <a class="btn btn-primary" href="courses.html">Semua Mata Kuliah</a>
+      </div>
+    </div>
+
+    <section class="mascot-banner">
+      <div class="mascot-banner-body">
+        <img class="mascot-figure" src="../assets/img/Target-Swift Owl Mascot.png" alt="Maskot Burung Hantu Clarity membawa anak panah">
+        <div>
+          <span class="badge badge-xp mb-2">Target Minggu Ini · Level 7</span>
+          <h2 class="mb-1" style="font-size:var(--text-lg)">Bidik 100% Tepat Waktu!</h2>
+          <p class="text-sm text-secondary mb-0">Tugas 4 Manajemen Proyek 07 & Quiz 2 menanti (+80 XP).</p>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="assignment.html">Kumpulkan Tugas H-1 →</a>
+    </section>
+
+    <!-- Ringkasan Statistik & XP Bar Ringkas -->
+    <div class="grid grid-4">
+      <section class="card stat-card">
+        <span class="stat-label">Mata Kuliah</span>
+        <span class="stat-value">4 Aktif</span>
+        <span class="stat-meta">Total 12 SKS semester ini</span>
+      </section>
+      <section class="card stat-card">
+        <span class="stat-label">Tugas Minggu Ini</span>
+        <span class="stat-value text-danger">2 Belum</span>
+        <span class="stat-meta">1 mendesak (H-1)</span>
+      </section>
+      <section class="card stat-card">
+        <span class="stat-label">Rata-Rata Nilai</span>
+        <span class="stat-value text-success">84,3</span>
+        <span class="stat-meta">Rata-rata kelas: 77,8</span>
+      </section>
+      <section class="card stat-card">
+        <div class="flex-between">
+          <span class="stat-label">Gamifikasi</span>
+          <span class="badge badge-xp">Level 7</span>
+        </div>
+        <div class="font-bold text-lg">Scholar Tekun</div>
+        <div class="flex-between text-xs text-muted">
+          <span>1.450 / 2.000 XP</span>
+          <a href="profile.html">Detail XP →</a>
+        </div>
+        <div class="progress mt-2" role="progressbar" aria-label="Progress XP menuju Level 8" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar progress-bar-xp" style="width:72%"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Baris Utama: Tugas Minggu Ini + Notifikasi Terbaru -->
+    <div class="grid grid-sidebar-right">
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Tugas Minggu Ini (Reminder Deadline)</h2>
+          <a class="text-sm font-semibold" href="calendar.html">Lihat Kalender →</a>
+        </div>
+        <div class="card-body list-group">
+          <article class="list-item">
+            <div>
+              <div class="flex flex-wrap mb-2">
+                <span class="badge badge-deadline-h1">Mendesak (H-1)</span>
+                <span class="badge badge-neutral">07228204 · MANAJEMEN PROYEK 07</span>
+              </div>
+              <h3 class="text-sm font-semibold mb-1"><a href="assignment.html">Tugas 4: Implementasi REST API Auth & JWT</a></h3>
+              <p class="text-xs text-muted mb-0">Batas: Besok, 6 Des 2026 · 23:59 WIB · Bonus +30 XP jika tepat waktu</p>
+            </div>
+            <a class="btn btn-primary btn-sm" href="assignment.html">Kumpulkan</a>
+          </article>
+
+          <article class="list-item">
+            <div>
+              <div class="flex flex-wrap mb-2">
+                <span class="badge badge-deadline-h3">Segera (H-3)</span>
+                <span class="badge badge-neutral">07228239 · TEKNOLOGI KEUANGAN 05</span>
+              </div>
+              <h3 class="text-sm font-semibold mb-1"><a href="assignment.html">Studi Kasus Diagram Sequence & Kontrak API</a></h3>
+              <p class="text-xs text-muted mb-0">Batas: Selasa, 8 Des 2026 · 23:59 WIB</p>
+            </div>
+            <a class="btn btn-outline btn-sm" href="assignment.html">Buka Tugas</a>
+          </article>
+
+          <article class="list-item">
+            <div>
+              <div class="flex flex-wrap mb-2">
+                <span class="badge badge-deadline-normal">Terjadwal (H-7)</span>
+                <span class="badge badge-neutral">07228203 · ETIKA PROFESI 07</span>
+              </div>
+              <h3 class="text-sm font-semibold mb-1"><a href="assignment.html?status=submitted">Laporan Studi Kasus Etika Sistem Cerdas</a></h3>
+              <p class="text-xs text-muted mb-0">Status: Sudah dikumpulkan · Batas: 12 Des 2026</p>
+            </div>
+            <span class="badge badge-success">Dikumpulkan</span>
+          </article>
+
+          <article class="list-item">
+            <div>
+              <div class="flex flex-wrap mb-2">
+                <span class="badge badge-info">Quiz Terbuka</span>
+                <span class="badge badge-neutral">07228204 · MANAJEMEN PROYEK 07</span>
+              </div>
+              <h3 class="text-sm font-semibold mb-1"><a href="quiz-intro.html">Quiz 2: Autentikasi JWT, REST API & Keamanan Web</a></h3>
+              <p class="text-xs text-muted mb-0">Tutup: 7 Des 2026 · Durasi 30 menit · Sisa 1 percobaan</p>
+            </div>
+            <a class="btn btn-secondary btn-sm" href="quiz-intro.html">Kerjakan Quiz</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Notifikasi Terbaru</h2>
+          <a class="text-xs font-semibold" href="notifications.html">Semua (3 baru)</a>
+        </div>
+        <div class="card-body stack-sm">
+          <a class="notif-unread notif-link" href="assignment.html">
+            <div class="text-xs font-bold text-primary">Pengingat H-1 · 08:00 WIB</div>
+            <div class="text-sm font-semibold">Tugas 4 REST API Auth & JWT</div>
+            <div class="text-xs text-muted">Batas besok 23:59 WIB. Kumpulkan tepat waktu!</div>
+          </a>
+          <a class="notif-unread notif-link" href="attendance.html">
+            <div class="text-xs font-bold text-primary">Presensi · 07:55 WIB</div>
+            <div class="text-sm font-semibold">Sesi Pertemuan 10 (07228204) Dibuka</div>
+            <div class="text-xs text-muted">Lakukan check-in sebelum 15:00 WIB.</div>
+          </a>
+          <a class="notif-unread notif-link" href="grades.html">
+            <div class="text-xs font-bold text-primary">Nilai Keluar · Kemarin</div>
+            <div class="text-sm font-semibold">Rancangan Kota Pintar: 92/100</div>
+            <div class="text-xs text-muted">Dinilai oleh ANDRE KURNIAWAN PAMUDJI.</div>
+          </a>
+          <a class="list-item notif-link" href="quiz-intro.html">
+            <div>
+              <div class="text-xs text-muted">Quiz · 3 Des 2026</div>
+              <div class="text-sm font-semibold">Quiz 2 MANAJEMEN PROYEK 07 telah dibuka</div>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Grafik Nilai vs Rata-Rata Kelas -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Grafik Nilai per Mata Kuliah vs Rata-Rata Kelas</h2>
+        <div class="chart-legend">
+          <span><span class="chart-legend-dot chart-dot-primary"></span>Nilai Saya</span>
+          <span><span class="chart-legend-dot chart-dot-muted"></span>Rata-Rata Kelas</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <svg viewBox="0 0 640 210" width="100%" role="img" aria-labelledby="chart-title chart-desc">
+          <title id="chart-title">Grafik Perbandingan Nilai Mahasiswa dengan Rata-Rata Kelas</title>
+          <desc id="chart-desc">07228204 Manajemen Proyek 07 nilai 86 vs kelas 79, 07228239 Teknologi Keuangan 05 nilai 82 vs kelas 76, 07228203 Etika Profesi 07 nilai 78 vs kelas 75, 07228250 Kota Cerdas 03 nilai 91 vs kelas 81.</desc>
+          <!-- Garis Panduan Y -->
+          <line x1="50" y1="20" x2="620" y2="20" stroke="var(--color-border-subtle)" stroke-dasharray="4"/>
+          <text x="10" y="24" font-size="11" fill="var(--color-text-muted)">100</text>
+          <line x1="50" y1="60" x2="620" y2="60" stroke="var(--color-border-subtle)" stroke-dasharray="4"/>
+          <text x="16" y="64" font-size="11" fill="var(--color-text-muted)">75</text>
+          <line x1="50" y1="100" x2="620" y2="100" stroke="var(--color-border-subtle)" stroke-dasharray="4"/>
+          <text x="16" y="104" font-size="11" fill="var(--color-text-muted)">50</text>
+          <line x1="50" y1="140" x2="620" y2="140" stroke="var(--color-border-subtle)" stroke-dasharray="4"/>
+          <text x="16" y="144" font-size="11" fill="var(--color-text-muted)">25</text>
+          <line x1="50" y1="175" x2="620" y2="175" stroke="var(--color-border)"/>
+
+          <!-- 07228204 Manajemen Proyek 07 (86 vs 79) -->
+          <rect x="85" y="37" width="38" height="138" rx="4" fill="var(--color-primary)"/>
+          <text x="104" y="31" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--color-text)">86</text>
+          <rect x="130" y="49" width="38" height="126" rx="4" fill="var(--color-border)"/>
+          <text x="149" y="43" font-size="11" text-anchor="middle" fill="var(--color-text-muted)">79</text>
+          <text x="126" y="196" font-size="12" font-weight="600" text-anchor="middle" fill="var(--color-text)">Manajemen Proyek 07</text>
+
+          <!-- 07228239 Teknologi Keuangan 05 (82 vs 76) -->
+          <rect x="225" y="44" width="38" height="131" rx="4" fill="var(--color-primary)"/>
+          <text x="244" y="38" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--color-text)">82</text>
+          <rect x="270" y="53" width="38" height="122" rx="4" fill="var(--color-border)"/>
+          <text x="289" y="47" font-size="11" text-anchor="middle" fill="var(--color-text-muted)">76</text>
+          <text x="266" y="196" font-size="12" font-weight="600" text-anchor="middle" fill="var(--color-text)">Tek. Keuangan 05</text>
+
+          <!-- 07228203 Etika Profesi 07 (78 vs 75) -->
+          <rect x="365" y="50" width="38" height="125" rx="4" fill="var(--color-primary)"/>
+          <text x="384" y="44" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--color-text)">78</text>
+          <rect x="410" y="55" width="38" height="120" rx="4" fill="var(--color-border)"/>
+          <text x="429" y="49" font-size="11" text-anchor="middle" fill="var(--color-text-muted)">75</text>
+          <text x="406" y="196" font-size="12" font-weight="600" text-anchor="middle" fill="var(--color-text)">Etika Profesi 07</text>
+
+          <!-- 07228250 Kota Cerdas 03 (91 vs 81) -->
+          <rect x="505" y="29" width="38" height="146" rx="4" fill="var(--color-primary)"/>
+          <text x="524" y="23" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--color-text)">91</text>
+          <rect x="550" y="45" width="38" height="130" rx="4" fill="var(--color-border)"/>
+          <text x="569" y="39" font-size="11" text-anchor="middle" fill="var(--color-text-muted)">81</text>
+          <text x="546" y="196" font-size="12" font-weight="600" text-anchor="middle" fill="var(--color-text)">Kota Cerdas 03</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Kartu Mata Kuliah dengan Progress Ring -->
+    <section class="stack">
+      <div class="flex-between">
+        <h2 style="margin:0">Mata Kuliah Diambil & Progress</h2>
+        <a class="text-sm font-semibold" href="courses.html">Lihat Semua →</a>
+      </div>
+      <div class="grid grid-2" id="dashboard-courses-grid">
+        <article class="course-visual-card">
+          <div class="course-banner pattern-mosaic-crimson">
+            <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+          </div>
+          <div class="course-visual-body">
+            <div class="flex-between">
+              <h3 class="course-code-title"><a href="course-detail.html">2026G1 07228204 MANAJEMEN PROYEK 07</a></h3>
+              <div data-ring="78"></div>
+            </div>
+            <div class="course-progress-row">
+              <div class="progress" role="progressbar" aria-label="Progress 07228204" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width:78%"></div>
+              </div>
+              <div class="course-progress-meta">
+                <span>78% selesai · Nilai: 86</span>
+                <span>Jumat, 13:00</span>
+              </div>
+            </div>
+            <div class="course-lecturer-list">
+              <div class="course-lecturer-item">
+                <span class="avatar avatar-md" aria-hidden="true">BC</span>
+                <div>
+                  <div class="course-lecturer-name">5811995177 T. BRENDA CHANDRAWATI</div>
+                  <div class="course-lecturer-role">Dosen Pengampu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="course-visual-card">
+          <div class="course-banner pattern-squares-gold">
+            <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+          </div>
+          <div class="course-visual-body">
+            <div class="flex-between">
+              <h3 class="course-code-title"><a href="course-detail.html">2026G1 07228239 TEKNOLOGI KEUANGAN 05</a></h3>
+              <div data-ring="65"></div>
+            </div>
+            <div class="course-progress-row">
+              <div class="progress" role="progressbar" aria-label="Progress 07228239" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width:65%"></div>
+              </div>
+              <div class="course-progress-meta">
+                <span>65% selesai · Nilai: 82</span>
+                <span>Jumat, 07:00</span>
+              </div>
+            </div>
+            <div class="course-lecturer-list">
+              <div class="course-lecturer-item">
+                <span class="avatar avatar-md" aria-hidden="true">SD</span>
+                <div>
+                  <div class="course-lecturer-name">5812023424 STEPHANI INGGRIT SWASTINI DEWI</div>
+                  <div class="course-lecturer-role">Dosen Pengampu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="course-visual-card">
+          <div class="course-banner pattern-hex-obsidian">
+            <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+          </div>
+          <div class="course-visual-body">
+            <div class="flex-between">
+              <h3 class="course-code-title"><a href="course-detail.html">2026G1 07228203 ETIKA PROFESI 07</a></h3>
+              <div data-ring="50"></div>
+            </div>
+            <div class="course-progress-row">
+              <div class="progress" role="progressbar" aria-label="Progress 07228203" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width:50%"></div>
+              </div>
+              <div class="course-progress-meta">
+                <span>50% selesai · Nilai: 78</span>
+                <span>Senin, 13:00</span>
+              </div>
+            </div>
+            <div class="course-lecturer-list">
+              <div class="course-lecturer-item">
+                <span class="avatar avatar-md" aria-hidden="true">YI</span>
+                <div>
+                  <div class="course-lecturer-name">5852017158 YIMMY ISKANDAR</div>
+                  <div class="course-lecturer-role">Dosen Pengampu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="course-visual-card">
+          <div class="course-banner pattern-hex-vermilion">
+            <span class="course-semester-pill">Semester Ganjil 2026/2027</span>
+          </div>
+          <div class="course-visual-body">
+            <div class="flex-between">
+              <h3 class="course-code-title"><a href="course-detail.html">2026G1 07228250 KOTA CERDAS 03</a></h3>
+              <div data-ring="90"></div>
+            </div>
+            <div class="course-progress-row">
+              <div class="progress" role="progressbar" aria-label="Progress 07228250" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width:90%"></div>
+              </div>
+              <div class="course-progress-meta">
+                <span>90% selesai · Nilai: 91</span>
+                <span>Senin, 08:00</span>
+              </div>
+            </div>
+            <div class="course-lecturer-list">
+              <div class="course-lecturer-item">
+                <span class="avatar avatar-md" aria-hidden="true">AP</span>
+                <div>
+                  <div class="course-lecturer-name">5812021403 ANDRE KURNIAWAN PAMUDJI</div>
+                  <div class="course-lecturer-role">Dosen Pengampu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.ClarityUI) return;
+      document.querySelectorAll('[data-ring]').forEach(function (el) {
+        var val = parseInt(el.getAttribute('data-ring'), 10) || 0;
+        el.innerHTML = ClarityUI.renderProgressRing(val, 58);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intro Quiz — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="quiz" data-title="Informasi Quiz" data-subtitle="07228204 · MANAJEMEN PROYEK 07">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li><a href="course-detail.html">07228204 Manajemen Proyek 07</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Quiz 2: Autentikasi JWT & Keamanan Web</li>
+      </ol>
+    </nav>
+
+    <div class="grid grid-sidebar-right">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-info mb-2">Quiz Tersedia</span>
+            <h1 style="font-size:var(--text-xl);margin-bottom:0">Quiz 2: Autentikasi JWT, REST API & Keamanan Web</h1>
+          </div>
+          <span class="badge badge-xp">+50 XP Selesai</span>
+        </div>
+        <div class="card-body stack">
+          <div class="grid grid-3">
+            <div class="card card-body stat-card">
+              <span class="stat-label">Durasi</span>
+              <span class="stat-value">30 Menit</span>
+              <span class="stat-meta">Auto-submit saat waktu habis</span>
+            </div>
+            <div class="card card-body stat-card">
+              <span class="stat-label">Jumlah Soal</span>
+              <span class="stat-value">5 Soal</span>
+              <span class="stat-meta">4 Pilihan Ganda + 1 Esai</span>
+            </div>
+            <div class="card card-body stat-card">
+              <span class="stat-label">Batas Percobaan</span>
+              <span class="stat-value">1 / 2</span>
+              <span class="stat-meta">Sisa 1 percobaan lagi</span>
+            </div>
+          </div>
+
+          <div class="alert alert-info">
+            <div>
+              <strong>Ketentuan Pengerjaan Quiz:</strong>
+              <ul style="padding-left:18px;margin:4px 0 0 0">
+                <li>Urutan soal dan opsi jawaban diacak otomatis untuk setiap percobaan.</li>
+                <li>Jawaban tersimpan otomatis (<em>autosave</em>) setiap kali Anda memilih opsi.</li>
+                <li>Nilai soal Pilihan Ganda tampil langsung setelah quiz dikumpulkan.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap">
+            <a class="btn btn-primary btn-lg" href="quiz-attempt.html">Mulai Kerjakan Quiz (Percobaan ke-2)</a>
+            <a class="btn btn-outline btn-lg" href="course-detail.html">Kembali ke Mata Kuliah</a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-header"><h2 class="card-title">Jadwal & Riwayat Percobaan</h2></div>
+        <div class="card-body stack">
+          <div class="text-sm">
+            <div class="flex-between mb-2"><span class="text-muted">Dibuka</span><strong>5 Des 2026 · 08:00 WIB</strong></div>
+            <div class="flex-between mb-2"><span class="text-muted">Ditutup</span><strong>7 Des 2026 · 23:59 WIB</strong></div>
+            <div class="flex-between"><span class="text-muted">Metode Penilaian</span><strong>Nilai Tertinggi</strong></div>
+          </div>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr><th>Percobaan</th><th>Waktu</th><th>Skor</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#1</td>
+                  <td>5 Des · 09:12</td>
+                  <td><strong>80</strong></td>
+                  <td><a class="text-xs font-semibold" href="quiz-result.html">Hasil</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+</body>
+</html>

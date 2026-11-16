@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Mata Kuliah 07228204 — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="courses" data-title="07228204 · MANAJEMEN PROYEK 07" data-subtitle="T. BRENDA CHANDRAWATI · Jumat 13:00–15:00">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li><a href="courses.html">Mata Kuliah</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">07228204 MANAJEMEN PROYEK 07</li>
+      </ol>
+    </nav>
+
+    <!-- Header Mata Kuliah -->
+    <section class="card card-body">
+      <div class="flex-between flex-wrap">
+        <div>
+          <div class="flex flex-wrap mb-2">
+            <span class="badge badge-primary">07228204</span>
+            <span class="badge badge-neutral">3 SKS</span>
+            <span class="badge badge-success">Presensi 92%</span>
+          </div>
+          <h1>MANAJEMEN PROYEK 07</h1>
+          <p class="text-sm text-secondary mb-0">T. BRENDA CHANDRAWATI · Jumat, 13:00–15:00 WIB · Ruang 8.1</p>
+        </div>
+        <div class="flex">
+          <div id="course-detail-ring"></div>
+          <div class="stack-sm">
+            <a class="btn btn-sm btn-primary" href="attendance.html">Isi Presensi Pertemuan 10</a>
+            <a class="btn btn-sm btn-outline" href="chat.html">Grup Diskusi 07228204</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Tab Utama: Materi, Tugas, Peserta, Nilai -->
+    <section class="card card-body" data-tabs>
+      <div class="tab-list" role="tablist" aria-label="Detail Mata Kuliah">
+        <button type="button" class="tab-trigger is-active" role="tab" aria-selected="true" data-tab-target="tab-materi">Materi & Pertemuan</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="tab-tugas">Tugas & Quiz</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="tab-peserta">Peserta Kelas (32)</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="tab-nilai">Ringkasan Nilai</button>
+      </div>
+
+      <!-- Tab Materi -->
+      <div id="tab-materi" class="tab-panel is-active" role="tabpanel">
+        <div class="stack">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Pertemuan 10: Keamanan Input, PDO Prepared Statement & Upload File</h2>
+                <span class="text-xs text-muted">Sabtu, 5 Desember 2026</span>
+              </div>
+              <span class="badge badge-info">Pertemuan Aktif</span>
+            </div>
+            <div class="card-body list-group">
+              <div class="list-item">
+                <div>
+                  <div class="text-sm font-semibold">Panduan Upload Aman & Validasi MIME (`P10_Upload_Security.pptx`)</div>
+                  <div class="text-xs text-muted">Slide Presentasi · 3,1 MB · Diunggah 4 Des 2026</div>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline" onclick="ClarityUI.showToast('Mengunduh P10_Upload_Security.pptx...', 'info')">Unduh Berkas</button>
+              </div>
+              <div class="list-item">
+                <div>
+                  <div class="text-sm font-semibold">Tugas 4: Implementasi REST API Auth & JWT</div>
+                  <div class="text-xs text-muted">Batas: Besok, 6 Des 2026 · 23:59 WIB</div>
+                </div>
+                <a class="btn btn-sm btn-primary" href="assignment.html">Buka Tugas</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Pertemuan 9: Autentikasi JWT & Middleware Role</h2>
+                <span class="text-xs text-muted">Senin, 30 November 2026</span>
+              </div>
+              <span class="badge badge-success">Selesai</span>
+            </div>
+            <div class="card-body list-group">
+              <div class="list-item">
+                <div>
+                  <div class="text-sm font-semibold">Modul Praktikum: JWT HS256 & Middleware (`P09_Modul_JWT.pdf`)</div>
+                  <div class="text-xs text-muted">Dokumen PDF · 1,8 MB</div>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline" onclick="ClarityUI.showToast('Mengunduh P09_Modul_JWT.pdf...', 'info')">Unduh PDF</button>
+              </div>
+              <div class="list-item">
+                <div>
+                  <div class="text-sm font-semibold">Video Rekaman Pembahasan Auth & Token</div>
+                  <div class="text-xs text-muted">Tautan Video Eksternal · Durasi 48 menit</div>
+                </div>
+                <a class="btn btn-sm btn-outline" href="#video-p09" onclick="ClarityUI.showToast('Membuka tautan video rekaman...', 'info'); return false;">Tonton Video</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Tab Tugas & Quiz -->
+      <div id="tab-tugas" class="tab-panel" role="tabpanel">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Judul Tugas / Quiz</th>
+                <th>Tenggat</th>
+                <th>Bobot</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tugas 4: Implementasi REST API Auth & JWT</strong></td>
+                <td><span class="badge badge-deadline-h1">Mendesak (H-1) · 6 Des</span></td>
+                <td>15%</td>
+                <td><span class="badge badge-warning">Belum Dikumpulkan</span></td>
+                <td><a class="btn btn-sm btn-primary" href="assignment.html">Kumpulkan</a></td>
+              </tr>
+              <tr>
+                <td><strong>Quiz 2: Autentikasi JWT & Keamanan Web</strong></td>
+                <td><span class="badge badge-deadline-h3">Tutup 7 Des 23:59</span></td>
+                <td>10%</td>
+                <td><span class="badge badge-info">1 / 2 Percobaan</span></td>
+                <td><a class="btn btn-sm btn-secondary" href="quiz-intro.html">Buka Quiz</a></td>
+              </tr>
+              <tr>
+                <td><strong>Tugas 3: Routing & Front Controller PHP</strong></td>
+                <td>29 Nov 2026</td>
+                <td>15%</td>
+                <td><span class="badge badge-success">Dinilai (90/100)</span></td>
+                <td><a class="btn btn-sm btn-outline" href="assignment.html?status=graded">Lihat Nilai</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Peserta -->
+      <div id="tab-peserta" class="tab-panel" role="tabpanel">
+        <div class="flex-between flex-wrap mb-4">
+          <h2 class="card-title">Peserta Kelas</h2>
+          <span class="badge badge-primary">1 Dosen · 32 Mahasiswa</span>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>NIM / NIP</th>
+                <th>Nama Lengkap</th>
+                <th>Peran</th>
+                <th>Email Kampus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-mono">5811995177</td>
+                <td><strong>T. BRENDA CHANDRAWATI</strong></td>
+                <td><span class="badge badge-secondary badge-primary">Dosen Pengampu</span></td>
+                <td>brenda.chandrawati@unika.ac.id</td>
+              </tr>
+              <tr>
+                <td class="font-mono">24.N1.0026</td>
+                <td>Dimas Rizky Fajar Pamungkas (Anda)</td>
+                <td><span class="badge badge-neutral">Mahasiswa</span></td>
+                <td>24n10026@student.unika.ac.id</td>
+              </tr>
+              <tr>
+                <td class="font-mono">24.N2.0008</td>
+                <td>Gabriel Kresnoputero W. B.</td>
+                <td><span class="badge badge-neutral">Mahasiswa</span></td>
+                <td>24n20008@student.unika.ac.id</td>
+              </tr>
+              <tr>
+                <td class="font-mono">24.N1.0043</td>
+                <td>Adonai Shan Matthew</td>
+                <td><span class="badge badge-neutral">Mahasiswa</span></td>
+                <td>24n10043@student.unika.ac.id</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Nilai -->
+      <div id="tab-nilai" class="tab-panel" role="tabpanel">
+        <div class="grid grid-3 mb-4">
+          <div class="card card-body stat-card">
+            <span class="stat-label">Nilai Sementara</span>
+            <span class="stat-value text-primary">86,0</span>
+            <span class="stat-meta">Predikat sementara: A</span>
+          </div>
+          <div class="card card-body stat-card">
+            <span class="stat-label">Rata-Rata Kelas</span>
+            <span class="stat-value">79,0</span>
+            <span class="stat-meta">+7,0 poin di atas rata-rata</span>
+          </div>
+          <div class="card card-body stat-card">
+            <span class="stat-label">Komponen Dinilai</span>
+            <span class="stat-value">60%</span>
+            <span class="stat-meta">UAS & Tugas 4 belum masuk</span>
+          </div>
+        </div>
+        <a class="btn btn-outline" href="grades.html">Lihat Rekap Nilai Lengkap →</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var ring = document.getElementById('course-detail-ring');
+      if (ring && window.ClarityUI) {
+        ring.innerHTML = ClarityUI.renderProgressRing(78, 64);
+      }
+    });
+  </script>
+</body>
+</html>

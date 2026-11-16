@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nilai per Mata Kuliah — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="grades" data-title="Rekap Nilai Mahasiswa" data-subtitle="Rincian komponen tugas, quiz, presensi, dan nilai akhir">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Nilai</li>
+      </ol>
+    </nav>
+
+    <div class="page-header">
+      <h1>Rekap Nilai Akademik</h1>
+      <div class="form-group" style="margin-bottom:0;min-width:260px">
+        <label class="sr-only" for="grades-course-select">Pilih Mata Kuliah</label>
+        <select class="form-select" id="grades-course-select">
+          <option value="07228204">07228204 — MANAJEMEN PROYEK 07</option>
+          <option value="07228239">07228239 — TEKNOLOGI KEUANGAN 05</option>
+          <option value="07228203">07228203 — ETIKA PROFESI 07</option>
+          <option value="07228250">07228250 — KOTA CERDAS 03</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="grid grid-4">
+      <div class="card card-body stat-card">
+        <span class="stat-label">Nilai Akhir Sementara</span>
+        <span class="stat-value text-primary">86,0</span>
+        <span class="stat-meta">Predikat: A (Sangat Baik)</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Rata-Rata Kelas</span>
+        <span class="stat-value">79,0</span>
+        <span class="stat-meta">Posisi Anda di atas rata-rata</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Rata-Rata Tugas</span>
+        <span class="stat-value text-success">88,5</span>
+        <span class="stat-meta">Bobot 30%</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Rata-Rata Quiz</span>
+        <span class="stat-value">82,5</span>
+        <span class="stat-meta">Bobot 20%</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Rincian Komponen & Bobot Nilai (07228204)</h2>
+        <span class="badge badge-success">Total Bobot: 100%</span>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Komponen</th>
+                <th>Item Penilaian</th>
+                <th>Bobot</th>
+                <th>Skor</th>
+                <th>Kontribusi</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Presensi</td>
+                <td>Kehadiran Pertemuan 1–10 (92%)</td>
+                <td>10%</td>
+                <td>92</td>
+                <td>9,2</td>
+                <td><span class="badge badge-success">Terhitung</span></td>
+              </tr>
+              <tr>
+                <td>Tugas</td>
+                <td>Tugas 1, 2, 3 (Tugas 4 belum dinilai)</td>
+                <td>30%</td>
+                <td>88,5</td>
+                <td>26,55</td>
+                <td><span class="badge badge-info">Parsial (3/4)</span></td>
+              </tr>
+              <tr>
+                <td>Quiz</td>
+                <td>Quiz 1 (85) & Quiz 2 (80)</td>
+                <td>20%</td>
+                <td>82,5</td>
+                <td>16,5</td>
+                <td><span class="badge badge-success">Terhitung</span></td>
+              </tr>
+              <tr>
+                <td>UTS</td>
+                <td>Ujian Tengah Semester</td>
+                <td>20%</td>
+                <td>84</td>
+                <td>16,8</td>
+                <td><span class="badge badge-success">Terhitung</span></td>
+              </tr>
+              <tr>
+                <td>UAS</td>
+                <td>Ujian Akhir Semester (Desember 2026)</td>
+                <td>20%</td>
+                <td>-</td>
+                <td>-</td>
+                <td><span class="badge badge-neutral">Belum Berlangsung</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+</body>
+</html>

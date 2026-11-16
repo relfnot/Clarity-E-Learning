@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta Mockup UI (Tahap F4) — Clarity E-Learning</title>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base="." data-page="index" data-title="Peta Mockup UI (F4)" data-subtitle="Daftar seluruh halaman prototipe klikabel & status review">
+  <div id="page-content" class="stack">
+    <section class="card card-body">
+      <div class="flex-between flex-wrap">
+        <div>
+          <span class="badge badge-primary mb-2">Tahap F4 · 13–18 Nov 2026</span>
+          <h1 class="mb-0">Prototipe UI Clarity E-Learning</h1>
+        </div>
+        <div class="flex flex-wrap">
+          <a class="btn btn-outline" href="components.html">Katalog Komponen</a>
+          <a class="btn btn-primary" href="login.html">Mulai Uji dari Login</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- P0 Wajib -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">1. Halaman P0 (Wajib Sesuai Output Proposal)</h2>
+        <span class="badge badge-success">8 Halaman Siap</span>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr><th>Halaman</th><th>Peran</th><th>Status</th><th>Tautan Normal</th><th>Varian State</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Login Bersama / Mahasiswa & Dosen</strong></td>
+                <td>Publik</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="login.html">Buka login.html</a> · <a class="text-xs" href="mahasiswa/login.html">mahasiswa/login.html</a></td>
+                <td><a href="login.html?state=loading">Loading</a> · <a href="login.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Dashboard Mahasiswa</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/dashboard.html">Buka dashboard.html</a></td>
+                <td><a href="mahasiswa/dashboard.html?state=loading">Loading</a> · <a href="mahasiswa/dashboard.html?state=empty">Empty</a> · <a href="mahasiswa/dashboard.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Daftar Mata Kuliah & Filter</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/courses.html">Buka courses.html</a></td>
+                <td><a href="mahasiswa/courses.html?state=loading">Loading</a> · <a href="mahasiswa/courses.html?state=empty">Empty</a> · <a href="mahasiswa/courses.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Detail Mata Kuliah (Materi, Tugas, Peserta, Nilai)</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/course-detail.html">Buka course-detail.html</a></td>
+                <td><a href="mahasiswa/course-detail.html?state=loading">Loading</a> · <a href="mahasiswa/course-detail.html?state=empty">Empty</a> · <a href="mahasiswa/course-detail.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Detail & Pengumpulan Tugas (File & Tautan + 4 Status)</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/assignment.html">Buka assignment.html</a></td>
+                <td><a href="mahasiswa/assignment.html?state=loading">Loading</a> · <a href="mahasiswa/assignment.html?state=empty">Empty</a> · <a href="mahasiswa/assignment.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Quiz — Layar 1: Intro & Riwayat Percobaan</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/quiz-intro.html">Buka quiz-intro.html</a></td>
+                <td><a href="mahasiswa/quiz-intro.html?state=loading">Loading</a> · <a href="mahasiswa/quiz-intro.html?state=empty">Empty</a> · <a href="mahasiswa/quiz-intro.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Quiz — Layar 2: Pengerjaan (Timer & Navigator Soal)</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/quiz-attempt.html">Buka quiz-attempt.html</a></td>
+                <td><a href="mahasiswa/quiz-attempt.html?state=loading">Loading</a> · <a href="mahasiswa/quiz-attempt.html?state=empty">Empty</a> · <a href="mahasiswa/quiz-attempt.html?state=error">Error</a></td>
+              </tr>
+              <tr>
+                <td><strong>Quiz — Layar 3: Hasil & Rincian Jawaban</strong></td>
+                <td>Mahasiswa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-primary" href="mahasiswa/quiz-result.html">Buka quiz-result.html</a></td>
+                <td><a href="mahasiswa/quiz-result.html?state=loading">Loading</a> · <a href="mahasiswa/quiz-result.html?state=empty">Empty</a> · <a href="mahasiswa/quiz-result.html?state=error">Error</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- P1 Mahasiswa -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">2. Halaman P1 Mahasiswa</h2>
+        <span class="badge badge-info">5 Halaman Siap</span>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr><th>Halaman</th><th>Fitur Utama</th><th>Status</th><th>Tautan</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Presensi Mahasiswa</strong></td>
+                <td>Check-in sesi terbuka & rekap kehadiran per matkul</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="mahasiswa/attendance.html">Buka attendance.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Kalender & Deadline</strong></td>
+                <td>Jadwal kuliah, tenggat tugas & quiz Des 2026</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="mahasiswa/calendar.html">Buka calendar.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Notifikasi</strong></td>
+                <td>Reminder H-1/H-3, nilai keluar & pengumuman</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="mahasiswa/notifications.html">Buka notifications.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Nilai per Mata Kuliah</strong></td>
+                <td>Rekap tugas, quiz, presensi & nilai akhir berbobot</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="mahasiswa/grades.html">Buka grades.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Profil & Gamifikasi (+ Pengaturan)</strong></td>
+                <td>XP bar, level, badge, leaderboard anonim & hemat data</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="mahasiswa/profile.html">Buka profile.html</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- P1 Dosen -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">3. Halaman P1 Dosen</h2>
+        <span class="badge badge-info">8 Halaman Siap</span>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr><th>Halaman</th><th>Fitur Utama</th><th>Status</th><th>Tautan</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dashboard Dosen</strong></td>
+                <td>Ringkasan kelas + Indikator Mahasiswa Berisiko</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/dashboard.html">Buka dosen/dashboard.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Kelola Mata Kuliah</strong></td>
+                <td>Pertemuan, materi, tugas, presensi & poin gamifikasi</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/course-manage.html">Buka course-manage.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Upload Materi</strong></td>
+                <td>Unggah PDF/slide atau tautan video per pertemuan</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/material-upload.html">Buka material-upload.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Buat Quiz & Bank Soal</strong></td>
+                <td>Parameter waktu/percobaan + editor soal PG & esai</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/quiz-builder.html">Buka quiz-builder.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Daftar Pengumpulan Tugas</strong></td>
+                <td>Filter tepat waktu, terlambat & belum mengumpulkan</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/submissions.html">Buka submissions.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Penilaian Tugas</strong></td>
+                <td>Beri skor & komentar feedback pada pengumpulan</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/grading.html">Buka grading.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Kelola Presensi</strong></td>
+                <td>Buka/tutup sesi & edit status Hadir/Izin/Sakit/Alpa</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/attendance-manage.html">Buka attendance-manage.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Kirim Pengumuman</strong></td>
+                <td>Broadcast notifikasi ke mahasiswa dalam satu mata kuliah</td>
+                <td><span class="badge badge-success">Siap Review</span></td>
+                <td><a class="btn btn-sm btn-outline" href="dosen/announcement.html">Buka announcement.html</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- P2 & Utilitas -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">4. Halaman P2 & Utilitas Design System</h2>
+        <span class="badge badge-neutral">3 Halaman Siap</span>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr><th>Halaman</th><th>Keterangan</th><th>Tautan</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Group Chat & Kontak</strong></td>
+                <td>Diskusi grup per mata kuliah & kontak langsung</td>
+                <td><a class="btn btn-sm btn-outline" href="mahasiswa/chat.html">Buka chat.html</a></td>
+              </tr>
+              <tr>
+                <td><strong>Halaman 404 / 403 / Offline</strong></td>
+                <td>Penanganan halaman tidak ditemukan, akses ditolak & offline</td>
+                <td><a class="btn btn-sm btn-outline" href="404.html?type=404">404</a> · <a class="btn btn-sm btn-outline" href="404.html?type=403">403</a> · <a class="btn btn-sm btn-outline" href="404.html?type=offline">Offline</a></td>
+              </tr>
+              <tr>
+                <td><strong>Katalog Komponen UI</strong></td>
+                <td>Design tokens + 15 komponen UI standar</td>
+                <td><a class="btn btn-sm btn-outline" href="components.html">Buka components.html</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/js/mock-data.js?v=2"></script>
+  <script src="assets/js/layout.js?v=2"></script>
+</body>
+</html>

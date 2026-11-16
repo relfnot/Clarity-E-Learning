@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifikasi — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="notifications" data-title="Pusat Notifikasi" data-subtitle="Pengumuman dosen, pengingat deadline, dan info nilai">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Notifikasi</li>
+      </ol>
+    </nav>
+
+    <div class="page-header">
+      <h1>Notifikasi & Pengumuman</h1>
+      <button type="button" class="btn btn-outline" id="btn-read-all">Tandai Semua Dibaca</button>
+    </div>
+
+    <section class="card card-body" data-tabs>
+      <div class="tab-list" role="tablist" aria-label="Filter kategori notifikasi">
+        <button type="button" class="tab-trigger is-active" role="tab" aria-selected="true" data-tab-target="notif-all">Semua (4)</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="notif-unread">Belum Dibaca (<span id="unread-count-label">3</span>)</button>
+      </div>
+
+      <div id="notif-all" class="tab-panel is-active stack" role="tabpanel">
+        <article class="notif-unread flex-between flex-wrap notif-item">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-deadline-h1">Reminder H-1</span>
+              <span class="text-xs text-muted">5 Des 2026 · 08:00 WIB</span>
+            </div>
+            <h2 class="text-sm font-bold mb-1">Pengingat H-1: Tugas 4 REST API Auth & JWT</h2>
+            <p class="text-xs text-secondary mb-0">Batas pengumpulan besok pukul 23:59 WIB. Kumpulkan tepat waktu untuk bonus +30 XP.</p>
+          </div>
+          <a class="btn btn-sm btn-primary" href="assignment.html">Kumpulkan</a>
+        </article>
+
+        <article class="notif-unread flex-between flex-wrap notif-item">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-info">Pengumuman Dosen</span>
+              <span class="text-xs text-muted">5 Des 2026 · 07:55 WIB</span>
+            </div>
+            <h2 class="text-sm font-bold mb-1">Pengumuman 07228204: Sesi Presensi Pertemuan 10 Dibuka</h2>
+            <p class="text-xs text-secondary mb-0">Silakan lakukan check-in presensi sebelum pukul 15:00 WIB melalui menu Presensi.</p>
+          </div>
+          <a class="btn btn-sm btn-outline" href="attendance.html">Isi Presensi</a>
+        </article>
+
+        <article class="notif-unread flex-between flex-wrap notif-item">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-success">Nilai Keluar</span>
+              <span class="text-xs text-muted">4 Des 2026 · 16:40 WIB</span>
+            </div>
+            <h2 class="text-sm font-bold mb-1">Nilai Keluar: Rancangan Sistem Kota Pintar (92/100)</h2>
+            <p class="text-xs text-secondary mb-0">ANDRE KURNIAWAN PAMUDJI telah menilai tugas Anda pada mata kuliah KOTA CERDAS 03.</p>
+          </div>
+          <a class="btn btn-sm btn-outline" href="grades.html">Lihat Nilai</a>
+        </article>
+
+        <article class="notif-read flex-between flex-wrap">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-neutral">Sudah Dibaca</span>
+              <span class="text-xs text-muted">3 Des 2026 · 11:00 WIB</span>
+            </div>
+            <h2 class="text-sm font-semibold mb-1">Quiz 2 MANAJEMEN PROYEK 07 Dijadwalkan</h2>
+            <p class="text-xs text-muted mb-0">Quiz dibuka 5–7 Des 2026, durasi 30 menit, maksimal 2 kali percobaan.</p>
+          </div>
+          <a class="btn btn-sm btn-ghost" href="quiz-intro.html">Buka Quiz</a>
+        </article>
+      </div>
+
+      <div id="notif-unread" class="tab-panel stack" role="tabpanel">
+        <article class="notif-unread flex-between flex-wrap notif-item">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-deadline-h1">Reminder H-1</span>
+              <span class="text-xs text-muted">5 Des 2026 · 08:00 WIB</span>
+            </div>
+            <h2 class="text-sm font-bold mb-1">Pengingat H-1: Tugas 4 REST API Auth & JWT</h2>
+            <p class="text-xs text-secondary mb-0">Batas pengumpulan besok pukul 23:59 WIB. Kumpulkan tepat waktu untuk bonus +30 XP.</p>
+          </div>
+          <a class="btn btn-sm btn-primary" href="assignment.html">Kumpulkan</a>
+        </article>
+
+        <article class="notif-unread flex-between flex-wrap notif-item">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-info">Pengumuman Dosen</span>
+              <span class="text-xs text-muted">5 Des 2026 · 07:55 WIB</span>
+            </div>
+            <h2 class="text-sm font-bold mb-1">Pengumuman 07228204: Sesi Presensi Pertemuan 10 Dibuka</h2>
+            <p class="text-xs text-secondary mb-0">Silakan lakukan check-in presensi sebelum pukul 15:00 WIB melalui menu Presensi.</p>
+          </div>
+          <a class="btn btn-sm btn-outline" href="attendance.html">Isi Presensi</a>
+        </article>
+
+        <article class="notif-unread flex-between flex-wrap notif-item">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-success">Nilai Keluar</span>
+              <span class="text-xs text-muted">4 Des 2026 · 16:40 WIB</span>
+            </div>
+            <h2 class="text-sm font-bold mb-1">Nilai Keluar: Rancangan Sistem Kota Pintar (92/100)</h2>
+            <p class="text-xs text-secondary mb-0">ANDRE KURNIAWAN PAMUDJI telah menilai tugas Anda pada mata kuliah KOTA CERDAS 03.</p>
+          </div>
+          <a class="btn btn-sm btn-outline" href="grades.html">Lihat Nilai</a>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('btn-read-all');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.notif-item').forEach(function (el) {
+          el.classList.remove('notif-unread');
+          el.classList.add('notif-read');
+        });
+        var lbl = document.getElementById('unread-count-label');
+        if (lbl) lbl.textContent = '0';
+        if (window.ClarityUI) ClarityUI.showToast('Semua notifikasi ditandai sudah dibaca.', 'success');
+      });
+    });
+  </script>
+</body>
+</html>

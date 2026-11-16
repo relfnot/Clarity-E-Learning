@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil, Gamifikasi & Pengaturan — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="profile" data-title="Profil & Gamifikasi" data-subtitle="Leveling, XP, Badge, Leaderboard Kelas & Pengaturan">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Profil & Gamifikasi</li>
+      </ol>
+    </nav>
+
+    <!-- Kartu Profil & Leveling -->
+    <section class="card card-body">
+      <div class="grid grid-sidebar-right">
+        <div class="flex flex-wrap">
+          <img class="mascot-figure-sm" src="../assets/img/Target-Swift Owl Mascot.png" alt="Maskot Burung Hantu Clarity membawa anak panah">
+          <div>
+            <div class="flex flex-wrap mb-1">
+              <span class="badge badge-xp">Level 7 · Scholar Tekun</span>
+              <span class="badge badge-neutral">24.N1.0026</span>
+            </div>
+            <h1 style="font-size:var(--text-xl);margin-bottom:4px">Dimas Rizky Fajar Pamungkas</h1>
+            <p class="text-sm text-muted mb-0">Sistem Informasi (S1) · Semester 5 · 24n10026@student.unika.ac.id</p>
+          </div>
+        </div>
+
+        <div class="stack-sm">
+          <div class="flex-between text-sm">
+            <span class="font-semibold">Total XP: 1.450 XP</span>
+            <span class="text-muted">550 XP lagi ke Level 8</span>
+          </div>
+          <div class="progress progress-lg" role="progressbar" aria-label="Progress XP menuju level 8" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar progress-bar-xp" style="width:72%"></div>
+          </div>
+          <p class="text-xs text-muted mb-0">Aturan XP: Tugas tepat waktu (+30 XP), Quiz selesai (+50 XP), Presensi hadir (+10 XP). <strong>Keterlambatan tidak mengurangi XP</strong>, hanya tidak memperoleh bonus tepat waktu.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-2">
+      <!-- Koleksi Badge -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Lencana (Badge) Prestasi</h2>
+          <span class="badge badge-success">3 / 4 Terbuka</span>
+        </div>
+        <div class="card-body grid grid-2">
+          <div class="badge-tile">
+            <div class="badge-icon-ring" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            </div>
+            <div class="font-semibold text-sm">Disiplin 5x</div>
+            <p class="text-xs text-muted mb-2">5 tugas berturut-turut tepat waktu.</p>
+            <span class="badge badge-success">Diperoleh 28 Nov</span>
+          </div>
+          <div class="badge-tile">
+            <div class="badge-icon-ring" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <div class="font-semibold text-sm">Penakluk Quiz</div>
+            <p class="text-xs text-muted mb-2">Skor ≥ 85 pada 2 quiz berbeda.</p>
+            <span class="badge badge-success">Diperoleh 2 Des</span>
+          </div>
+          <div class="badge-tile">
+            <div class="badge-icon-ring" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="font-semibold text-sm">Hadir Penuh</div>
+            <p class="text-xs text-muted mb-2">100% hadir dalam 1 bulan kuliah.</p>
+            <span class="badge badge-success">Diperoleh 30 Nov</span>
+          </div>
+          <div class="badge-tile is-locked">
+            <div class="badge-icon-ring" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="font-semibold text-sm">Diskusi Aktif</div>
+            <p class="text-xs text-muted mb-2">Aktif 15 pesan di forum kelas.</p>
+            <span class="badge badge-neutral">Terkunci (9/15)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pengaturan Privasi Gamifikasi & Hemat Data -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Pengaturan Privasi & Mode Hemat Data</h2>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div>
+              <label class="font-semibold text-sm" for="toggle-anon">Tampilkan saya sebagai Anonim</label>
+              <div class="text-xs text-muted">Nama Anda muncul sebagai "Mahasiswa Anonim" pada papan peringkat kelas.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-anon" aria-label="Tampilkan saya sebagai Anonim">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <label class="font-semibold text-sm" for="toggle-hide-lb">Sembunyikan Leaderboard</label>
+              <div class="text-xs text-muted">Menyembunyikan papan peringkat kelas dari tampilan Anda & mengeluarkan skor Anda dari papan.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-hide-lb" aria-label="Sembunyikan Leaderboard">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <label class="font-semibold text-sm" for="toggle-datasaver">Mode Hemat Data (P2)</label>
+              <div class="text-xs text-muted">Nonaktifkan pratinjau otomatis media berat dan kurangi frekuensi polling chat.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-datasaver" aria-label="Mode Hemat Data">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Leaderboard per Kelas -->
+    <section class="card" id="leaderboard-section">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Leaderboard Kelas — 07228204 MANAJEMEN PROYEK 07</h2>
+          <p class="text-xs text-muted mb-0">Keterlambatan tugas tidak pernah mengurangi XP. Anda dapat mengaktifkan mode anonim atau menyembunyikan panel ini kapan saja.</p>
+        </div>
+        <div class="form-group" style="margin-bottom:0;min-width:200px">
+          <label class="sr-only" for="lb-course-select">Pilih Kelas Leaderboard</label>
+          <select class="form-select" id="lb-course-select">
+            <option>07228204 MANAJEMEN PROYEK 07</option>
+            <option>07228239 TEKNOLOGI KEUANGAN 05</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card-body" id="leaderboard-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Peringkat</th>
+                <th>Mahasiswa</th>
+                <th>Level & Gelar</th>
+                <th>Total XP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>#1</strong></td>
+                <td>Gabriel Kresnoputero W. B. <span class="text-xs text-muted">(24.N2.0008)</span></td>
+                <td><span class="badge badge-xp">Lv. 8 · Arsitek Kode</span></td>
+                <td><strong>1.780 XP</strong></td>
+              </tr>
+              <tr style="background:var(--color-primary-soft)">
+                <td><strong>#2</strong></td>
+                <td><strong id="lb-my-name">Dimas Rizky Fajar Pamungkas (Anda)</strong></td>
+                <td><span class="badge badge-xp">Lv. 7 · Scholar Tekun</span></td>
+                <td><strong>1.450 XP</strong></td>
+              </tr>
+              <tr>
+                <td><strong>#3</strong></td>
+                <td>Adonai Shan Matthew <span class="text-xs text-muted">(24.N1.0043)</span></td>
+                <td><span class="badge badge-xp">Lv. 7 · Scholar Tekun</span></td>
+                <td><strong>1.390 XP</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card-body" id="leaderboard-hidden-state" hidden>
+        <div class="empty-state">
+          <div class="empty-state-title">Leaderboard Disembunyikan</div>
+          <p class="empty-state-text">Anda memilih untuk menyembunyikan leaderboard agar lebih fokus pada progress belajar pribadi.</p>
+          <button type="button" class="btn btn-sm btn-outline" id="btn-show-lb-again">Tampilkan Kembali Leaderboard</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var anonToggle = document.getElementById('toggle-anon');
+      var hideToggle = document.getElementById('toggle-hide-lb');
+      var dataSaver = document.getElementById('toggle-datasaver');
+      var myNameEl = document.getElementById('lb-my-name');
+      var lbBody = document.getElementById('leaderboard-body');
+      var lbHidden = document.getElementById('leaderboard-hidden-state');
+      var showAgainBtn = document.getElementById('btn-show-lb-again');
+
+      if (anonToggle && myNameEl) {
+        anonToggle.addEventListener('change', function () {
+          myNameEl.textContent = anonToggle.checked ? 'Mahasiswa Anonim (Anda)' : 'Dimas Rizky Fajar Pamungkas (Anda)';
+          if (window.ClarityUI) ClarityUI.showToast(anonToggle.checked ? 'Mode Anonim leaderboard diaktifkan.' : 'Nama asli Anda ditampilkan kembali.', 'info');
+        });
+      }
+
+      function syncHideState() {
+        if (!hideToggle || !lbBody || !lbHidden) return;
+        lbBody.hidden = hideToggle.checked;
+        lbHidden.hidden = !hideToggle.checked;
+      }
+
+      if (hideToggle) {
+        hideToggle.addEventListener('change', syncHideState);
+      }
+      if (showAgainBtn && hideToggle) {
+        showAgainBtn.addEventListener('click', function () {
+          hideToggle.checked = false;
+          syncHideState();
+        });
+      }
+      if (dataSaver) {
+        dataSaver.addEventListener('change', function () {
+          if (window.ClarityUI) ClarityUI.showToast(dataSaver.checked ? 'Mode hemat data aktif.' : 'Mode normal aktif.', 'info');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presensi Mahasiswa — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base=".." data-page="attendance" data-title="Presensi Perkuliahan" data-subtitle="Check-in sesi pertemuan aktif & rekap kehadiran">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Presensi</li>
+      </ol>
+    </nav>
+
+    <!-- Sesi Presensi Aktif -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <span class="badge badge-success mb-1">Sesi Presensi Terbuka</span>
+          <h1 style="font-size:var(--text-xl);margin-bottom:0">07228204 · Pertemuan 10: Keamanan Input & Upload File</h1>
+        </div>
+        <span class="badge badge-xp">+10 XP Hadir</span>
+      </div>
+      <div class="card-body">
+        <p class="text-sm text-secondary mb-4">Dosen: T. BRENDA CHANDRAWATI · Sesi dibuka pukul 13:00 WIB dan ditutup otomatis pukul <strong>15:00 WIB</strong>.</p>
+        <form id="checkin-form" class="flex flex-wrap">
+          <div class="form-group" style="margin-bottom:0;min-width:200px">
+            <label class="form-label" for="checkin-status">Status Kehadiran</label>
+            <select class="form-select" id="checkin-status">
+              <option value="hadir">Hadir</option>
+              <option value="izin">Izin (dengan keterangan)</option>
+              <option value="sakit">Sakit</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" id="btn-checkin" style="align-self:flex-end">Check-In Presensi Sekarang</button>
+        </form>
+        <div id="checkin-done-alert" class="alert alert-success mt-4" hidden>
+          Presensi Pertemuan 10 berhasil dicatat pada pukul 10:08 WIB dengan status <strong>Hadir</strong> (+10 XP).
+        </div>
+      </div>
+    </section>
+
+    <!-- Ringkasan Kehadiran per Mata Kuliah -->
+    <section class="grid grid-4">
+      <div class="card card-body stat-card">
+        <span class="stat-label">Manajemen Proyek 07</span>
+        <span class="stat-value text-success">92%</span>
+        <span class="stat-meta">11 Hadir · 1 Izin · 0 Alpa</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Teknologi Keuangan 05</span>
+        <span class="stat-value text-success">100%</span>
+        <span class="stat-meta">12 Hadir · 0 Izin · 0 Alpa</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Etika Profesi 07</span>
+        <span class="stat-value text-primary">85%</span>
+        <span class="stat-meta">10 Hadir · 1 Sakit · 1 Alpa</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Kota Cerdas 03</span>
+        <span class="stat-value text-success">95%</span>
+        <span class="stat-meta">11 Hadir · 1 Izin · 0 Alpa</span>
+      </div>
+    </section>
+
+    <!-- Tabel Riwayat Presensi -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Riwayat Kehadiran Pertemuan</h2>
+        <div class="form-group" style="margin-bottom:0;min-width:220px">
+          <label class="sr-only" for="att-course-filter">Filter Mata Kuliah</label>
+          <select class="form-select" id="att-course-filter">
+            <option value="all">07228204 — MANAJEMEN PROYEK 07</option>
+            <option value="07228239">07228239 — TEKNOLOGI KEUANGAN 05</option>
+            <option value="07228203">07228203 — ETIKA PROFESI 07</option>
+            <option value="07228250">07228250 — KOTA CERDAS 03</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Pertemuan</th>
+                <th>Tanggal</th>
+                <th>Topik Bahasan</th>
+                <th>Waktu Check-In</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Pertemuan 10</td>
+                <td>5 Des 2026</td>
+                <td>Keamanan Input & Upload File</td>
+                <td id="p10-time">Menunggu Check-in</td>
+                <td id="p10-badge"><span class="badge badge-warning">Belum Check-In</span></td>
+              </tr>
+              <tr>
+                <td>Pertemuan 9</td>
+                <td>30 Nov 2026</td>
+                <td>Autentikasi JWT & Middleware Role</td>
+                <td>08:04 WIB</td>
+                <td><span class="badge badge-success">Hadir</span></td>
+              </tr>
+              <tr>
+                <td>Pertemuan 8</td>
+                <td>23 Nov 2026</td>
+                <td>Arsitektur REST API & Routing PHP Native</td>
+                <td>08:09 WIB</td>
+                <td><span class="badge badge-success">Hadir</span></td>
+              </tr>
+              <tr>
+                <td>Pertemuan 7</td>
+                <td>16 Nov 2026</td>
+                <td>Ujian Tengah Semester / Review Proyek</td>
+                <td>-</td>
+                <td><span class="badge badge-info">Izin</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('checkin-form');
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var alertEl = document.getElementById('checkin-done-alert');
+        var btn = document.getElementById('btn-checkin');
+        var p10Time = document.getElementById('p10-time');
+        var p10Badge = document.getElementById('p10-badge');
+        if (alertEl) alertEl.hidden = false;
+        if (btn) { btn.disabled = true; btn.textContent = 'Sudah Check-In'; }
+        if (p10Time) p10Time.textContent = '10:08 WIB';
+        if (p10Badge) p10Badge.innerHTML = '<span class="badge badge-success">Hadir</span>';
+        if (window.ClarityUI) ClarityUI.showToast('Presensi Pertemuan 10 tercatat! (+10 XP)', 'success');
+      });
+    });
+  </script>
+</body>
+</html>

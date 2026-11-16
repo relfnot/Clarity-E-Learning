@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Mahasiswa & Dosen — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="auth" data-base="..">
+  <main class="auth-page">
+    <div class="card auth-card mascot-peek-card">
+      <div class="card-body stack">
+        <div class="mascot-peek-header">
+          <div>
+            <h1 class="brand-wordmark-auth">Clarity E-Learning</h1>
+            <p class="text-xs text-muted mb-0">Bidik Target Akademikmu Tepat Sasaran</p>
+          </div>
+          <img class="mascot-peek-img" src="../assets/img/Chibi Owl Mascot Waving Cheerfully.png" alt="Maskot Burung Hantu Clarity menyapa">
+        </div>
+
+        <div id="login-error-alert" class="alert alert-danger" role="alert" hidden>
+          <span><strong>Login gagal:</strong> Kredensial salah. Periksa NIM/NIP atau kata sandi Anda.</span>
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="mhs-identifier">NIM / NIP / Email Kampus <span class="form-required">*</span></label>
+            <input class="form-control" id="mhs-identifier" type="text" value="24.N1.0026" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="mhs-password">Kata Sandi <span class="form-required">*</span></label>
+            <input class="form-control" id="mhs-password" type="password" value="rahasia123" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="mhs-role-demo">Masuk Sebagai (Demo)</label>
+            <select class="form-select" id="mhs-role-demo">
+              <option value="mahasiswa">Mahasiswa — Dimas Rizky F. P.</option>
+              <option value="dosen">Dosen — T. BRENDA CHANDRAWATI</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk</button>
+        </form>
+
+        <div class="flex-between flex-wrap text-xs">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-mhs-error">Simulasi Kredensial Salah</button>
+          <a href="../index.html">Peta Mockup F4</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('login-form');
+      var roleSelect = document.getElementById('mhs-role-demo');
+      var identifier = document.getElementById('mhs-identifier');
+      var errAlert = document.getElementById('login-error-alert');
+
+      roleSelect.addEventListener('change', function () {
+        identifier.value = roleSelect.value === 'dosen' ? '5811995177' : '24.N1.0026';
+      });
+
+      document.getElementById('btn-mhs-error').addEventListener('click', function () {
+        errAlert.hidden = false;
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        window.location.href = roleSelect.value === 'dosen' ? '../dosen/dashboard.html' : 'dashboard.html';
+      });
+    });
+  </script>
+</body>
+</html>
