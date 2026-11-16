@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Pengumpulan Tugas — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="dosen" data-base=".." data-page="submissions" data-title="Daftar Pengumpulan Tugas" data-subtitle="Pantau status tepat waktu, terlambat, atau belum mengumpulkan">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard Dosen</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li><a href="course-manage.html">Kelola 07228204</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Daftar Pengumpulan</li>
+      </ol>
+    </nav>
+
+    <div class="page-header">
+      <div>
+        <h1>Pengumpulan: Tugas 4 REST API Auth & JWT</h1>
+        <p class="page-subtitle">07228204 MANAJEMEN PROYEK 07 · Tenggat: 6 Des 2026 23:59 WIB</p>
+      </div>
+      <div class="form-group" style="margin-bottom:0;min-width:220px">
+        <label class="sr-only" for="sub-status-filter">Filter Status Pengumpulan</label>
+        <select class="form-select" id="sub-status-filter">
+          <option value="all">Semua Status (32)</option>
+          <option value="tepat_waktu">Tepat Waktu (24)</option>
+          <option value="terlambat">Terlambat (4)</option>
+          <option value="belum">Belum Mengumpulkan (4)</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="grid grid-4">
+      <div class="card card-body stat-card">
+        <span class="stat-label">Total Peserta</span>
+        <span class="stat-value">32</span>
+        <span class="stat-meta">Kelas 07228204</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Tepat Waktu</span>
+        <span class="stat-value text-success">24</span>
+        <span class="stat-meta">75% mengumpulkan sebelum deadline</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Terlambat</span>
+        <span class="stat-value text-danger">4</span>
+        <span class="stat-meta">Ditandai is_late: true</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Belum Mengumpulkan</span>
+        <span class="stat-value text-warning">4</span>
+        <span class="stat-meta">Belum ada file/tautan</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Tabel Pengumpulan Mahasiswa</h2>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>NIM</th>
+                <th>Nama Mahasiswa</th>
+                <th>Status</th>
+                <th>Waktu Kumpul</th>
+                <th>Berkas / Tautan</th>
+                <th>Nilai</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="submissions-tbody">
+              <tr data-sub-status="tepat_waktu">
+                <td class="font-mono">24.N1.0026</td>
+                <td><strong>Dimas Rizky Fajar Pamungkas</strong></td>
+                <td><span class="badge badge-success">Tepat Waktu</span></td>
+                <td>5 Des 2026 · 14:20</td>
+                <td><code>tugas4-rest-api-24N10026.zip</code></td>
+                <td><strong>90</strong></td>
+                <td><a class="btn btn-sm btn-outline" href="grading.html">Lihat / Ubah</a></td>
+              </tr>
+              <tr data-sub-status="tepat_waktu">
+                <td class="font-mono">24.N2.0008</td>
+                <td><strong>Gabriel Kresnoputero W. B.</strong></td>
+                <td><span class="badge badge-success">Tepat Waktu</span></td>
+                <td>5 Des 2026 · 11:05</td>
+                <td><a href="#gh">github.com/gabriel/07228204-jwt</a></td>
+                <td><strong>94</strong></td>
+                <td><a class="btn btn-sm btn-outline" href="grading.html">Lihat / Ubah</a></td>
+              </tr>
+              <tr data-sub-status="tepat_waktu">
+                <td class="font-mono">24.N1.0043</td>
+                <td><strong>Adonai Shan Matthew</strong></td>
+                <td><span class="badge badge-success">Tepat Waktu</span></td>
+                <td>5 Des 2026 · 19:45</td>
+                <td><code>auth-jwt-addon.pdf</code></td>
+                <td><span class="badge badge-warning">Belum Dinilai</span></td>
+                <td><a class="btn btn-sm btn-primary" href="grading.html">Nilai Sekarang</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var filter = document.getElementById('sub-status-filter');
+      if (!filter) return;
+      filter.addEventListener('change', function () {
+        var val = filter.value;
+        document.querySelectorAll('#submissions-tbody tr').forEach(function (tr) {
+          tr.style.display = (val === 'all' || tr.getAttribute('data-sub-status') === val) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Mata Kuliah — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="dosen" data-base=".." data-page="course-manage" data-title="Kelola Mata Kuliah" data-subtitle="07228204 · Materi, Jadwal, Presensi, Tugas, Quiz & Aturan Gamifikasi">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard Dosen</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Kelola 07228204 MANAJEMEN PROYEK 07</li>
+      </ol>
+    </nav>
+
+    <section class="card card-body">
+      <div class="flex-between flex-wrap">
+        <div>
+          <span class="badge badge-primary mb-2">07228204 · Ganjil 2026/2027</span>
+          <h1>MANAJEMEN PROYEK 07</h1>
+          <p class="page-subtitle">Jumat, 13:00–15:00 WIB · Ruang 8.1</p>
+        </div>
+        <div class="flex flex-wrap">
+          <a class="btn btn-outline" href="announcement.html">Kirim Pengumuman</a>
+          <a class="btn btn-primary" href="material-upload.html">+ Tambah Materi</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card card-body" data-tabs>
+      <div class="tab-list" role="tablist" aria-label="Pengelolaan kelas">
+        <button type="button" class="tab-trigger is-active" role="tab" aria-selected="true" data-tab-target="cm-pertemuan">Pertemuan & Materi</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="cm-tugas">Tugas & Quiz</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="cm-presensi">Sesi Presensi</button>
+        <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="cm-gamifikasi">Aturan Gamifikasi</button>
+      </div>
+
+      <div id="cm-pertemuan" class="tab-panel is-active stack" role="tabpanel">
+        <div class="flex-between flex-wrap">
+          <h2 class="card-title">Daftar Pertemuan & Materi</h2>
+          <a class="btn btn-sm btn-primary" href="material-upload.html">+ Unggah Materi Baru</a>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr><th>Pertemuan</th><th>Topik</th><th>Tanggal</th><th>Materi</th><th>Aksi</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Pertemuan 10</td>
+                <td>Keamanan Input & Upload File</td>
+                <td>5 Des 2026</td>
+                <td>1 File (PPTX)</td>
+                <td><a class="btn btn-sm btn-outline" href="material-upload.html">Kelola</a></td>
+              </tr>
+              <tr>
+                <td>Pertemuan 9</td>
+                <td>Autentikasi JWT & Middleware Role</td>
+                <td>30 Nov 2026</td>
+                <td>1 File PDF + 1 Video</td>
+                <td><a class="btn btn-sm btn-outline" href="material-upload.html">Kelola</a></td>
+              </tr>
+              <tr>
+                <td>Pertemuan 8</td>
+                <td>Arsitektur REST API & Routing PHP</td>
+                <td>23 Nov 2026</td>
+                <td>1 File PDF</td>
+                <td><a class="btn btn-sm btn-outline" href="material-upload.html">Kelola</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="cm-tugas" class="tab-panel stack" role="tabpanel">
+        <div class="flex-between flex-wrap">
+          <h2 class="card-title">Tugas & Quiz Mata Kuliah</h2>
+          <div class="flex flex-wrap">
+            <a class="btn btn-sm btn-outline" href="quiz-builder.html">+ Buat Quiz</a>
+            <a class="btn btn-sm btn-primary" href="submissions.html">Lihat Pengumpulan</a>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr><th>Judul</th><th>Jenis</th><th>Tenggat / Tutup</th><th>Progres Pengumpulan</th><th>Aksi</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tugas 4: Implementasi REST API Auth & JWT</strong></td>
+                <td><span class="badge badge-primary">File / Tautan</span></td>
+                <td>6 Des 2026 · 23:59 WIB</td>
+                <td>28 / 32 Mahasiswa</td>
+                <td><a class="btn btn-sm btn-primary" href="submissions.html">Periksa & Nilai</a></td>
+              </tr>
+              <tr>
+                <td><strong>Quiz 2: Autentikasi JWT & Keamanan Web</strong></td>
+                <td><span class="badge badge-info">Quiz (30 Menit)</span></td>
+                <td>7 Des 2026 · 23:59 WIB</td>
+                <td>19 / 32 Mengerjakan</td>
+                <td><a class="btn btn-sm btn-outline" href="quiz-builder.html">Edit Soal</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="cm-presensi" class="tab-panel stack" role="tabpanel">
+        <div class="flex-between flex-wrap">
+          <h2 class="card-title">Status Sesi Presensi Pertemuan</h2>
+          <a class="btn btn-sm btn-primary" href="attendance-manage.html">Buka Kelola Presensi</a>
+        </div>
+        <div class="alert alert-success">Sesi Pertemuan 10 saat ini <strong>Terbuka</strong> (28 hadir, 1 izin, 3 belum check-in).</div>
+      </div>
+
+      <div id="cm-gamifikasi" class="tab-panel stack" role="tabpanel">
+        <h2 class="card-title">Pengaturan Poin XP & Badge Kelas (Fitur Dosen No. 9)</h2>
+        <form id="gamif-rules-form" class="form-inline-grid form-inline-grid-3">
+          <div class="form-group">
+            <label class="form-label" for="xp-ontime">Bonus XP Tugas Tepat Waktu</label>
+            <input class="form-control" id="xp-ontime" type="number" value="30">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="xp-quiz">XP Selesai Quiz</label>
+            <input class="form-control" id="xp-quiz" type="number" value="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="xp-att">XP Presensi Hadir</label>
+            <input class="form-control" id="xp-att" type="number" value="10">
+          </div>
+          <div class="form-group" style="grid-column:1 / -1">
+            <button type="submit" class="btn btn-primary">Simpan Aturan Gamifikasi Kelas</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('gamif-rules-form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (window.ClarityUI) ClarityUI.showToast('Aturan poin XP kelas disimpan.', 'success');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

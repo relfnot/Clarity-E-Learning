@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Dosen — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="dosen" data-base=".." data-page="dashboard" data-title="Dashboard Dosen" data-subtitle="Ringkasan kelas, pengumpulan terbaru, dan indikator mahasiswa berisiko">
+  <div id="page-content" class="stack">
+    <div class="page-header">
+      <h1>Dashboard Dosen</h1>
+      <div class="flex flex-wrap">
+        <a class="btn btn-outline" href="attendance-manage.html">Kelola Presensi</a>
+        <a class="btn btn-primary" href="material-upload.html">+ Unggah Materi</a>
+      </div>
+    </div>
+
+    <section class="card card-body mascot-peek-card">
+      <div class="mascot-peek-header flex-wrap">
+        <div>
+          <span class="badge badge-primary mb-2">T. BRENDA CHANDRAWATI</span>
+          <h2 class="mb-1" style="font-size:var(--text-lg)">14 Tugas Siap Dinilai & 1 Mahasiswa Berisiko</h2>
+        </div>
+        <img class="mascot-peek-img" src="../assets/img/Chibi Owl Mascot Waving Cheerfully.png" alt="Maskot Burung Hantu Clarity menyapa dosen">
+      </div>
+    </section>
+
+    <!-- Statistik Dosen -->
+    <section class="grid grid-4">
+      <div class="card card-body stat-card">
+        <span class="stat-label">Mata Kuliah Diampu</span>
+        <span class="stat-value">1 Kelas</span>
+        <span class="stat-meta">07228204 · Semester Ganjil</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Menunggu Penilaian</span>
+        <span class="stat-value text-warning">14 Tugas</span>
+        <span class="stat-meta">Dari Tugas 4 Manajemen Proyek 07</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Sesi Presensi Aktif</span>
+        <span class="stat-value text-success">1 Terbuka</span>
+        <span class="stat-meta">07228204 Pertemuan 10 (28/32 hadir)</span>
+      </div>
+      <div class="card card-body stat-card">
+        <span class="stat-label">Mahasiswa Berisiko</span>
+        <span class="stat-value text-danger">1 Mahasiswa</span>
+        <span class="stat-meta">Perlu tindak lanjut dosen</span>
+      </div>
+    </section>
+
+    <!-- Panel Khusus: Indikator Mahasiswa Berisiko (Fitur Tambahan No. 5) -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Indikator Mahasiswa Berisiko</h2>
+        <span class="badge badge-danger">1 Perlu Perhatian</span>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Mahasiswa</th>
+                <th>Mata Kuliah</th>
+                <th>Indikator / Alasan Risiko</th>
+                <th>Login Terakhir</th>
+                <th>Rata-Rata</th>
+                <th>Aksi Cepat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Adonai Shan Matthew</strong>
+                  <div class="text-xs text-muted font-mono">24.N1.0043</div>
+                </td>
+                <td>07228203 Etika Profesi 07</td>
+                <td>
+                  <div class="flex flex-wrap">
+                    <span class="badge badge-warning">Nilai Turun 22% (Quiz 2)</span>
+                  </div>
+                </td>
+                <td>3 Des 2026</td>
+                <td><strong class="text-warning">66</strong></td>
+                <td><a class="btn btn-sm btn-outline" href="announcement.html">Kirim Pengingat</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-2">
+      <!-- Mata Kuliah Diampu -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Kelas yang Diampu</h2>
+          <a class="text-sm font-semibold" href="course-manage.html">Kelola Lengkap →</a>
+        </div>
+        <div class="card-body stack">
+          <div class="card card-body">
+            <div class="flex-between mb-2">
+              <span class="badge badge-primary">07228204 · 32 Mahasiswa</span>
+              <span class="text-xs text-muted">Jumat, 13:00–15:00</span>
+            </div>
+            <h3 class="text-base mb-1"><a href="course-manage.html">MANAJEMEN PROYEK 07</a></h3>
+            <p class="text-xs text-muted mb-3">Ruang 8.1 · Rata-rata kelas: 79,0 · Kehadiran: 92%</p>
+            <div class="flex flex-wrap">
+              <a class="btn btn-sm btn-primary" href="course-manage.html">Kelola Kelas</a>
+              <a class="btn btn-sm btn-outline" href="submissions.html">Pengumpulan Tugas</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pengumpulan Terbaru Menunggu Dinilai -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Pengumpulan Terbaru</h2>
+          <a class="text-sm font-semibold" href="submissions.html">Lihat Semua →</a>
+        </div>
+        <div class="card-body list-group">
+          <div class="list-item">
+            <div>
+              <div class="text-sm font-semibold">Adonai Shan Matthew (24.N1.0043)</div>
+              <div class="text-xs text-muted">Tugas 4 (07228204) · 5 Des 2026 19:45 WIB</div>
+            </div>
+            <div class="flex">
+              <span class="badge badge-success">Tepat Waktu</span>
+              <a class="btn btn-sm btn-primary" href="grading.html">Nilai</a>
+            </div>
+          </div>
+          <div class="list-item">
+            <div>
+              <div class="text-sm font-semibold">Dimas Rizky Fajar Pamungkas (24.N1.0026)</div>
+              <div class="text-xs text-muted">Tugas 4 (07228204) · 5 Des 2026 14:20 WIB</div>
+            </div>
+            <div class="flex">
+              <span class="badge badge-success">Dinilai (90)</span>
+              <a class="btn btn-sm btn-outline" href="grading.html">Ubah</a>
+            </div>
+          </div>
+          <div class="list-item">
+            <div>
+              <div class="text-sm font-semibold">Gabriel Kresnoputero W. B. (24.N2.0008)</div>
+              <div class="text-xs text-muted">Tugas 4 (07228204) · 5 Des 2026 11:05 WIB</div>
+            </div>
+            <div class="flex">
+              <span class="badge badge-success">Dinilai (94)</span>
+              <a class="btn btn-sm btn-outline" href="grading.html">Ubah</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+</body>
+</html>

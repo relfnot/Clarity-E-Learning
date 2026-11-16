@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Presensi Kelas — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="dosen" data-base=".." data-page="attendance-manage" data-title="Kelola Presensi Kelas" data-subtitle="Buka/tutup sesi pertemuan dan rekap status kehadiran mahasiswa">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard Dosen</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li><a href="course-manage.html">Kelola 07228204</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Kelola Presensi</li>
+      </ol>
+    </nav>
+
+    <!-- Kontrol Sesi Presensi -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <span class="badge badge-success mb-1" id="session-status-badge">Sesi Terbuka</span>
+          <h1 style="font-size:var(--text-xl);margin-bottom:0">07228204 · Pertemuan 10: Keamanan Input & Upload File</h1>
+        </div>
+        <button type="button" class="btn btn-danger" id="btn-toggle-session">Tutup Sesi Presensi</button>
+      </div>
+      <div class="card-body">
+        <div class="form-inline-grid form-inline-grid-3">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label" for="att-meeting-select">Pilih Pertemuan</label>
+            <select class="form-select" id="att-meeting-select">
+              <option>Pertemuan 10 (5 Des 2026) — Aktif</option>
+              <option>Pertemuan 9 (30 Nov 2026) — Ditutup</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label" for="att-closes-at">Batas Tutup Otomatis</label>
+            <input class="form-control" id="att-closes-at" type="time" value="10:30">
+          </div>
+          <div class="form-group" style="margin-bottom:0;justify-content:flex-end">
+            <span class="text-xs text-muted">Rekap Pertemuan 10:</span>
+            <strong class="text-sm">28 Hadir · 1 Izin · 0 Sakit · 3 Belum/Alpa</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabel Kehadiran Mahasiswa -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Daftar Kehadiran Mahasiswa (Pertemuan 10)</h2>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>NIM</th>
+                <th>Nama Mahasiswa</th>
+                <th>Waktu Check-In</th>
+                <th>Status Kehadiran</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-mono">24.N1.0026</td>
+                <td>Dimas Rizky Fajar Pamungkas</td>
+                <td>08:02 WIB</td>
+                <td>
+                  <label class="sr-only" for="st-101">Status Dimas</label>
+                  <select class="form-select select-status" id="st-101">
+                    <option selected>Hadir</option><option>Izin</option><option>Sakit</option><option>Alpa</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="font-mono">24.N2.0008</td>
+                <td>Gabriel Kresnoputero W. B.</td>
+                <td>08:05 WIB</td>
+                <td>
+                  <label class="sr-only" for="st-102">Status Gabriel</label>
+                  <select class="form-select select-status" id="st-102">
+                    <option selected>Hadir</option><option>Izin</option><option>Sakit</option><option>Alpa</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="font-mono">24.N1.0043</td>
+                <td>Adonai Shan Matthew</td>
+                <td>08:07 WIB</td>
+                <td>
+                  <label class="sr-only" for="st-103">Status Adonai</label>
+                  <select class="form-select select-status" id="st-103">
+                    <option selected>Hadir</option><option>Izin</option><option>Sakit</option><option>Alpa</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('btn-toggle-session');
+      var badge = document.getElementById('session-status-badge');
+      var isOpen = true;
+      if (btn && badge) {
+        btn.addEventListener('click', function () {
+          isOpen = !isOpen;
+          badge.textContent = isOpen ? 'Sesi Terbuka' : 'Sesi Ditutup';
+          badge.className = isOpen ? 'badge badge-success mb-1' : 'badge badge-neutral mb-1';
+          btn.textContent = isOpen ? 'Tutup Sesi Presensi' : 'Buka Kembali Sesi';
+          btn.className = isOpen ? 'btn btn-danger' : 'btn btn-primary';
+          if (window.ClarityUI) ClarityUI.showToast(isOpen ? 'Sesi presensi dibuka.' : 'Sesi presensi ditutup.', 'info');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buat Quiz & Bank Soal — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="dosen" data-base=".." data-page="quiz-builder" data-title="Buat Quiz & Bank Soal" data-subtitle="Atur jadwal, durasi, batas percobaan, dan soal PG/Esai">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard Dosen</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li><a href="course-manage.html">Kelola 07228204</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Buat Quiz & Soal</li>
+      </ol>
+    </nav>
+
+    <div class="grid grid-sidebar-left">
+      <!-- Pengaturan Quiz -->
+      <section class="card">
+        <div class="card-header"><h1 class="card-title" style="font-size:var(--text-lg)">Pengaturan Quiz</h1></div>
+        <div class="card-body">
+          <form id="quiz-meta-form">
+            <div class="form-group">
+              <label class="form-label" for="qb-course">Mata Kuliah</label>
+              <select class="form-select" id="qb-course">
+                <option>07228204 — MANAJEMEN PROYEK 07</option>
+                <option>07228239 — TEKNOLOGI KEUANGAN 05</option>
+                <option>07228203 — ETIKA PROFESI 07</option>
+                <option>07228250 — KOTA CERDAS 03</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="qb-title">Judul Quiz</label>
+              <input class="form-control" id="qb-title" type="text" value="Quiz 2: Autentikasi JWT, REST API & Keamanan Web">
+            </div>
+            <div class="form-inline-grid">
+              <div class="form-group">
+                <label class="form-label" for="qb-open">Waktu Buka</label>
+                <input class="form-control" id="qb-open" type="datetime-local" value="2026-12-05T08:00">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="qb-close">Waktu Tutup</label>
+                <input class="form-control" id="qb-close" type="datetime-local" value="2026-12-07T23:59">
+              </div>
+            </div>
+            <div class="form-inline-grid">
+              <div class="form-group">
+                <label class="form-label" for="qb-duration">Durasi (Menit)</label>
+                <input class="form-control" id="qb-duration" type="number" value="30">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="qb-attempts">Batas Percobaan</label>
+                <input class="form-control" id="qb-attempts" type="number" value="2">
+              </div>
+            </div>
+            <div class="toggle-row mb-4">
+              <label class="text-sm font-semibold" for="qb-shuffle">Acak Urutan Soal</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="qb-shuffle" aria-label="Acak urutan soal" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Simpan & Publikasikan Quiz</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Editor Bank Soal -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Daftar Soal (2 Contoh Terpasang)</h2>
+          <button type="button" class="btn btn-sm btn-outline" id="btn-add-question">+ Tambah Soal</button>
+        </div>
+        <div class="card-body stack" id="question-bank-list">
+          <article class="card card-body">
+            <div class="flex-between mb-2">
+              <span class="badge badge-primary">Soal #1 · Pilihan Ganda</span>
+              <span class="badge badge-neutral">Bobot: 20 Poin</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="q1-text">Pertanyaan</label>
+              <textarea class="form-textarea" id="q1-text" rows="2">Kode status HTTP mana yang paling tepat dikembalikan server ketika pengguna belum mengirimkan token autentikasi JWT yang valid?</textarea>
+            </div>
+            <div class="stack-sm text-sm">
+              <div><input type="radio" name="kunci1" id="k1a"> <label for="k1a">A. 400 Bad Request</label></div>
+              <div><input type="radio" name="kunci1" id="k1b" checked> <label for="k1b">B. 401 Unauthorized <strong>(Kunci Jawaban)</strong></label></div>
+              <div><input type="radio" name="kunci1" id="k1c"> <label for="k1c">C. 403 Forbidden</label></div>
+              <div><input type="radio" name="kunci1" id="k1d"> <label for="k1d">D. 404 Not Found</label></div>
+            </div>
+          </article>
+
+          <article class="card card-body">
+            <div class="flex-between mb-2">
+              <span class="badge badge-info">Soal #2 · Esai</span>
+              <span class="badge badge-neutral">Bobot: 20 Poin</span>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label" for="q2-text">Pertanyaan Esai</label>
+              <textarea class="form-textarea" id="q2-text" rows="2">Jelaskan perbedaan antara kode status 401 dan 403 dalam otorisasi berbasis peran (mahasiswa vs dosen)!</textarea>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('quiz-meta-form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (window.ClarityUI) ClarityUI.showToast('Pengaturan quiz & bank soal berhasil disimpan.', 'success');
+        });
+      }
+      var addBtn = document.getElementById('btn-add-question');
+      var list = document.getElementById('question-bank-list');
+      if (addBtn && list) {
+        addBtn.addEventListener('click', function () {
+          var count = list.querySelectorAll('article').length + 1;
+          var item = document.createElement('article');
+          item.className = 'card card-body';
+          item.innerHTML = '<div class="flex-between mb-2"><span class="badge badge-primary">Soal #' + count + ' · Pilihan Ganda</span><span class="badge badge-neutral">Bobot: 20 Poin</span></div>' +
+            '<div class="form-group" style="margin-bottom:0"><label class="form-label" for="q-new-' + count + '">Pertanyaan Baru</label><textarea class="form-textarea" id="q-new-' + count + '" rows="2" placeholder="Tulis pertanyaan..."></textarea></div>';
+          list.appendChild(item);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

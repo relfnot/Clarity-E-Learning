@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Materi — Clarity E-Learning</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="../assets/css/components.css?v=2">
+</head>
+<body data-role="dosen" data-base=".." data-page="material-upload" data-title="Upload Materi Kuliah" data-subtitle="Unggah file dokumen/slide atau tautan video per pertemuan">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="dashboard.html">Dashboard Dosen</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li><a href="course-manage.html">Kelola 07228204</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Upload Materi</li>
+      </ol>
+    </nav>
+
+    <div class="grid grid-sidebar-right">
+      <section class="card">
+        <div class="card-header">
+          <h1 class="card-title" style="font-size:var(--text-lg)">Unggah Materi Baru</h1>
+        </div>
+        <div class="card-body">
+          <form id="upload-material-form">
+            <div class="form-inline-grid">
+              <div class="form-group">
+                <label class="form-label" for="mat-course">Mata Kuliah <span class="form-required">*</span></label>
+                <select class="form-select" id="mat-course">
+                  <option>07228204 — MANAJEMEN PROYEK 07</option>
+                  <option>07228239 — TEKNOLOGI KEUANGAN 05</option>
+                  <option>07228203 — ETIKA PROFESI 07</option>
+                  <option>07228250 — KOTA CERDAS 03</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="mat-meeting">Pertemuan <span class="form-required">*</span></label>
+                <select class="form-select" id="mat-meeting">
+                  <option>Pertemuan 10 (5 Des 2026)</option>
+                  <option>Pertemuan 11 (12 Des 2026)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="mat-title">Judul Materi <span class="form-required">*</span></label>
+              <input class="form-control" id="mat-title" type="text" placeholder="Contoh: Slide Pertemuan 11 — Optimasi Query MySQL" required>
+            </div>
+
+            <div data-tabs>
+              <div class="tab-list" role="tablist" aria-label="Jenis sumber materi">
+                <button type="button" class="tab-trigger is-active" role="tab" aria-selected="true" data-tab-target="mat-tab-file">Unggah Berkas (PDF / Slide)</button>
+                <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="mat-tab-link">Tautan Video / Eksternal</button>
+              </div>
+
+              <div id="mat-tab-file" class="tab-panel is-active" role="tabpanel">
+                <div class="form-group">
+                  <label class="form-label" for="mat-file">Pilih Berkas (Maks 10 MB)</label>
+                  <label class="dropzone" for="mat-file" style="display:block">
+                    <div class="font-semibold mb-1">Klik atau seret berkas PDF, PPTX, DOCX, atau ZIP</div>
+                    <div class="text-xs text-muted">Video berukuran besar dianjurkan menggunakan mode Tautan Video.</div>
+                  </label>
+                  <input class="sr-only" id="mat-file" type="file">
+                </div>
+              </div>
+
+              <div id="mat-tab-link" class="tab-panel" role="tabpanel">
+                <div class="form-group">
+                  <label class="form-label" for="mat-url">URL Video / Referensi</label>
+                  <input class="form-control" id="mat-url" type="url" placeholder="https://video.unika.ac.id/07228204-p11">
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">Publikasikan Materi</button>
+          </form>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-header"><h2 class="card-title">Materi Terunggah (07228204)</h2></div>
+        <div class="card-body list-group">
+          <div class="list-item">
+            <div>
+              <div class="text-sm font-semibold">P10_Upload_Security.pptx</div>
+              <div class="text-xs text-muted">Pertemuan 10 · 3,1 MB</div>
+            </div>
+            <span class="badge badge-success">Aktif</span>
+          </div>
+          <div class="list-item">
+            <div>
+              <div class="text-sm font-semibold">Video Pembahasan Auth & Token</div>
+              <div class="text-xs text-muted">Pertemuan 9 · Tautan</div>
+            </div>
+            <span class="badge badge-info">Tautan</span>
+          </div>
+          <div class="list-item">
+            <div>
+              <div class="text-sm font-semibold">P09_Modul_JWT.pdf</div>
+              <div class="text-xs text-muted">Pertemuan 9 · 1,8 MB</div>
+            </div>
+            <span class="badge badge-success">Aktif</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../assets/js/mock-data.js?v=2"></script>
+  <script src="../assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('upload-material-form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (window.ClarityUI) ClarityUI.showToast('Materi kuliah berhasil dipublikasikan!', 'success');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
