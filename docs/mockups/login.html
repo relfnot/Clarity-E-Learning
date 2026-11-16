@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk Akun Kampus — Clarity E-Learning</title>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="assets/css/components.css?v=2">
+</head>
+<body data-role="auth" data-base=".">
+  <main class="auth-page">
+    <div class="card auth-card mascot-peek-card">
+      <div class="card-body stack">
+        <div class="mascot-peek-header">
+          <div>
+            <h1 class="brand-wordmark-auth">Clarity E-Learning</h1>
+            <p class="text-xs text-muted mb-0">Bidik Target Akademikmu Tepat Sasaran</p>
+          </div>
+          <img class="mascot-peek-img" src="assets/img/Chibi Owl Mascot Waving Cheerfully.png" alt="Maskot Burung Hantu Clarity menyapa">
+        </div>
+
+        <div id="login-error-alert" class="alert alert-danger" role="alert" hidden>
+          <span><strong>Login gagal:</strong> Kredensial salah. Periksa kembali NIM/NIP, email, dan kata sandi Anda.</span>
+        </div>
+
+        <div id="login-loading-box" class="alert alert-info" role="status" hidden>
+          <span>Memverifikasi akun kampus ke server...</span>
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="login-identifier">NIM / NIP / Email Kampus <span class="form-required">*</span></label>
+            <input class="form-control" id="login-identifier" type="text" value="24.N1.0026" placeholder="Contoh: 24.N1.0026 atau 24n10026@student.unika.ac.id" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-password">Kata Sandi <span class="form-required">*</span></label>
+            <input class="form-control" id="login-password" type="password" value="rahasia123" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-role-demo">Simulasi Peran (Khusus Prototipe)</label>
+            <select class="form-select" id="login-role-demo">
+              <option value="mahasiswa">Mahasiswa (Dimas Rizky — 24.N1.0026)</option>
+              <option value="dosen">Dosen (T. BRENDA CHANDRAWATI)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk ke Portal</button>
+        </form>
+
+        <div class="flex-between flex-wrap text-xs">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-sim-error">Simulasi Kredensial Salah</button>
+          <a href="index.html">Kembali ke Peta Mockup</a>
+        </div>
+
+        <div class="alert alert-info text-xs" style="margin-bottom:0">
+          <div>
+            <strong>Akun Demo:</strong><br>
+            Mahasiswa: <code>24.N1.0026</code> · Dosen: <code>5811995177</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/mock-data.js?v=2"></script>
+  <script src="assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('login-form');
+      var roleSelect = document.getElementById('login-role-demo');
+      var identifier = document.getElementById('login-identifier');
+      var errAlert = document.getElementById('login-error-alert');
+      var loadBox = document.getElementById('login-loading-box');
+
+      if (window.ClarityUI && ClarityUI.getQueryParam('state') === 'loading') {
+        loadBox.hidden = false;
+      }
+
+      roleSelect.addEventListener('change', function () {
+        identifier.value = roleSelect.value === 'dosen' ? '5811995177' : '24.N1.0026';
+      });
+
+      document.getElementById('btn-sim-error').addEventListener('click', function () {
+        errAlert.hidden = false;
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!identifier.value.trim()) {
+          errAlert.hidden = false;
+          return;
+        }
+        window.location.href = roleSelect.value === 'dosen' ? 'dosen/dashboard.html' : 'mahasiswa/dashboard.html';
+      });
+    });
+  </script>
+</body>
+</html>

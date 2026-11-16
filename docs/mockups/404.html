@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Error & Status Jaringan — Clarity E-Learning</title>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="assets/css/components.css?v=2">
+</head>
+<body data-role="auth" data-base=".">
+  <main class="auth-page">
+    <div class="card auth-card" style="max-width:540px">
+      <div class="card-body stack" style="text-align:center">
+        <div class="flex flex-wrap" style="justify-content:center">
+          <a class="proto-pill" href="?type=404" id="pill-404">404 Tidak Ditemukan</a>
+          <a class="proto-pill" href="?type=403" id="pill-403">403 Akses Ditolak</a>
+          <a class="proto-pill" href="?type=offline" id="pill-offline">Mode Offline / Hemat Data</a>
+        </div>
+
+        <div id="err-code" class="text-3xl font-bold text-primary">404</div>
+        <h1 id="err-title" style="font-size:var(--text-xl);margin-bottom:0">Halaman Tidak Ditemukan</h1>
+        <p id="err-desc" class="text-sm text-muted mb-0">Tautan yang Anda buka tidak tersedia atau materi perkuliahan telah dipindahkan oleh dosen.</p>
+
+        <div class="flex flex-wrap" style="justify-content:center">
+          <a class="btn btn-primary" href="mahasiswa/dashboard.html">Kembali ke Dashboard Mahasiswa</a>
+          <a class="btn btn-outline" href="index.html">Peta Mockup F4</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/mock-data.js?v=2"></script>
+  <script src="assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var type = (window.ClarityUI && ClarityUI.getQueryParam('type')) || '404';
+      var codeEl = document.getElementById('err-code');
+      var titleEl = document.getElementById('err-title');
+      var descEl = document.getElementById('err-desc');
+
+      var configs = {
+        '404': {
+          code: '404',
+          title: 'Halaman Tidak Ditemukan',
+          desc: 'Tautan yang Anda buka tidak tersedia atau materi perkuliahan telah dipindahkan.'
+        },
+        '403': {
+          code: '403',
+          title: 'Akses Ditolak (Peran Tidak Sesuai)',
+          desc: 'Halaman ini hanya dapat diakses oleh akun dengan peran Dosen Pengampu. Silakan kembali ke halaman peran Anda.'
+        },
+        'offline': {
+          code: 'Offline',
+          title: 'Anda Sedang Offline',
+          desc: 'Koneksi internet terputus. Materi yang sebelumnya dibuka masih dapat diakses dalam Mode Hemat Data / Cache PWA.'
+        }
+      };
+
+      var cfg = configs[type] || configs['404'];
+      if (codeEl) codeEl.textContent = cfg.code;
+      if (titleEl) titleEl.textContent = cfg.title;
+      if (descEl) descEl.textContent = cfg.desc;
+      var activePill = document.getElementById('pill-' + type);
+      if (activePill) activePill.classList.add('is-active');
+    });
+  </script>
+</body>
+</html>

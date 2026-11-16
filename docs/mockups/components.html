@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Design System & Komponen — Clarity E-Learning</title>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=2">
+  <link rel="stylesheet" href="assets/css/components.css?v=2">
+</head>
+<body data-role="mahasiswa" data-base="." data-page="components" data-title="Katalog Komponen UI" data-subtitle="Design tokens & 15 komponen standar Clarity LMS">
+  <div id="page-content" class="stack">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="index.html">Peta Mockup F4</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current">Katalog Komponen</li>
+      </ol>
+    </nav>
+
+    <div class="page-header">
+      <h1>Design System & Katalog Komponen</h1>
+      <div class="flex flex-wrap">
+        <button type="button" class="btn btn-primary" data-modal-open="demo-modal">Uji Modal</button>
+        <button type="button" class="btn btn-outline" id="demo-toast-btn">Uji Toast</button>
+      </div>
+    </div>
+
+    <!-- Tokens Warna & Maskot -->
+    <section class="card mascot-peek-card">
+      <div class="card-header">
+        <h2 class="card-title">1. Palet Brand Clarity & Maskot Burung Hantu</h2>
+        <span class="badge badge-info">Palet Non-Pastel</span>
+      </div>
+      <div class="card-body stack">
+        <div class="mascot-banner mascot-peek-card">
+          <div class="mascot-banner-body">
+            <img class="mascot-figure" src="assets/img/Target-Swift Owl Mascot.png" alt="Maskot Burung Hantu Clarity membawa anak panah">
+            <div>
+              <h3 class="text-base font-bold mb-1">Maskot Clarity: Burung Hantu Target & Anak Panah</h3>
+              <p class="text-sm text-secondary mb-0">Dua pose resmi maskot Clarity: <code>Target-Swift Owl Mascot.png</code> (pose penuh membawa anak panah emas) dan <code>Chibi Owl Mascot Waving Cheerfully.png</code> (pose mengintip & melambai di tepi kartu).</p>
+            </div>
+          </div>
+          <div class="flex">
+            <span class="brand-wordmark-auth" style="font-size:var(--text-xl);margin:0">Clarity E-Learning</span>
+            <img class="mascot-peek-img" src="assets/img/Chibi Owl Mascot Waving Cheerfully.png" alt="Maskot Burung Hantu Clarity menyapa">
+          </div>
+        </div>
+        <div class="grid grid-4">
+          <div class="card card-body"><span class="badge badge-danger mb-2">Deep Crimson</span><div class="text-sm font-semibold">--color-primary</div><div class="text-xs text-muted">#BE1A1A</div></div>
+          <div class="card card-body"><span class="badge badge-xp mb-2">Warm Gold</span><div class="text-sm font-semibold">--color-secondary-soft</div><div class="text-xs text-muted">#F7D87F</div></div>
+          <div class="card card-body"><span class="badge badge-primary mb-2">Cream Gold</span><div class="text-sm font-semibold">--color-primary-soft</div><div class="text-xs text-muted">#F8EBAB</div></div>
+          <div class="card card-body"><span class="badge badge-success mb-2">Sukses Solid</span><div class="text-sm font-semibold">--color-success</div><div class="text-xs text-muted">#15803D (solid kontras tinggi)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Button & Badge -->
+    <div class="grid grid-2">
+      <section class="card">
+        <div class="card-header"><h2 class="card-title">2. Button</h2></div>
+        <div class="card-body stack">
+          <div class="flex flex-wrap">
+            <button type="button" class="btn btn-primary">Primer</button>
+            <button type="button" class="btn btn-secondary">Sekunder</button>
+            <button type="button" class="btn btn-success">Sukses</button>
+            <button type="button" class="btn btn-danger">Bahaya</button>
+            <button type="button" class="btn btn-outline">Outline</button>
+            <button type="button" class="btn btn-ghost">Ghost</button>
+          </div>
+          <div class="flex flex-wrap">
+            <button type="button" class="btn btn-primary btn-sm">Ukuran Kecil</button>
+            <button type="button" class="btn btn-primary btn-lg">Ukuran Besar</button>
+            <button type="button" class="btn btn-primary" disabled>Nonaktif</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header"><h2 class="card-title">3. Badge, Chip & Label Deadline</h2></div>
+        <div class="card-body stack">
+          <div class="flex flex-wrap">
+            <span class="badge badge-primary">Primer</span>
+            <span class="badge badge-success">Tepat Waktu</span>
+            <span class="badge badge-warning">Menunggu</span>
+            <span class="badge badge-danger">Terlambat</span>
+            <span class="badge badge-info">Informasi</span>
+            <span class="badge badge-neutral">Netral</span>
+            <span class="badge badge-xp">+30 XP</span>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="badge badge-deadline-h1">Mendesak (H-1)</span>
+            <span class="badge badge-deadline-h3">Segera (H-3)</span>
+            <span class="badge badge-deadline-normal">Terjadwal (Normal)</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Form & Alert -->
+    <div class="grid grid-2">
+      <section class="card">
+        <div class="card-header"><h2 class="card-title">4. Input, Select, Textarea & Toggle</h2></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label" for="comp-input">Nama Mata Kuliah <span class="form-required">*</span></label>
+            <input class="form-control" id="comp-input" type="text" value="Pemrograman Web Lanjut">
+            <span class="form-hint">Contoh hint input standar.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="comp-select">Semester</label>
+            <select class="form-select" id="comp-select">
+              <option>Ganjil 2026/2027</option>
+              <option>Genap 2026/2027</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="comp-textarea">Catatan</label>
+            <textarea class="form-textarea" id="comp-textarea" placeholder="Tulis catatan atau feedback..."></textarea>
+          </div>
+          <div class="toggle-row">
+            <label for="comp-toggle-anon">Mode Anonim Leaderboard</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="comp-toggle-anon" aria-label="Mode Anonim Leaderboard" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header"><h2 class="card-title">5. Alert, Avatar, Progress Bar & Ring</h2></div>
+        <div class="card-body stack">
+          <div class="alert alert-info">Info: Jadwal quiz dibuka hingga 7 Des 2026.</div>
+          <div class="alert alert-success">Sukses: Tugas berhasil dikumpulkan tepat waktu.</div>
+          <div class="alert alert-warning">Peringatan: Batas pengumpulan kurang dari 24 jam.</div>
+          <div class="alert alert-danger">Kesalahan: Format berkas tidak didukung (maks 10 MB).</div>
+
+          <div class="flex flex-wrap">
+            <span class="avatar avatar-sm">DR</span>
+            <span class="avatar avatar-md">GK</span>
+            <span class="avatar avatar-lg">AM</span>
+            <div id="demo-rings" class="flex"></div>
+          </div>
+
+          <div>
+            <div class="flex-between text-xs mb-2">
+              <span class="font-semibold">Progress XP Level 7</span>
+              <span>1.450 / 2.000 XP</span>
+            </div>
+            <div class="progress progress-lg" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar progress-bar-xp" style="width:72%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab, Table & Pagination -->
+    <section class="card">
+      <div class="card-header"><h2 class="card-title">6. Tab, Tabel & Pagination</h2></div>
+      <div class="card-body" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Demo Tab Komponen">
+          <button type="button" class="tab-trigger is-active" role="tab" aria-selected="true" data-tab-target="tab-tabel">Tabel Data</button>
+          <button type="button" class="tab-trigger" role="tab" aria-selected="false" data-tab-target="tab-skeleton">Skeleton & Empty</button>
+        </div>
+        <div id="tab-tabel" class="tab-panel is-active" role="tabpanel">
+          <div class="table-container mb-4">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NIM</th>
+                  <th>Nama Mahasiswa</th>
+                  <th>Status</th>
+                  <th>Skor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-mono">24.N1.0026</td>
+                  <td>Dimas Rizky Fajar Pamungkas</td>
+                  <td><span class="badge badge-success">Tepat Waktu</span></td>
+                  <td>90</td>
+                </tr>
+                <tr>
+                  <td class="font-mono">24.N2.0008</td>
+                  <td>Gabriel Kresnoputero W. B.</td>
+                  <td><span class="badge badge-success">Tepat Waktu</span></td>
+                  <td>94</td>
+                </tr>
+                <tr>
+                  <td class="font-mono">24.N1.0043</td>
+                  <td>Adonai Shan Matthew</td>
+                  <td><span class="badge badge-warning">Menunggu Nilai</span></td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <nav aria-label="Contoh Pagination">
+            <ul class="pagination">
+              <li><a class="page-link" href="#prev">Prev</a></li>
+              <li><a class="page-link is-active" href="#1">1</a></li>
+              <li><a class="page-link" href="#2">2</a></li>
+              <li><a class="page-link" href="#3">3</a></li>
+              <li><a class="page-link" href="#next">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div id="tab-skeleton" class="tab-panel" role="tabpanel">
+          <div class="grid grid-2">
+            <div class="card card-body">
+              <h3 class="text-sm">Skeleton Loading</h3>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-line"></div>
+              <div class="skeleton skeleton-line" style="width:75%"></div>
+              <div class="skeleton skeleton-card mt-2"></div>
+            </div>
+            <div class="empty-state">
+              <div class="empty-state-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="empty-state-title">Belum Ada Pengumpulan</div>
+              <div class="empty-state-text">Mahasiswa belum mengumpulkan berkas atau tautan untuk tugas ini.</div>
+              <button type="button" class="btn btn-sm btn-primary">Muat Ulang</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal Demo -->
+  <div class="modal-overlay" id="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="card-title" id="demo-modal-title">Konfirmasi Aksi</h3>
+        <button type="button" class="btn btn-ghost btn-sm" data-modal-close aria-label="Tutup modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm text-secondary mb-0">Ini adalah komponen modal standar dari <code>components.css</code> yang mendukung penutupan via tombol atau klik area luar.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Batal</button>
+        <button type="button" class="btn btn-primary" data-modal-close>Setuju</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/mock-data.js?v=2"></script>
+  <script src="assets/js/layout.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var rings = document.getElementById('demo-rings');
+      if (rings && window.ClarityUI) {
+        rings.innerHTML = ClarityUI.renderProgressRing(78, 56) + ClarityUI.renderProgressRing(45, 56);
+      }
+      var toastBtn = document.getElementById('demo-toast-btn');
+      if (toastBtn && window.ClarityUI) {
+        toastBtn.addEventListener('click', function () {
+          ClarityUI.showToast('Komponen toast berhasil ditampilkan!', 'success');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

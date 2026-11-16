@@ -1,0 +1,298 @@
+/* ==========================================================================
+   Clarity E-Learning — Design Tokens
+   Palet Brand: Deep Crimson (#BE1A1A), Vermilion (#D0311E),
+                Warm Gold (#F7D87F), Cream Gold (#F8EBAB) + Warm Stone
+   Standar: CSS Custom Properties, skala spasi 4px, kontras WCAG AA (>= 4.5:1)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  /* Warna Primer & Sekunder (Palet Clarity Target & Panah di Atas Netral Putih) */
+  --color-primary: #be1a1a;
+  --color-primary-hover: #d0311e;
+  --color-primary-text: #be1a1a;
+  --color-primary-soft: #f8fafc;
+  --color-primary-border: #cbd5e1;
+
+  --color-secondary: #d0311e;
+  --color-secondary-hover: #be1a1a;
+  --color-secondary-soft: #f7d87f;
+
+  /* Tombol Call-to-Action vs Tombol Destruktif (Agar CTA tidak tertukar dengan Hapus/Bahaya) */
+  --btn-primary-bg: #181311;
+  --btn-primary-hover: #2d2420;
+  --btn-primary-text: #ffffff;
+  --btn-primary-border: #181311;
+
+  --btn-secondary-bg: #f7d87f;
+  --btn-secondary-hover: #ebd070;
+  --btn-secondary-text: #181311;
+  --btn-secondary-border: #d4b04c;
+
+  /* Warna Semantik (Soft Tinted Editorial — Bukan Pastel AI Slop & Bukan Blok Pekat) */
+  --color-success: #15803d;
+  --color-success-hover: #166534;
+  --color-success-soft: #f1f9f4;
+  --color-success-text: #113c23;
+  --color-success-border: #9fd8b6;
+
+  --color-warning: #b45309;
+  --color-warning-hover: #92400e;
+  --color-warning-soft: #fdf8ec;
+  --color-warning-text: #422605;
+  --color-warning-border: #e6c677;
+
+  --color-danger: #be1a1a;
+  --color-danger-hover: #991313;
+  --color-danger-soft: #fdf2f2;
+  --color-danger-text: #581313;
+  --color-danger-border: #eca6a6;
+
+  --color-info: #1d63b8;
+  --color-info-soft: #f2f7fd;
+  --color-info-text: #123458;
+  --color-info-border: #b6d4f4;
+
+  /* Tag Status Non-Pastel (Di Atas Permukaan Netral Putih) */
+  --badge-danger-bg: #be1a1a;
+  --badge-danger-text: #ffffff;
+  --badge-danger-dot: #f7d87f;
+  --badge-danger-border: #991313;
+
+  --badge-warning-bg: #f7d87f;
+  --badge-warning-text: #181311;
+  --badge-warning-dot: #be1a1a;
+  --badge-warning-border: #d4b04c;
+
+  --badge-gold-bg: #ffffff;
+  --badge-gold-text: #0f172a;
+  --badge-gold-dot: #be1a1a;
+  --badge-gold-border: #cbd5e1;
+
+  --badge-success-bg: #15803d;
+  --badge-success-text: #ffffff;
+  --badge-success-dot: #ffffff;
+  --badge-success-border: #146c34;
+
+  --badge-neutral-bg: #f1f5f9;
+  --badge-neutral-text: #334155;
+  --badge-neutral-dot: #64748b;
+  --badge-neutral-border: #cbd5e1;
+
+  /* Notifikasi Unread (Putih Bersih) */
+  --notif-unread-bg: #ffffff;
+  --notif-unread-border: #cbd5e1;
+  --notif-unread-accent: #be1a1a;
+
+  /* Warna Netral & Permukaan (Putih Bersih) */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1f5f9;
+  --color-surface-hover: #e2e8f0;
+  --color-border: #cbd5e1;
+  --color-border-subtle: #e2e8f0;
+
+  --color-text: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #475569;
+  --color-text-inverse: #ffffff;
+
+  /* Warna Khusus Sidebar (Soft Gray-White Terpisah dari Background Utama) */
+  --color-sidebar-bg: #eef2f6;
+  --color-sidebar-surface: #e2e8f0;
+  --color-sidebar-text: #334155;
+  --color-sidebar-text-muted: #64748b;
+  --color-sidebar-text-strong: #0f172a;
+  --color-sidebar-text-active: #ffffff;
+  --color-sidebar-accent: #be1a1a;
+  --color-sidebar-brand: #be1a1a;
+  --color-sidebar-pill-bg: #f7d87f;
+  --color-sidebar-pill-text: #181311;
+  --color-sidebar-border: #cbd5e1;
+
+  /* Permukaan Gelap Kontras Tinggi (Toast, Banner Obsidian, Pil Semester) */
+  --color-obsidian: #161110;
+  --color-obsidian-surface: #241c1a;
+
+  /* Gamifikasi */
+  --color-xp: #181311;
+  --color-xp-soft: #f7d87f;
+  --color-xp-bar: #d0311e;
+  --color-gold: #f7d87f;
+  --color-gold-soft: #f8ebab;
+
+  /* Tipografi */
+  --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: var(--font-body);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --tracking-display: 0em;
+
+  --text-xs: 0.8125rem;   /* 13px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.3125rem;   /* 21px */
+  --text-2xl: 1.625rem;   /* 26px */
+  --text-3xl: 2rem;       /* 32px */
+
+  --leading-tight: 1.3;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Skala Spasi (kelipatan 4px) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius (Human-Approachable) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Bayangan & Elevation */
+  --elev-ring: 0 0 0 1px var(--color-border-subtle);
+  --shadow-xs: 0 1px 2px rgba(24, 19, 17, 0.05);
+  --shadow-sm: 0 1px 3px rgba(24, 19, 17, 0.07), 0 1px 2px rgba(24, 19, 17, 0.04);
+  --shadow-md: 0 6px 16px -4px rgba(24, 19, 17, 0.1), 0 2px 6px -2px rgba(24, 19, 17, 0.05);
+  --shadow-lg: 0 18px 46px rgba(24, 19, 17, 0.14);
+
+  /* Layout & Z-Index */
+  --sidebar-width: 260px;
+  --topbar-height: 64px;
+  --bottom-nav-height: 60px;
+  --container-max: 1280px;
+
+  --z-base: 1;
+  --z-topbar: 20;
+  --z-backdrop: 30;
+  --z-sidebar: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+
+  /* Transisi */
+  --transition-fast: 150ms ease;
+  --transition-normal: 220ms ease;
+}
+
+/* Mode Gelap Opsional */
+[data-theme="dark"] {
+  --color-primary: #d0311e;
+  --color-primary-hover: #be1a1a;
+  --color-primary-text: #f7d87f;
+  --color-primary-soft: rgba(247, 216, 127, 0.16);
+  --color-primary-border: #8a6d23;
+
+  --color-secondary: #f7d87f;
+  --color-secondary-hover: #f8ebab;
+  --color-secondary-soft: rgba(247, 216, 127, 0.2);
+
+  --btn-primary-bg: #f7d87f;
+  --btn-primary-hover: #f8ebab;
+  --btn-primary-text: #181311;
+  --btn-primary-border: #d4b04c;
+
+  --btn-secondary-bg: #241c1a;
+  --btn-secondary-hover: #332724;
+  --btn-secondary-text: #f8ebab;
+  --btn-secondary-border: #8a6d23;
+
+  --color-success: #22c55e;
+  --color-success-soft: #13251b;
+  --color-success-text: #bbf7d0;
+  --color-success-border: #1e5635;
+
+  --color-warning: #f59e0b;
+  --color-warning-soft: #271f10;
+  --color-warning-text: #fde68a;
+  --color-warning-border: #785516;
+
+  --color-danger: #e53924;
+  --color-danger-soft: #2a1414;
+  --color-danger-text: #fecaca;
+  --color-danger-border: #7f1d1d;
+
+  --color-info: #3b82f6;
+  --color-info-soft: #131f33;
+  --color-info-text: #bfdbfe;
+  --color-info-border: #1e4278;
+
+  --badge-danger-bg: #be1a1a;
+  --badge-danger-text: #ffffff;
+  --badge-danger-dot: #f7d87f;
+  --badge-danger-border: #d0311e;
+
+  --badge-warning-bg: #f7d87f;
+  --badge-warning-text: #181311;
+  --badge-warning-dot: #be1a1a;
+  --badge-warning-border: #d4b04c;
+
+  --badge-gold-bg: #362d1b;
+  --badge-gold-text: #f8ebab;
+  --badge-gold-dot: #f7d87f;
+  --badge-gold-border: #8a6d23;
+
+  --badge-success-bg: #15803d;
+  --badge-success-text: #ffffff;
+  --badge-success-dot: #f8ebab;
+  --badge-success-border: #22c55e;
+
+  --badge-neutral-bg: #241c1a;
+  --badge-neutral-text: #d6cfc8;
+  --badge-neutral-dot: #a69c94;
+  --badge-neutral-border: #3d312e;
+
+  --notif-unread-bg: #221c15;
+  --notif-unread-border: #8a6d23;
+  --notif-unread-accent: #f7d87f;
+
+  --color-bg: #120e0d;
+  --color-surface: #1b1514;
+  --color-surface-alt: #241c1a;
+  --color-surface-hover: #332724;
+  --color-border: #3d312e;
+  --color-border-subtle: #2b2220;
+
+  --color-text: #f7f4ee;
+  --color-text-secondary: #dfd8cf;
+  --color-text-muted: #aba098;
+
+  --color-sidebar-bg: #161110;
+  --color-sidebar-surface: #241c1a;
+  --color-sidebar-text: #d6cfc8;
+  --color-sidebar-text-muted: #a69c94;
+  --color-sidebar-text-strong: #f8ebab;
+  --color-sidebar-text-active: #ffffff;
+  --color-sidebar-accent: #be1a1a;
+  --color-sidebar-brand: #e53924;
+  --color-sidebar-pill-bg: #f7d87f;
+  --color-sidebar-pill-text: #181311;
+  --color-sidebar-border: #332724;
+
+  --color-xp: #181311;
+  --color-xp-soft: #f7d87f;
+  --color-xp-bar: #f7d87f;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.38);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
