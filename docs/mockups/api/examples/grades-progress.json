@@ -1,0 +1,38 @@
+{
+  "student_grade_summary": {
+    "data": {
+      "course_id": 1,
+      "course_code": "07228204",
+      "course_name": "MANAJEMEN PROYEK 07",
+      "student_id": 101,
+      "components": {
+        "tugas": { "average": 88.5, "weight": 30 },
+        "quiz": { "average": 84.0, "weight": 20 },
+        "presensi": { "average": 92.0, "weight": 10 },
+        "uts": { "average": 85.0, "weight": 20 },
+        "uas": { "average": 85.0, "weight": 20 }
+      },
+      "final_score": 86.55,
+      "letter_grade": "A",
+      "class_average": 79.0
+    },
+    "meta": {}
+  },
+  "student_progress": {
+    "data": {
+      "course_id": 1,
+      "user_id": 101,
+      "materials_completed": 8,
+      "materials_total": 10,
+      "materials_percent": 80,
+      "assignments_submitted": 4,
+      "assignments_total": 5,
+      "assignments_percent": 80,
+      "quizzes_completed": 2,
+      "quizzes_total": 3,
+      "quizzes_percent": 67,
+      "overall_progress_percent": 78
+    },
+    "meta": {}
+  }
+}

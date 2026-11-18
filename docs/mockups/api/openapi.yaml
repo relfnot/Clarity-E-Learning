@@ -1,0 +1,3516 @@
+openapi: 3.0.3
+info:
+  title: Clarity E-Learning — Kontrak REST API
+  version: 1.0.0
+  description: |
+    Spesifikasi kontrak REST API untuk **Clarity E-Learning** (Universitas Katolik Soegijapranata).
+    Dokumen ini adalah *Single Source of Truth* (Tahap F5) yang menghubungkan Frontend (**Matthew**) dengan Backend 1 (**Rizky**) dan Backend 2 (**Gaby**).
+
+    ### Konvensi Wajib
+    - **Base Path:** `/api/v1`
+    - **Autentikasi:** JWT HS256 (`Authorization: Bearer <token>`), berlaku 8 jam (`sub`, `role`, `exp`).
+    - **Format Waktu:** ISO 8601 dengan offset WIB (`Asia/Jakarta`), misal `2026-12-05T23:59:00+07:00`.
+    - **Penamaan Field:** Seluruh field JSON dan query parameter menggunakan `snake_case`.
+    - **Envelope Sukses:** `{ "data": ..., "meta": { ... } }`
+    - **Envelope Error:** `{ "error": { "code": "...", "message": "...", "details": { ... } } }`
+
+    ### Aturan Bisnis Utama
+    1. **Keterlambatan Tugas (`is_late`):** Dihitung server (`submitted_at > deadline`). Keterlambatan **tidak** mengurangi XP dasar, hanya tanpa bonus XP tepat waktu.
+    2. **Presensi:** Hanya dapat dilakukan saat sesi berstatus `open` dan maksimal **1 kali** per pertemuan per mahasiswa (duplikat mengembalikan `409 CONFLICT`).
+    3. **Quiz:** Hanya dapat dimulai dalam rentang `open_at` s/d `close_at`, maksimal sebanyak `max_attempts` (lebih dari itu `409 CONFLICT`), auto-submit saat `expires_at`, dan soal tidak dibocorkan pada detail quiz sebelum percobaan dimulai.
+    4. **Nilai Akhir:** $\text{Nilai Akhir} = \sum (\text{komponen} \times \text{bobot} / 100)$, di mana total bobot seluruh komponen wajib tepat **100**.
+    5. **Leaderboard & Privasi:** Mahasiswa dengan `leaderboard_anonymous = true` ditampilkan sebagai `"Anonim"`; mahasiswa dengan `leaderboard_hidden = true` disembunyikan dari daftar.
+    6. **Reminder Tugas:** Notifikasi otomatis dikirim pada H-3, H-1, dan H-3 jam (`J3`) tanpa pengiriman ganda (dicatat di `reminder_log`).
+  contact:
+    name: Tim Pengembang Clarity E-Learning (Rizky, Gaby, Matthew)
+
+servers:
+  - url: /api/v1
+    description: Server API Lokal (Laragon Apache Rewrite)
+  - url: http://localhost/elearning/public/api/v1
+    description: Laragon Subfolder Default
+
+tags:
+  - name: Auth
+    description: "Autentikasi JWT HS256 & sesi pengguna (PIC: Rizky · P0)"
+  - name: Akun
+    description: "Pengaturan profil, password, dan preferensi privasi/hemat data (PIC: Rizky & Gaby · P1)"
+  - name: Mata Kuliah
+    description: "Daftar dan detail mata kuliah yang diikuti/diampu (PIC: Rizky · P0/P1)"
+  - name: Peserta
+    description: "Daftar peserta kelas & pengelolaan enrollment (PIC: Rizky · P0/P1)"
+  - name: Pertemuan
+    description: "Jadwal dan daftar pertemuan perkuliahan (PIC: Rizky · P0)"
+  - name: Materi
+    description: "Modul materi perkuliahan berupa berkas atau tautan video (PIC: Rizky · P0)"
+  - name: Tugas & Pengumpulan
+    description: "Manajemen tugas, pengumpulan berkas/tautan, dan penilaian (PIC: Rizky & Gaby · P0)"
+  - name: Presensi
+    description: "Sesi presensi pertemuan, check-in mahasiswa, dan rekap kehadiran (PIC: Rizky · P0/P1)"
+  - name: Kalender
+    description: "Agenda terpadu kuliah, batas waktu tugas, dan jadwal quiz (PIC: Rizky · P0)"
+  - name: Quiz
+    description: "Manajemen quiz, bank soal PG/Esai, percobaan berwaktu, dan penilaian otomatis (PIC: Gaby · P0/P1)"
+  - name: Nilai & Progress
+    description: "Rekap nilai komponen, bobot penilaian, dan persentase kemajuan belajar (PIC: Gaby · P0)"
+  - name: Dashboard & Reminder
+    description: "Ringkasan terpadu halaman utama mahasiswa, dosen, dan pengingat tugas (PIC: Gaby · P0/P1/P2)"
+  - name: Notifikasi
+    description: "Pusat notifikasi pengguna dan siaran pengumuman kelas (PIC: Gaby · P0)"
+  - name: Chat
+    description: "Diskusi grup mata kuliah dan pesan langsung berbasis REST polling (PIC: Gaby · P1)"
+  - name: Gamifikasi
+    description: "Profil XP, level, badge, dan papan peringkat kelas (PIC: Gaby · P1)"
+
+security:
+  - bearerAuth: []
+
+paths:
+  # ============================================================================
+  # 1. AUTH & AKUN
+  # ============================================================================
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login menggunakan NIM/NIP atau Email + Password (P0)
+      description: |
+        Mengautentikasi mahasiswa atau dosen dan mengembalikan token JWT HS256 yang berlaku selama **8 jam**.
+        Dibatasi oleh rate limiter maksimal **5 percobaan gagal per 15 menit** per akun + IP (`429 RATE_LIMITED`).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, password]
+              properties:
+                identifier:
+                  type: string
+                  description: NIM mahasiswa, NIP dosen, atau alamat email kampus.
+                  example: "24.N1.0026"
+                password:
+                  type: string
+                  format: password
+                  example: "RahasiaKampus123!"
+      responses:
+        '200':
+          description: Login berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: object
+                    required: [token, token_type, expires_in, user]
+                    properties:
+                      token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwicm9sZSI6Im1haGFzaXN3YSIsImlhdCI6MTc5NjQ0MjAwMCwiZXhwIjoxNzk2NDcwODAwfQ.dummy_signature"
+                      token_type:
+                        type: string
+                        example: "Bearer"
+                      expires_in:
+                        type: integer
+                        example: 28800
+                      expires_at:
+                        type: string
+                        format: date-time
+                        example: "2026-12-05T18:00:00+07:00"
+                      user:
+                        $ref: '#/components/schemas/User'
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimitedError'
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Ambil profil pengguna yang sedang login (P0)
+      description: Mengembalikan profil lengkap pengguna berdasarkan klaim `sub` pada token JWT.
+      responses:
+        '200':
+          description: Profil pengguna saat ini
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout sesi saat ini (P0)
+      description: Mengakhiri sesi pengguna (klien menghapus token JWT dari storage browser).
+      responses:
+        '200':
+          description: Logout berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Berhasil keluar dari sesi."
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /me/profile:
+    patch:
+      tags: [Akun]
+      summary: Perbarui profil pengguna saat ini (P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Dimas Rizky Fajar Pamungkas"
+                email:
+                  type: string
+                  format: email
+                  example: "24n10026@student.unika.ac.id"
+      responses:
+        '200':
+          description: Profil berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /me/password:
+    patch:
+      tags: [Akun]
+      summary: Ubah password akun (P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [current_password, new_password]
+              properties:
+                current_password:
+                  type: string
+                  format: password
+                new_password:
+                  type: string
+                  format: password
+                  minLength: 8
+      responses:
+        '200':
+          description: Password berhasil diubah
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Password berhasil diperbarui."
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /me/settings:
+    get:
+      tags: [Akun]
+      summary: Ambil pengaturan privasi leaderboard & hemat data (P1)
+      responses:
+        '200':
+          description: Pengaturan pengguna
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserSettings'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+    put:
+      tags: [Akun]
+      summary: Simpan pengaturan privasi leaderboard & hemat data (P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+      responses:
+        '200':
+          description: Pengaturan berhasil disimpan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserSettings'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  # ============================================================================
+  # 2. MATA KULIAH, PESERTA, PERTEMUAN & MATERI
+  # ============================================================================
+  /courses:
+    get:
+      tags: [Mata Kuliah]
+      summary: Daftar mata kuliah milik pengguna saat ini (P0)
+      description: |
+        - Untuk **mahasiswa**: hanya mengembalikan mata kuliah yang diikuti (`enrollments`).
+        - Untuk **dosen**: hanya mengembalikan mata kuliah yang diampu (`lecturer_id = user.id`).
+      parameters:
+        - name: semester
+          in: query
+          schema:
+            type: string
+          example: "Ganjil 2026/2027"
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Daftar mata kuliah
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Course'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+    post:
+      tags: [Mata Kuliah]
+      summary: Buat mata kuliah baru (Khusus Dosen · P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '201':
+          description: Mata kuliah berhasil dibuat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Course'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /courses/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Mata Kuliah]
+      summary: Detail mata kuliah, dosen pengampu & jadwal (P0)
+      responses:
+        '200':
+          description: Detail mata kuliah
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Course'
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags: [Mata Kuliah]
+      summary: Ubah informasi mata kuliah yang diampu (Khusus Dosen · P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '200':
+          description: Mata kuliah berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Course'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /courses/{id}/participants:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+    get:
+      tags: [Peserta]
+      summary: Daftar peserta mata kuliah (P0)
+      responses:
+        '200':
+          description: Daftar peserta kelas
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /courses/{id}/enrollments:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Peserta]
+      summary: Daftarkan mahasiswa ke mata kuliah berdasarkan NIM (Khusus Dosen · P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nim_nip]
+              properties:
+                nim_nip:
+                  type: string
+                  example: "24.N1.0026"
+      responses:
+        '201':
+          description: Mahasiswa berhasil didaftarkan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+
+  /courses/{id}/enrollments/{user_id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+    delete:
+      tags: [Peserta]
+      summary: Keluarkan mahasiswa dari mata kuliah (Khusus Dosen · P1)
+      responses:
+        '204':
+          description: Mahasiswa berhasil dikeluarkan dari kelas
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /courses/{id}/meetings:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Pertemuan]
+      summary: Daftar pertemuan pada mata kuliah (P0)
+      responses:
+        '200':
+          description: Daftar pertemuan berurutan
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Meeting'
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags: [Pertemuan]
+      summary: Buat pertemuan baru (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [number, title, meeting_date]
+              properties:
+                number:
+                  type: integer
+                  example: 11
+                title:
+                  type: string
+                  example: "Optimasi Query & Caching Sederhana"
+                description:
+                  type: string
+                  example: "Pembahasan indeks MySQL dan optimasi endpoint dashboard."
+                meeting_date:
+                  type: string
+                  format: date
+                  example: "2026-12-12"
+      responses:
+        '201':
+          description: Pertemuan berhasil dibuat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Meeting'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /courses/{id}/materials:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Materi]
+      summary: Daftar materi perkuliahan pada mata kuliah (P0)
+      parameters:
+        - name: meeting_id
+          in: query
+          schema:
+            type: integer
+          description: Filter materi berdasarkan ID pertemuan
+      responses:
+        '200':
+          description: Daftar materi perkuliahan
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Material'
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags: [Materi]
+      summary: Unggah materi berkas atau tautan baru (Khusus Dosen · P0)
+      description: |
+        Untuk `type=file`, kirimkan `multipart/form-data` dengan field `file` (maks 10 MB; tipe `pdf, doc, docx, ppt, pptx, xls, xlsx, zip, jpg, png, txt`).
+        Untuk video, gunakan `type=link` dan isi field `url`.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [meeting_id, title, type]
+              properties:
+                meeting_id:
+                  type: integer
+                  example: 3
+                title:
+                  type: string
+                  example: "Panduan Upload Aman & Validasi MIME"
+                type:
+                  type: string
+                  enum: [file, link]
+                  example: "file"
+                file:
+                  type: string
+                  format: binary
+                url:
+                  type: string
+                  format: uri
+                  nullable: true
+      responses:
+        '201':
+          description: Materi berhasil ditambahkan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Material'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /materials/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Materi]
+      summary: Ubah metadata materi (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                meeting_id:
+                  type: integer
+                title:
+                  type: string
+                url:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Materi berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Material'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags: [Materi]
+      summary: Hapus materi perkuliahan (Khusus Dosen · P0)
+      responses:
+        '204':
+          description: Materi berhasil dihapus
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /materials/{id}/download:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Materi]
+      summary: Unduh berkas materi perkuliahan (P0)
+      description: Mengalirkan berkas dari `storage/uploads` setelah memverifikasi pengguna adalah peserta/pengampu mata kuliah.
+      responses:
+        '200':
+          description: Stream berkas materi
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # ============================================================================
+  # 3. TUGAS, PENGUMPULAN & PENILAIAN
+  # ============================================================================
+  /courses/{id}/assignments:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Tugas & Pengumpulan]
+      summary: Daftar tugas pada mata kuliah (P0)
+      description: Bila dipanggil oleh mahasiswa, setiap item menyertakan ringkasan status pengumpulan miliknya (`my_submission`).
+      responses:
+        '200':
+          description: Daftar tugas
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Assignment'
+                  meta:
+                    type: object
+                    example: {}
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags: [Tugas & Pengumpulan]
+      summary: Buat tugas baru pada mata kuliah (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentInput'
+      responses:
+        '201':
+          description: Tugas berhasil dibuat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Assignment'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /assignments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Tugas & Pengumpulan]
+      summary: Detail tugas beserta status pengumpulan pengguna (P0)
+      responses:
+        '200':
+          description: Detail tugas
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Assignment'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags: [Tugas & Pengumpulan]
+      summary: Ubah detail, deadline, atau bobot tugas (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentInput'
+      responses:
+        '200':
+          description: Tugas berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Assignment'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags: [Tugas & Pengumpulan]
+      summary: Hapus tugas (Khusus Dosen · P0)
+      responses:
+        '204':
+          description: Tugas berhasil dihapus
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /assignments/{id}/submissions:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Tugas & Pengumpulan]
+      summary: Kumpulkan berkas atau tautan tugas (Khusus Mahasiswa · P0)
+      description: |
+        `is_late` dihitung otomatis di server berdasarkan `submitted_at > deadline`.
+        Keterlambatan **tidak** mengurangi XP dasar, hanya tidak memperoleh bonus XP tepat waktu.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Berkas tugas (maks 10 MB) bila `accept_file = true`
+                link_url:
+                  type: string
+                  format: uri
+                  description: Tautan repositori/dokumen bila `accept_link = true`
+                  example: "https://github.com/gabriel/07228204-jwt"
+      responses:
+        '201':
+          description: Tugas berhasil dikumpulkan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Submission'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      tags: [Tugas & Pengumpulan]
+      summary: Tabel seluruh pengumpulan mahasiswa pada tugas ini (Khusus Dosen · P0)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/SubmissionStatusEnum'
+      responses:
+        '200':
+          description: Daftar pengumpulan mahasiswa (tepat waktu / terlambat / belum)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Submission'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /assignments/{id}/submissions/me:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Tugas & Pengumpulan]
+      summary: Lihat status pengumpulan, nilai & umpan balik milik sendiri (Khusus Mahasiswa · P0)
+      responses:
+        '200':
+          description: Detail pengumpulan mahasiswa saat ini
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Submission'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /submissions/{id}/download:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Tugas & Pengumpulan]
+      summary: Unduh berkas pengumpulan tugas (Pemilik atau Dosen Pengampu · P0)
+      responses:
+        '200':
+          description: Stream berkas pengumpulan
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /submissions/{id}/grade:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Tugas & Pengumpulan]
+      summary: Beri nilai dan feedback pada pengumpulan tugas (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [score]
+              properties:
+                score:
+                  type: number
+                  minimum: 0
+                  maximum: 100
+                  example: 90.0
+                feedback:
+                  type: string
+                  nullable: true
+                  example: "Struktur router dan validasi JWT sudah sangat rapi."
+      responses:
+        '200':
+          description: Penilaian berhasil disimpan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Submission'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  # ============================================================================
+  # 4. PRESENSI & KALENDER
+  # ============================================================================
+  /meetings/{id}/attendance-session:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Presensi]
+      summary: Buka sesi presensi pada pertemuan (Khusus Dosen · P0)
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                closes_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                  example: "2026-12-05T15:00:00+07:00"
+                passcode:
+                  type: string
+                  nullable: true
+                  example: "MANPRO10"
+      responses:
+        '201':
+          description: Sesi presensi dibuka
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AttendanceSession'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+
+  /attendance-sessions/{id}/close:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    patch:
+      tags: [Presensi]
+      summary: Tutup sesi presensi (Khusus Dosen · P0)
+      responses:
+        '200':
+          description: Sesi presensi berhasil ditutup
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AttendanceSession'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /attendance-sessions/{id}/check-in:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Presensi]
+      summary: Isi kehadiran mahasiswa pada sesi terbuka (Khusus Mahasiswa · P0)
+      description: |
+        Hanya dapat dilakukan saat sesi berstatus `open` dan sebelum `closes_at`.
+        Satu mahasiswa hanya boleh melakukan check-in **satu kali** per pertemuan; percobaan kedua mengembalikan `409 CONFLICT`.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passcode:
+                  type: string
+                  nullable: true
+                  example: "MANPRO10"
+      responses:
+        '201':
+          description: Presensi berhasil tercatat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AttendanceRecord'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /courses/{id}/attendance/summary:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Presensi]
+      summary: Rekap kehadiran sendiri (Mahasiswa) atau seluruh kelas (Dosen) (P0)
+      responses:
+        '200':
+          description: Ringkasan kehadiran mata kuliah
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      course_id:
+                        type: integer
+                        example: 1
+                      total_meetings:
+                        type: integer
+                        example: 10
+                      attendance_percent:
+                        type: number
+                        example: 92.0
+                      counts:
+                        type: object
+                        properties:
+                          hadir: { type: integer, example: 9 }
+                          izin: { type: integer, example: 1 }
+                          sakit: { type: integer, example: 0 }
+                          alpa: { type: integer, example: 0 }
+                      records:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/AttendanceRecord'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /meetings/{id}/attendance:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Presensi]
+      summary: Rekap daftar kehadiran mahasiswa per pertemuan (Khusus Dosen · P1)
+      responses:
+        '200':
+          description: Daftar presensi mahasiswa pada pertemuan tersebut
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AttendanceRecord'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /attendance-records/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Presensi]
+      summary: Ubah status kehadiran mahasiswa menjadi hadir/izin/sakit/alpa (Khusus Dosen · P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  $ref: '#/components/schemas/AttendanceStatusEnum'
+      responses:
+        '200':
+          description: Status kehadiran berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AttendanceRecord'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /calendar:
+    get:
+      tags: [Kalender]
+      summary: Ambil jadwal kuliah, deadline tugas, dan jadwal quiz dalam rentang tanggal (P0)
+      parameters:
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          example: "2026-12-01"
+        - name: to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          example: "2026-12-31"
+        - name: course_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Daftar agenda kalender
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CalendarEvent'
+                  meta:
+                    type: object
+                    properties:
+                      from:
+                        type: string
+                        example: "2026-12-01"
+                      to:
+                        type: string
+                        example: "2026-12-31"
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  # ============================================================================
+  # 5. QUIZ & PERCOBAAN (ATTEMPTS)
+  # ============================================================================
+  /courses/{id}/quizzes:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Quiz]
+      summary: Daftar quiz pada mata kuliah (P0)
+      description: Mengembalikan metadata quiz tanpa membocorkan daftar soal sebelum mahasiswa memulai percobaan.
+      responses:
+        '200':
+          description: Daftar quiz
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Quiz'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags: [Quiz]
+      summary: Buat quiz baru pada mata kuliah (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizInput'
+      responses:
+        '201':
+          description: Quiz berhasil dibuat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Quiz'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /quizzes/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Quiz]
+      summary: Detail aturan & jadwal quiz (soal tidak dibocorkan untuk mahasiswa sebelum mulai · P0)
+      responses:
+        '200':
+          description: Detail quiz
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Quiz'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags: [Quiz]
+      summary: Ubah pengaturan atau jadwal quiz (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizInput'
+      responses:
+        '200':
+          description: Quiz berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Quiz'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags: [Quiz]
+      summary: Hapus quiz (Khusus Dosen · P0)
+      responses:
+        '204':
+          description: Quiz berhasil dihapus
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /quizzes/{id}/questions:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Quiz]
+      summary: Tambahkan soal Pilihan Ganda (PG) atau Esai ke dalam quiz (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionInput'
+      responses:
+        '201':
+          description: Soal berhasil ditambahkan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Question'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /questions/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Quiz]
+      summary: Ubah soal dan opsi jawaban (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionInput'
+      responses:
+        '200':
+          description: Soal berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Question'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags: [Quiz]
+      summary: Hapus soal dari quiz (Khusus Dosen · P0)
+      responses:
+        '204':
+          description: Soal berhasil dihapus
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /quizzes/{id}/attempts:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Quiz]
+      summary: Mulai percobaan quiz baru (Khusus Mahasiswa · P0)
+      description: |
+        Memvalidasi bahwa waktu saat ini berada di antara `open_at` dan `close_at`, serta jumlah percobaan mahasiswa belum mencapai `max_attempts`.
+        Jika melebihi `max_attempts` atau masih ada attempt aktif yang belum disubmit, mengembalikan `409 CONFLICT`.
+        Mengembalikan daftar soal (teracak bila `shuffle = true`) tanpa field `is_correct` serta waktu batas akhir pengerjaan (`expires_at`).
+      responses:
+        '201':
+          description: Percobaan quiz dimulai
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Attempt'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+    get:
+      tags: [Quiz]
+      summary: Daftar seluruh percobaan quiz mahasiswa (Khusus Dosen · P0/P1)
+      responses:
+        '200':
+          description: Daftar percobaan seluruh mahasiswa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Attempt'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /attempts/{id}/answers:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Quiz]
+      summary: Simpan jawaban sementara / autosave selama pengerjaan quiz (Khusus Mahasiswa · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    required: [question_id]
+                    properties:
+                      question_id:
+                        type: integer
+                        example: 1
+                      option_id:
+                        type: integer
+                        nullable: true
+                        example: 12
+                      answer_text:
+                        type: string
+                        nullable: true
+                        example: "401 untuk belum login, 403 untuk role tidak berhak."
+      responses:
+        '200':
+          description: Jawaban berhasil disimpan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      saved_count:
+                        type: integer
+                        example: 5
+                      saved_at:
+                        type: string
+                        format: date-time
+                        example: "2026-12-05T10:15:00+07:00"
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /attempts/{id}/submit:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Quiz]
+      summary: Kirim jawaban akhir & hitung nilai PG otomatis (Khusus Mahasiswa · P0)
+      description: |
+        Menutup percobaan (`status = submitted`), menilai soal Pilihan Ganda secara otomatis, dan menampilkan skor.
+        Jika dipanggil dua kali pada attempt yang sudah selesai, mengembalikan `409 CONFLICT`.
+      responses:
+        '200':
+          description: Quiz berhasil dikumpulkan dan dinilai
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Attempt'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+
+  /attempts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Quiz]
+      summary: Lihat hasil pengerjaan quiz (Mahasiswa pemilik setelah selesai atau Dosen · P0)
+      responses:
+        '200':
+          description: Detail hasil percobaan quiz
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Attempt'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /answers/{id}/grade:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Quiz]
+      summary: Beri nilai manual untuk jawaban soal Esai (Khusus Dosen · P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [score]
+              properties:
+                score:
+                  type: number
+                  minimum: 0
+                  example: 18.0
+      responses:
+        '200':
+          description: Nilai esai berhasil disimpan dan total skor attempt diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Attempt'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  # ============================================================================
+  # 6. NILAI & PROGRESS
+  # ============================================================================
+  /courses/{id}/grades/me:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Nilai & Progress]
+      summary: Rekap nilai tugas, quiz, presensi, dan nilai akhir milik sendiri (Khusus Mahasiswa · P0)
+      responses:
+        '200':
+          description: Ringkasan nilai mahasiswa pada mata kuliah
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GradeSummary'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /courses/{id}/grades:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Nilai & Progress]
+      summary: Rekap nilai seluruh mahasiswa dalam satu kelas (Khusus Dosen · P0)
+      responses:
+        '200':
+          description: Tabel nilai kelas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradeSummary'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /courses/{id}/grade-weights:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Nilai & Progress]
+      summary: Lihat bobot komponen penilaian mata kuliah (P0)
+      responses:
+        '200':
+          description: Daftar bobot komponen (total 100%)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GradeWeights'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags: [Nilai & Progress]
+      summary: Atur bobot komponen penilaian; jumlah total wajib 100 (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeWeights'
+      responses:
+        '200':
+          description: Bobot nilai berhasil disimpan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GradeWeights'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /courses/{id}/progress/me:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Nilai & Progress]
+      summary: Persentase penyelesaian materi, tugas, dan quiz mahasiswa (Khusus Mahasiswa · P0)
+      responses:
+        '200':
+          description: Ringkasan progress belajar mahasiswa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Progress'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # ============================================================================
+  # 7. DASHBOARD, REMINDER & RISIKO
+  # ============================================================================
+  /dashboard/student:
+    get:
+      tags: [Dashboard & Reminder]
+      summary: Data terpadu dashboard mahasiswa (kartu matkul, tugas mendatang, notifikasi, grafik nilai, progress · P0)
+      responses:
+        '200':
+          description: Payload lengkap dashboard mahasiswa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      gamification:
+                        $ref: '#/components/schemas/GamificationProfile'
+                      courses:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Course'
+                      upcoming_tasks:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Assignment'
+                      unread_notifications_count:
+                        type: integer
+                        example: 3
+                      recent_notifications:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Notification'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /dashboard/lecturer:
+    get:
+      tags: [Dashboard & Reminder]
+      summary: Data terpadu dashboard dosen (ringkasan kelas, pengumpulan terbaru, mahasiswa berisiko · P1)
+      responses:
+        '200':
+          description: Payload lengkap dashboard dosen
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      lecturer:
+                        $ref: '#/components/schemas/User'
+                      summary:
+                        type: object
+                        properties:
+                          active_courses_count: { type: integer, example: 2 }
+                          total_students: { type: integer, example: 64 }
+                          ungraded_submissions_count: { type: integer, example: 5 }
+                          at_risk_students_count: { type: integer, example: 1 }
+                      recent_submissions:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Submission'
+                      at_risk_students:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/AtRiskStudent'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /me/upcoming-tasks:
+    get:
+      tags: [Dashboard & Reminder]
+      summary: Widget daftar tugas mendatang beserta label tingkat urgensi (Khusus Mahasiswa · P1)
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 7
+          description: Rentang hari ke depan
+      responses:
+        '200':
+          description: Daftar tugas mendatang dengan label `urgency` (`j3`, `h1`, `h3`, `normal`)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Assignment'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /courses/{id}/at-risk-students:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Dashboard & Reminder]
+      summary: Daftar mahasiswa berisiko pada mata kuliah beserta alasan indikator (Khusus Dosen · P2)
+      responses:
+        '200':
+          description: Daftar mahasiswa berisiko (jarang login, sering terlambat, atau nilai turun)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AtRiskStudent'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # ============================================================================
+  # 8. NOTIFIKASI & PENGUMUMAN
+  # ============================================================================
+  /notifications:
+    get:
+      tags: [Notifikasi]
+      summary: Daftar notifikasi pengguna (P0)
+      parameters:
+        - name: unread
+          in: query
+          schema:
+            type: integer
+            enum: [0, 1]
+          description: Isi `1` untuk hanya menampilkan notifikasi yang belum dibaca
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Daftar notifikasi
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /notifications/unread-count:
+    get:
+      tags: [Notifikasi]
+      summary: Jumlah notifikasi yang belum dibaca (P0)
+      responses:
+        '200':
+          description: Jumlah notifikasi belum dibaca
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      unread_count:
+                        type: integer
+                        example: 3
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /notifications/{id}/read:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    patch:
+      tags: [Notifikasi]
+      summary: Tandai satu notifikasi sebagai sudah dibaca (P0)
+      responses:
+        '200':
+          description: Notifikasi berhasil ditandai dibaca
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Notification'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /notifications/read-all:
+    post:
+      tags: [Notifikasi]
+      summary: Tandai seluruh notifikasi milik pengguna sebagai sudah dibaca (P0)
+      responses:
+        '200':
+          description: Semua notifikasi ditandai dibaca
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      updated_count:
+                        type: integer
+                        example: 3
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /courses/{id}/announcements:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    post:
+      tags: [Notifikasi]
+      summary: Kirim pengumuman baru ke seluruh peserta mata kuliah (Khusus Dosen · P0)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, body]
+              properties:
+                title:
+                  type: string
+                  example: "Pengumuman 07228204: Sesi Presensi Pertemuan 10 Dibuka"
+                body:
+                  type: string
+                  example: "Silakan lakukan check-in presensi sebelum pukul 15:00 WIB melalui menu Presensi."
+      responses:
+        '201':
+          description: Pengumuman berhasil dikirim ke seluruh peserta kelas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      recipients_count:
+                        type: integer
+                        example: 32
+                      title:
+                        type: string
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  # ============================================================================
+  # 9. CHAT (POLLING REST)
+  # ============================================================================
+  /courses/{id}/messages:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Chat]
+      summary: Ambil pesan chat grup mata kuliah (Polling tiap 3-5 detik · P1)
+      parameters:
+        - name: after_id
+          in: query
+          schema:
+            type: integer
+          description: Hanya ambil pesan dengan `id > after_id` untuk efisiensi polling
+      responses:
+        '200':
+          description: Daftar pesan grup kelas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+    post:
+      tags: [Chat]
+      summary: Kirim pesan baru ke grup mata kuliah (P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+                  maxLength: 2000
+                  example: "Baik Bu Brenda, dokumentasi OpenAPI sudah kami push."
+      responses:
+        '201':
+          description: Pesan terkirim
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Message'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /contacts:
+    get:
+      tags: [Chat]
+      summary: Daftar kontak dosen & rekan sekelas untuk pesan langsung (P1)
+      responses:
+        '200':
+          description: Daftar kontak
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /conversations/{user_id}/messages:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      tags: [Chat]
+      summary: Ambil riwayat pesan langsung dengan pengguna tertentu (P1)
+      parameters:
+        - name: after_id
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Daftar pesan langsung
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+    post:
+      tags: [Chat]
+      summary: Kirim pesan langsung ke pengguna tertentu (P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+                  maxLength: 2000
+      responses:
+        '201':
+          description: Pesan langsung terkirim
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Message'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  # ============================================================================
+  # 10. GAMIFIKASI
+  # ============================================================================
+  /me/gamification:
+    get:
+      tags: [Gamifikasi]
+      summary: Ambil profil XP, level, title, dan koleksi badge milik pengguna (P1)
+      responses:
+        '200':
+          description: Profil gamifikasi pengguna
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GamificationProfile'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+
+  /courses/{id}/leaderboard:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Gamifikasi]
+      summary: Papan peringkat XP kelas; menghormati pengaturan anonim & sembunyi (P1)
+      description: |
+        - Pengguna dengan `leaderboard_anonymous = true` tetap muncul dengan `name: "Anonim"` dan `nim_nip: null`.
+        - Pengguna dengan `leaderboard_hidden = true` tidak disertakan dalam daftar.
+      responses:
+        '200':
+          description: Peringkat kelas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LeaderboardEntry'
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /courses/{id}/gamification-rules:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Gamifikasi]
+      summary: Lihat aturan poin XP dan badge pada mata kuliah (P1)
+      responses:
+        '200':
+          description: Konfigurasi poin XP
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      xp_attendance: { type: integer, example: 10 }
+                      xp_submission_base: { type: integer, example: 20 }
+                      xp_submission_ontime_bonus: { type: integer, example: 30 }
+                      xp_quiz_complete: { type: integer, example: 40 }
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+    put:
+      tags: [Gamifikasi]
+      summary: Ubah aturan poin XP pada mata kuliah (Khusus Dosen · P1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                xp_attendance: { type: integer, example: 10 }
+                xp_submission_base: { type: integer, example: 20 }
+                xp_submission_ontime_bonus: { type: integer, example: 30 }
+                xp_quiz_complete: { type: integer, example: 40 }
+      responses:
+        '200':
+          description: Aturan gamifikasi berhasil disimpan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+# ==============================================================================
+# COMPONENTS (SCHEMAS, ENUMS, PARAMETERS, RESPONSES, SECURITY)
+# ==============================================================================
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Masukkan token JWT HS256 yang diperoleh dari `POST /api/v1/auth/login`.
+        Masa berlaku token adalah 8 jam (`sub`, `role`, `exp`).
+
+  parameters:
+    IdPathParam:
+      name: id
+      in: path
+      required: true
+      description: ID numerik resource
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: Nomor halaman pagination (mulai dari 1)
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      required: false
+      description: Jumlah item per halaman (default 20, maksimal 100)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  responses:
+    UnauthenticatedError:
+      description: Token autentikasi tidak dikirim, tidak valid, atau sudah kedaluwarsa (`401`)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "UNAUTHENTICATED"
+              message: "Token autentikasi tidak ditemukan, tidak valid, atau sudah kedaluwarsa."
+              details: {}
+    ForbiddenError:
+      description: Pengguna tidak memiliki peran yang sesuai atau bukan peserta/pengampu mata kuliah (`403`)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "FORBIDDEN"
+              message: "Anda tidak memiliki izin akses untuk resource ini."
+              details: {}
+    NotFoundError:
+      description: Resource tidak ditemukan (`404`)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "NOT_FOUND"
+              message: "Data yang diminta tidak ditemukan."
+              details: {}
+    ConflictError:
+      description: Konflik aksi ganda seperti presensi duplikat atau melebihi batas percobaan quiz (`409`)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "CONFLICT"
+              message: "Aksi ini sudah pernah dilakukan dan tidak dapat diulang."
+              details: {}
+    ValidationError:
+      description: Validasi field gagal (`422`)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "Data yang dikirim tidak lolos validasi."
+              details:
+                field_name:
+                  - "Pesan kesalahan spesifik pada field ini."
+    RateLimitedError:
+      description: Terlalu banyak percobaan gagal dalam jendela waktu (`429`)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "RATE_LIMITED"
+              message: "Terlalu banyak percobaan login gagal (maks 5 kali / 15 menit). Silakan coba lagi nanti."
+              details:
+                retry_after_seconds: 900
+
+  schemas:
+    # --- ENUMS (Didefinisikan sekali sesuai bagian 6 PRD F5) ---
+    RoleEnum:
+      type: string
+      enum: [mahasiswa, dosen]
+      example: "mahasiswa"
+
+    SubmissionStatusEnum:
+      type: string
+      enum: [belum, tepat_waktu, terlambat, dinilai]
+      example: "tepat_waktu"
+
+    AttendanceStatusEnum:
+      type: string
+      enum: [hadir, izin, sakit, alpa]
+      example: "hadir"
+
+    QuestionTypeEnum:
+      type: string
+      enum: [pg, esai]
+      example: "pg"
+
+    UrgencyEnum:
+      type: string
+      enum: [j3, h1, h3, normal]
+      description: "`j3` (<= 3 jam), `h1` (<= 24 jam), `h3` (<= 3 hari), `normal` (> 3 hari)"
+      example: "h1"
+
+    # --- CORE SCHEMAS ---
+    User:
+      type: object
+      required: [id, nim_nip, name, email, role]
+      properties:
+        id:
+          type: integer
+          example: 101
+        nim_nip:
+          type: string
+          example: "24.N1.0026"
+        name:
+          type: string
+          example: "Dimas Rizky Fajar Pamungkas"
+        email:
+          type: string
+          format: email
+          example: "24n10026@student.unika.ac.id"
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        program_studi:
+          type: string
+          nullable: true
+          example: "Sistem Informasi (S1)"
+        semester:
+          type: integer
+          nullable: true
+          example: 5
+        department:
+          type: string
+          nullable: true
+          example: "Fakultas Ilmu Komputer"
+        initials:
+          type: string
+          example: "DR"
+        avatar_url:
+          type: string
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-09-01T08:00:00+07:00"
+
+    UserSettings:
+      type: object
+      required: [leaderboard_anonymous, leaderboard_hidden, data_saver]
+      properties:
+        leaderboard_anonymous:
+          type: boolean
+          example: false
+        leaderboard_hidden:
+          type: boolean
+          example: false
+        data_saver:
+          type: boolean
+          example: false
+
+    Course:
+      type: object
+      required: [id, code, name, semester, credits, lecturer_id]
+      properties:
+        id:
+          type: integer
+          example: 1
+        code:
+          type: string
+          example: "07228204"
+        name:
+          type: string
+          example: "MANAJEMEN PROYEK 07"
+        description:
+          type: string
+          example: "Mata kuliah ini akan membekali mahasiswa dengan pengetahuan dan keterampilan dalam mengelola proyek perangkat lunak secara efektif dan efisien."
+        semester:
+          type: string
+          example: "Ganjil 2026/2027"
+        credits:
+          type: integer
+          example: 3
+        lecturer_id:
+          type: integer
+          example: 1
+        lecturer_name:
+          type: string
+          example: "T. BRENDA CHANDRAWATI"
+        day:
+          type: string
+          example: "Jumat"
+        start_time:
+          type: string
+          example: "13:00"
+        end_time:
+          type: string
+          example: "15:00"
+        room:
+          type: string
+          example: "Ruang 8.1"
+        enrolled_count:
+          type: integer
+          example: 32
+        progress_percent:
+          type: integer
+          nullable: true
+          example: 78
+        student_score:
+          type: number
+          nullable: true
+          example: 86.0
+        class_average:
+          type: number
+          nullable: true
+          example: 79.0
+        attendance_percent:
+          type: number
+          nullable: true
+          example: 92.0
+
+    CourseInput:
+      type: object
+      required: [code, name, semester, credits, day, start_time, end_time, room]
+      properties:
+        code:
+          type: string
+          example: "07228204"
+        name:
+          type: string
+          example: "MANAJEMEN PROYEK 07"
+        description:
+          type: string
+        semester:
+          type: string
+          example: "Ganjil 2026/2027"
+        credits:
+          type: integer
+          example: 3
+        day:
+          type: string
+          example: "Jumat"
+        start_time:
+          type: string
+          example: "13:00"
+        end_time:
+          type: string
+          example: "15:00"
+        room:
+          type: string
+          example: "Ruang 8.1"
+
+    Meeting:
+      type: object
+      required: [id, course_id, number, title, meeting_date]
+      properties:
+        id:
+          type: integer
+          example: 3
+        course_id:
+          type: integer
+          example: 1
+        number:
+          type: integer
+          example: 10
+        title:
+          type: string
+          example: "Keamanan Input, PDO Prepared Statement & Upload File"
+        description:
+          type: string
+          nullable: true
+          example: "Pencegahan SQL Injection, XSS, dan validasi MIME."
+        meeting_date:
+          type: string
+          format: date
+          example: "2026-12-05"
+
+    Material:
+      type: object
+      required: [id, course_id, meeting_id, title, type, created_at]
+      properties:
+        id:
+          type: integer
+          example: 201
+        course_id:
+          type: integer
+          example: 1
+        meeting_id:
+          type: integer
+          example: 1
+        meeting_number:
+          type: integer
+          example: 8
+        title:
+          type: string
+          example: "Slide Pertemuan 8: Prinsip RESTful API"
+        type:
+          type: string
+          enum: [file, link]
+          example: "file"
+        file_name:
+          type: string
+          nullable: true
+          example: "P08_REST_API.pdf"
+        file_size:
+          type: string
+          nullable: true
+          example: "2.4 MB"
+        url:
+          type: string
+          nullable: true
+          example: null
+        download_url:
+          type: string
+          nullable: true
+          example: "/api/v1/materials/201/download"
+        completed:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-11-22T09:00:00+07:00"
+
+    Assignment:
+      type: object
+      required: [id, course_id, title, deadline, accept_file, accept_link, weight, max_score]
+      properties:
+        id:
+          type: integer
+          example: 11
+        course_id:
+          type: integer
+          example: 1
+        course_code:
+          type: string
+          example: "07228204"
+        course_name:
+          type: string
+          example: "MANAJEMEN PROYEK 07"
+        meeting_id:
+          type: integer
+          nullable: true
+          example: 2
+        title:
+          type: string
+          example: "Tugas 4: Implementasi REST API Auth & JWT"
+        description:
+          type: string
+          example: "Buat endpoint login dan profil menggunakan PHP native dan JWT HS256."
+        deadline:
+          type: string
+          format: date-time
+          example: "2026-12-06T23:59:00+07:00"
+        accept_file:
+          type: boolean
+          example: true
+        accept_link:
+          type: boolean
+          example: true
+        weight:
+          type: number
+          example: 20.0
+        max_score:
+          type: integer
+          example: 100
+        urgency:
+          $ref: '#/components/schemas/UrgencyEnum'
+        my_submission:
+          $ref: '#/components/schemas/Submission'
+
+    AssignmentInput:
+      type: object
+      required: [title, deadline, accept_file, accept_link, weight, max_score]
+      properties:
+        meeting_id:
+          type: integer
+          nullable: true
+          example: 2
+        title:
+          type: string
+          example: "Tugas 4: Implementasi REST API Auth & JWT"
+        description:
+          type: string
+        deadline:
+          type: string
+          format: date-time
+          example: "2026-12-06T23:59:00+07:00"
+        accept_file:
+          type: boolean
+          example: true
+        accept_link:
+          type: boolean
+          example: true
+        weight:
+          type: number
+          example: 20.0
+        max_score:
+          type: integer
+          example: 100
+
+    Submission:
+      type: object
+      required: [id, assignment_id, user_id, submitted_at, is_late, status]
+      properties:
+        id:
+          type: integer
+          example: 501
+        assignment_id:
+          type: integer
+          example: 11
+        user_id:
+          type: integer
+          example: 101
+        student_name:
+          type: string
+          example: "Dimas Rizky Fajar Pamungkas"
+        nim_nip:
+          type: string
+          example: "24.N1.0026"
+        file_name:
+          type: string
+          nullable: true
+          example: "tugas4-rest-api-24N10026.zip"
+        file_size:
+          type: string
+          nullable: true
+          example: "1.2 MB"
+        download_url:
+          type: string
+          nullable: true
+          example: "/api/v1/submissions/501/download"
+        link_url:
+          type: string
+          nullable: true
+          example: null
+        submitted_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T14:20:00+07:00"
+        is_late:
+          type: boolean
+          example: false
+        status:
+          $ref: '#/components/schemas/SubmissionStatusEnum'
+        score:
+          type: number
+          nullable: true
+          example: 90.0
+        feedback:
+          type: string
+          nullable: true
+          example: "Struktur router dan validasi JWT sudah sangat rapi."
+        graded_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-12-05T17:00:00+07:00"
+
+    AttendanceSession:
+      type: object
+      required: [id, meeting_id, opened_at, status]
+      properties:
+        id:
+          type: integer
+          example: 601
+        course_id:
+          type: integer
+          example: 1
+        meeting_id:
+          type: integer
+          example: 3
+        opened_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T13:00:00+07:00"
+        closes_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-12-05T15:00:00+07:00"
+        passcode:
+          type: string
+          nullable: true
+          example: "MANPRO10"
+        status:
+          type: string
+          enum: [open, closed]
+          example: "open"
+
+    AttendanceRecord:
+      type: object
+      required: [id, session_id, user_id, status]
+      properties:
+        id:
+          type: integer
+          example: 701
+        session_id:
+          type: integer
+          example: 601
+        meeting_id:
+          type: integer
+          example: 3
+        user_id:
+          type: integer
+          example: 101
+        student_name:
+          type: string
+          example: "Dimas Rizky Fajar Pamungkas"
+        nim_nip:
+          type: string
+          example: "24.N1.0026"
+        status:
+          $ref: '#/components/schemas/AttendanceStatusEnum'
+        checked_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-12-05T13:04:12+07:00"
+
+    CalendarEvent:
+      type: object
+      required: [id, type, course_id, title, start_at]
+      properties:
+        id:
+          type: string
+          example: "assignment-11"
+        type:
+          type: string
+          enum: [lecture, assignment_deadline, quiz_window]
+          example: "assignment_deadline"
+        course_id:
+          type: integer
+          example: 1
+        course_code:
+          type: string
+          example: "07228204"
+        course_name:
+          type: string
+          example: "MANAJEMEN PROYEK 07"
+        title:
+          type: string
+          example: "Deadline Tugas 4: Implementasi REST API Auth & JWT"
+        start_at:
+          type: string
+          format: date-time
+          example: "2026-12-06T23:59:00+07:00"
+        end_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-12-06T23:59:00+07:00"
+        location:
+          type: string
+          nullable: true
+          example: "Ruang 8.1"
+
+    Quiz:
+      type: object
+      required: [id, course_id, title, open_at, close_at, duration_min, max_attempts, shuffle]
+      properties:
+        id:
+          type: integer
+          example: 401
+        course_id:
+          type: integer
+          example: 1
+        course_code:
+          type: string
+          example: "07228204"
+        course_name:
+          type: string
+          example: "MANAJEMEN PROYEK 07"
+        meeting_id:
+          type: integer
+          nullable: true
+          example: 3
+        title:
+          type: string
+          example: "Quiz 2: Autentikasi JWT, REST API & Keamanan Web"
+        open_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T08:00:00+07:00"
+        close_at:
+          type: string
+          format: date-time
+          example: "2026-12-07T23:59:00+07:00"
+        duration_min:
+          type: integer
+          example: 30
+        max_attempts:
+          type: integer
+          example: 2
+        attempts_used:
+          type: integer
+          example: 1
+        shuffle:
+          type: boolean
+          example: true
+        total_questions:
+          type: integer
+          example: 5
+        weight:
+          type: number
+          example: 15.0
+
+    QuizInput:
+      type: object
+      required: [title, open_at, close_at, duration_min, max_attempts, shuffle]
+      properties:
+        meeting_id:
+          type: integer
+          nullable: true
+        title:
+          type: string
+          example: "Quiz 2: Autentikasi JWT, REST API & Keamanan Web"
+        open_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T08:00:00+07:00"
+        close_at:
+          type: string
+          format: date-time
+          example: "2026-12-07T23:59:00+07:00"
+        duration_min:
+          type: integer
+          example: 30
+        max_attempts:
+          type: integer
+          example: 2
+        shuffle:
+          type: boolean
+          example: true
+        weight:
+          type: number
+          example: 15.0
+
+    Question:
+      type: object
+      required: [id, quiz_id, type, text, points, position]
+      properties:
+        id:
+          type: integer
+          example: 1
+        quiz_id:
+          type: integer
+          example: 401
+        type:
+          $ref: '#/components/schemas/QuestionTypeEnum'
+        text:
+          type: string
+          example: "Kode status HTTP mana yang paling tepat dikembalikan server ketika pengguna belum mengirimkan token autentikasi JWT yang valid?"
+        points:
+          type: number
+          example: 20
+        position:
+          type: integer
+          example: 1
+        options:
+          type: array
+          items:
+            type: object
+            required: [id, text]
+            properties:
+              id:
+                type: integer
+                example: 12
+              label:
+                type: string
+                example: "B"
+              text:
+                type: string
+                example: "401 Unauthorized"
+              is_correct:
+                type: boolean
+                description: Hanya dikembalikan kepada Dosen atau setelah attempt selesai
+                example: true
+
+    QuestionInput:
+      type: object
+      required: [type, text, points, position]
+      properties:
+        type:
+          $ref: '#/components/schemas/QuestionTypeEnum'
+        text:
+          type: string
+        points:
+          type: number
+          example: 20
+        position:
+          type: integer
+          example: 1
+        options:
+          type: array
+          items:
+            type: object
+            required: [text, is_correct]
+            properties:
+              text:
+                type: string
+              is_correct:
+                type: boolean
+
+    Attempt:
+      type: object
+      required: [id, quiz_id, user_id, started_at, expires_at, status]
+      properties:
+        id:
+          type: integer
+          example: 801
+        quiz_id:
+          type: integer
+          example: 401
+        user_id:
+          type: integer
+          example: 101
+        attempt_number:
+          type: integer
+          example: 1
+        started_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T10:00:00+07:00"
+        expires_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T10:30:00+07:00"
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-12-05T10:21:45+07:00"
+        score:
+          type: number
+          nullable: true
+          example: 80.0
+        status:
+          type: string
+          enum: [in_progress, submitted, graded]
+          example: "submitted"
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+
+    GradeWeights:
+      type: object
+      description: Total seluruh bobot komponen wajib tepat 100
+      required: [tugas, quiz, presensi, uts, uas]
+      properties:
+        tugas:
+          type: number
+          example: 30
+        quiz:
+          type: number
+          example: 20
+        presensi:
+          type: number
+          example: 10
+        uts:
+          type: number
+          example: 20
+        uas:
+          type: number
+          example: 20
+
+    GradeSummary:
+      type: object
+      required: [course_id, student_id, final_score]
+      properties:
+        course_id:
+          type: integer
+          example: 1
+        course_code:
+          type: string
+          example: "07228204"
+        course_name:
+          type: string
+          example: "MANAJEMEN PROYEK 07"
+        student_id:
+          type: integer
+          example: 101
+        student_name:
+          type: string
+          example: "Dimas Rizky Fajar Pamungkas"
+        nim_nip:
+          type: string
+          example: "24.N1.0026"
+        components:
+          type: object
+          properties:
+            tugas:
+              type: object
+              properties:
+                average: { type: number, example: 88.5 }
+                weight: { type: number, example: 30 }
+            quiz:
+              type: object
+              properties:
+                average: { type: number, example: 84.0 }
+                weight: { type: number, example: 20 }
+            presensi:
+              type: object
+              properties:
+                average: { type: number, example: 92.0 }
+                weight: { type: number, example: 10 }
+            uts:
+              type: object
+              properties:
+                average: { type: number, example: 85.0 }
+                weight: { type: number, example: 20 }
+            uas:
+              type: object
+              properties:
+                average: { type: number, example: 85.0 }
+                weight: { type: number, example: 20 }
+        final_score:
+          type: number
+          example: 86.55
+        letter_grade:
+          type: string
+          example: "A"
+        class_average:
+          type: number
+          example: 79.0
+
+    Progress:
+      type: object
+      required: [course_id, user_id, overall_progress_percent]
+      properties:
+        course_id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 101
+        materials_completed:
+          type: integer
+          example: 8
+        materials_total:
+          type: integer
+          example: 10
+        materials_percent:
+          type: integer
+          example: 80
+        assignments_submitted:
+          type: integer
+          example: 4
+        assignments_total:
+          type: integer
+          example: 5
+        assignments_percent:
+          type: integer
+          example: 80
+        quizzes_completed:
+          type: integer
+          example: 2
+        quizzes_total:
+          type: integer
+          example: 3
+        quizzes_percent:
+          type: integer
+          example: 67
+        overall_progress_percent:
+          type: integer
+          example: 78
+
+    Notification:
+      type: object
+      required: [id, type, title, body, created_at]
+      properties:
+        id:
+          type: integer
+          example: 301
+        user_id:
+          type: integer
+          example: 101
+        type:
+          type: string
+          enum: [reminder, grade, announcement, quiz]
+          example: "reminder"
+        title:
+          type: string
+          example: "Pengingat H-1: Tugas 4 REST API Auth & JWT"
+        body:
+          type: string
+          example: "Batas pengumpulan besok pukul 23:59 WIB. Kumpulkan tepat waktu untuk bonus +30 XP."
+        link:
+          type: string
+          nullable: true
+          example: "assignment.html"
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T08:00:00+07:00"
+
+    Message:
+      type: object
+      required: [id, sender_id, body, created_at]
+      properties:
+        id:
+          type: integer
+          example: 901
+        course_id:
+          type: integer
+          nullable: true
+          example: 1
+        sender_id:
+          type: integer
+          example: 1
+        sender_name:
+          type: string
+          example: "T. BRENDA CHANDRAWATI"
+        sender_role:
+          $ref: '#/components/schemas/RoleEnum'
+        recipient_id:
+          type: integer
+          nullable: true
+          example: null
+        body:
+          type: string
+          example: "Selamat siang rekan-rekan, jangan lupa kontrak API dibekukan hari ini ya."
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-12-05T12:45:00+07:00"
+
+    GamificationProfile:
+      type: object
+      required: [level, title, xp, next_level_xp]
+      properties:
+        user_id:
+          type: integer
+          example: 101
+        level:
+          type: integer
+          example: 7
+        title:
+          type: string
+          example: "Scholar Tekun"
+        xp:
+          type: integer
+          example: 1450
+        next_level_xp:
+          type: integer
+          example: 2000
+        rank_in_class:
+          type: integer
+          nullable: true
+          example: 2
+        badges:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: integer, example: 1 }
+              code: { type: string, example: "ON_TIME_5" }
+              name: { type: string, example: "Disiplin 5x" }
+              description: { type: string, example: "Mengumpulkan 5 tugas berturut-turut sebelum batas waktu." }
+              earned: { type: boolean, example: true }
+              earned_at: { type: string, format: date-time, nullable: true, example: "2026-11-28T15:00:00+07:00" }
+
+    LeaderboardEntry:
+      type: object
+      required: [rank, xp, level, title]
+      properties:
+        rank:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          nullable: true
+          example: 102
+        name:
+          type: string
+          description: Bernilai `"Anonim"` bila mahasiswa mengaktifkan `leaderboard_anonymous`
+          example: "Gabriel Kresnoputero W. B."
+        nim_nip:
+          type: string
+          nullable: true
+          example: "24.N2.0008"
+        xp:
+          type: integer
+          example: 1780
+        level:
+          type: integer
+          example: 8
+        title:
+          type: string
+          example: "Arsitek Kode"
+        is_anonymous:
+          type: boolean
+          example: false
+        is_me:
+          type: boolean
+          example: false
+
+    AtRiskStudent:
+      type: object
+      required: [user_id, name, nim_nip, risk_level, reasons]
+      properties:
+        user_id:
+          type: integer
+          example: 103
+        name:
+          type: string
+          example: "Adonai Shan Matthew"
+        nim_nip:
+          type: string
+          example: "24.N1.0043"
+        course_id:
+          type: integer
+          example: 3
+        course_code:
+          type: string
+          example: "07228203"
+        course_name:
+          type: string
+          example: "ETIKA PROFESI 07"
+        risk_level:
+          type: string
+          enum: [rendah, sedang, tinggi]
+          example: "sedang"
+        reasons:
+          type: array
+          items:
+            type: string
+          example: ["Nilai turun 22% pada Quiz 2"]
+        last_login_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-12-03T18:10:00+07:00"
+        current_avg:
+          type: number
+          example: 66.0
+
+    Pagination:
+      type: object
+      required: [page, per_page, total]
+      properties:
+        page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 32
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, details]
+          properties:
+            code:
+              type: string
+              enum:
+                - UNAUTHENTICATED
+                - FORBIDDEN
+                - NOT_FOUND
+                - VALIDATION_ERROR
+                - CONFLICT
+                - RATE_LIMITED
+                - SERVER_ERROR
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              example: "Data yang dikirim tidak valid."
+            details:
+              type: object
+              additionalProperties: true
+              example: {}

@@ -1,0 +1,49 @@
+{
+  "unauthenticated_401": {
+    "error": {
+      "code": "UNAUTHENTICATED",
+      "message": "Token autentikasi tidak ditemukan, tidak valid, atau sudah kedaluwarsa.",
+      "details": {}
+    }
+  },
+  "forbidden_403": {
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "Anda tidak memiliki izin peran atau bukan peserta/pengampu mata kuliah ini.",
+      "details": {}
+    }
+  },
+  "not_found_404": {
+    "error": {
+      "code": "NOT_FOUND",
+      "message": "Data yang diminta tidak ditemukan.",
+      "details": {}
+    }
+  },
+  "conflict_409": {
+    "error": {
+      "code": "CONFLICT",
+      "message": "Anda sudah melakukan check-in presensi pada sesi pertemuan ini.",
+      "details": {}
+    }
+  },
+  "validation_error_422": {
+    "error": {
+      "code": "VALIDATION_ERROR",
+      "message": "Validasi input gagal. Periksa kembali data yang Anda kirim.",
+      "details": {
+        "file": ["Ukuran berkas maksimal 10 MB dengan tipe pdf, docx, pptx, xlsx, zip, jpg, png, atau txt."],
+        "deadline": ["Format waktu harus ISO 8601 (contoh: 2026-12-06T23:59:00+07:00)."]
+      }
+    }
+  },
+  "rate_limited_429": {
+    "error": {
+      "code": "RATE_LIMITED",
+      "message": "Terlalu banyak percobaan login gagal (maksimal 5 kali per 15 menit). Silakan coba lagi nanti.",
+      "details": {
+        "retry_after_seconds": 900
+      }
+    }
+  }
+}
