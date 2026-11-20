@@ -1,0 +1,262 @@
+/* ==========================================================================
+   Clarity E-Learning — Hallmark Design Tokens (Brand Palette Preservation)
+   Palet resmi DESIGN.md dipetakan ke skala token Hallmark
+   ========================================================================== */
+
+:root {
+  /* Skala Spasi Hallmark (kelipatan 4px + sub-hairline 2px) */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-md-lg: 20px;
+  --space-lg: 24px;
+  --space-xl-s: 32px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 144px;
+
+  /* Skala Tipografi */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.125rem;
+  --text-display-s: 1.375rem;
+  --text-display: 1.75rem;
+  --text-section: 1.1875rem;
+  --text-title: 1rem;
+  --text-lead: 1rem;
+
+  /* Gerak & Kurva Hallmark */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --dur-long: 420ms;
+
+  /* Grid & Layer */
+  --container: 1440px;
+  --gutter: 32px;
+  --gap-columns: 24px;
+  --section-gap-s: 40px;
+  --section-gap: 64px;
+  --section-gap-l: 96px;
+  --z-base: 1;
+  --z-raised: 10;
+  --z-backdrop: 35;
+  --z-sidebar: 40;
+  --z-sticky: 30;
+  --z-sticky-nav: 30;
+  --z-dropdown: 100;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  /* Geometri Permukaan */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-card: 12px;
+  --radius-shell: 20px;
+  --radius-pill: 999px;
+  --rule-hair: 1px;
+  --rule-thick: 3px;
+  --shadow-card: none;
+  --tracking-display: -0.02em;
+
+  /* Keluarga Font (DESIGN.md) */
+  --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-outlier: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-outlier);
+
+  /* Palet Brand Clarity (Warm Ivory Paper, Deep Crimson, Warm Gold, Espresso Ink) */
+  --color-paper-bg: #f6f4ee;
+  --color-paper: #f6f4ee;
+  --color-paper-2: #fcfbf8;
+  --color-paper-3: #efece3;
+  --color-ink: #181311;
+  --color-ink-2: #3b312d;
+  --color-muted: #5c504a;
+  --color-rule: #d6cfc2;
+  --color-rule-2: #e6e0d4;
+  --color-rule-strong: #b8ae9f;
+
+  --color-accent: #be1a1a;
+  --color-accent-hover: #a11515;
+  --color-accent-deep: #8c1212;
+  --color-accent-ink: #fcfbf8;
+  --color-focus: #be1a1a;
+
+  --color-gold: #f7d87f;
+  --color-gold-hover: #ebd070;
+  --color-gold-rule: #d4b04c;
+  --color-cream: #f8ebab;
+  --color-cream-rule: #dfc86f;
+  --color-on-gold: #181311;
+
+  --color-row-hover: #fdf9ed;
+  --color-card-hover: #fffdf8;
+  --color-obsidian: #261311;
+  --color-obsidian-2: #361b18;
+  --color-obsidian-rule: #522b26;
+  --color-obsidian-ink: #f6f4ee;
+  --color-obsidian-muted: #e3d6cf;
+
+  /* Kanvas & Showcase Halaman Login (Selaras Logo #be1a1a + #f7d87f + #f6f4ee) */
+  --auth-canvas-base: #f3efe4;
+  --auth-canvas-grid: rgba(153, 19, 19, 0.045);
+  --auth-canvas-gold-tint: rgba(247, 216, 127, 0.34);
+  --auth-canvas-crimson-tint: rgba(190, 26, 26, 0.09);
+  --auth-canvas-ring-gold: rgba(212, 176, 76, 0.28);
+  --auth-canvas-ring-crimson: rgba(190, 26, 26, 0.14);
+  --auth-brand-top: #991313;
+  --auth-brand-mid: #741010;
+  --auth-brand-bottom: #4b0d0d;
+  --auth-brand-ring-outer: rgba(248, 235, 171, 0.16);
+  --auth-brand-ring-inner: rgba(247, 216, 127, 0.28);
+  --auth-brand-core-fill: rgba(252, 251, 248, 0.08);
+
+  --color-success: #16794b;
+  --color-success-hover: #12613b;
+  --color-success-soft: #ccf0dd;
+  --color-success-text: #0d4a2d;
+  --color-success-border: #6bc497;
+
+  --color-warning: #c26a09;
+  --color-warning-hover: #9e5406;
+  --color-warning-soft: #fde396;
+  --color-warning-text: #573103;
+  --color-warning-border: #dfa832;
+
+  --color-danger: #be1a1a;
+  --color-danger-hover: #991313;
+  --color-danger-soft: #fbd5d5;
+  --color-danger-text: #7d1010;
+  --color-danger-border: #e07a7a;
+
+  --color-error: #be1a1a;
+  --color-info: #1d63b8;
+  --color-info-soft: #f2f7fd;
+  --color-info-text: #123458;
+  --color-info-border: #b6d4f4;
+
+  /* Tombol (Merah Crimson Primer + Emas Hangat Sekunder + Ivory Outline) */
+  --action-primary-surface: #be1a1a;
+  --action-primary-hover-surface: #991313;
+  --action-primary-ink: #fcfbf8;
+  --action-primary-border: #991313;
+
+  --action-crimson-surface: #be1a1a;
+  --action-crimson-hover-surface: #991313;
+  --action-crimson-ink: #fcfbf8;
+  --action-crimson-border: #991313;
+
+  --action-outline-surface: #fcfbf8;
+  --action-outline-hover-surface: #f1ece1;
+  --action-outline-ink: #181311;
+  --action-outline-border: #c4bba9;
+
+  --action-gold-surface: #f8de82;
+  --action-gold-hover-surface: #f2cf56;
+  --action-gold-ink: #261b05;
+  --action-gold-border: #cfa22b;
+
+  /* Tag Status Terstruktur (Merah, Kuning, Hijau Jelas & Natural) */
+  --badge-danger-surface: #fbd5d5;
+  --badge-danger-ink: #7d1010;
+  --badge-danger-border: #e07a7a;
+
+  --badge-warning-surface: #fde396;
+  --badge-warning-ink: #573103;
+  --badge-warning-border: #dfa832;
+
+  --badge-gold-surface: #faecb8;
+  --badge-gold-ink: #423008;
+  --badge-gold-border: #d9b84a;
+
+  --badge-success-surface: #ccf0dd;
+  --badge-success-ink: #0d4a2d;
+  --badge-success-border: #6bc497;
+
+  --badge-neutral-surface: #efece3;
+  --badge-neutral-ink: #3b312d;
+  --badge-neutral-border: #d6cfc2;
+
+  /* Permukaan & Sidebar (Soft Slate DESIGN.md) */
+  --color-surface: var(--color-paper-2);
+  --color-surface-alt: var(--color-paper-3);
+  --color-surface-hover: #e7e2d7;
+  --color-border: var(--color-rule);
+  --color-border-subtle: var(--color-rule-2);
+
+  --color-text: var(--color-ink);
+  --color-text-secondary: var(--color-ink-2);
+  --color-text-muted: var(--color-muted);
+  --color-text-inverse: #fcfbf8;
+
+  --color-primary: var(--color-accent);
+  --color-primary-hover: var(--color-accent-hover);
+  --color-primary-text: #991313;
+  --color-primary-soft: var(--color-cream);
+  --color-primary-border: var(--color-cream-rule);
+
+  --color-sidebar-surface: #f1ede4;
+  --color-sidebar-elevated: #e7e1d4;
+  --color-sidebar-card: #fcfbf8;
+  --color-sidebar-ink: #2b211e;
+  --color-sidebar-ink-muted: #655852;
+  --color-sidebar-ink-strong: #181311;
+  --color-sidebar-ink-active: #fcfbf8;
+  --color-sidebar-accent: #be1a1a;
+  --color-sidebar-brand: #be1a1a;
+  --color-sidebar-border: #d8d0c1;
+
+  --color-backdrop: rgba(24, 19, 17, 0.56);
+  --color-dark-surface-deep: #120e0d;
+  --color-dark-card: #1b1514;
+  --color-dark-elevated: #241c1a;
+  --color-dark-hover: #332724;
+  --color-dark-border: #3d312e;
+  --color-dark-border-subtle: #2b2220;
+  --color-dark-border-strong: #544440;
+  --color-dark-ink: #f7f4ee;
+  --color-dark-ink-2: #dfd8cf;
+  --color-dark-muted: #b5aaa2;
+
+  /* Layout Shell */
+  --sidebar-width: 268px;
+  --topbar-height: 64px;
+  --bottom-nav-height: 60px;
+
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 220ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Alias Basecoat UI / shadcn */
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-paper-2);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-paper-2);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-accent-ink);
+  --secondary: var(--color-gold);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-paper-3);
+  --muted-foreground: var(--color-muted);
+  --accent: var(--color-cream);
+  --accent-foreground: var(--color-ink);
+  --destructive: var(--color-danger);
+  --destructive-foreground: var(--color-accent-ink);
+  --border: var(--color-rule);
+  --input: var(--color-rule);
+  --ring: var(--color-focus);
+  --radius: 0.75rem;
+}

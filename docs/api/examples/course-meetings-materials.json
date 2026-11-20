@@ -1,0 +1,107 @@
+{
+  "meetings": {
+    "data": [
+      {
+        "id": 1,
+        "course_id": 1,
+        "number": 8,
+        "title": "Arsitektur REST API & Routing PHP Native",
+        "description": "Pembahasan front controller, routing tanpa framework, dan struktur response JSON standar.",
+        "meeting_date": "2026-11-23"
+      },
+      {
+        "id": 2,
+        "course_id": 1,
+        "number": 9,
+        "title": "Autentikasi JWT & Middleware Role",
+        "description": "Implementasi token JWT HS256 dan pemisahan hak akses mahasiswa vs dosen.",
+        "meeting_date": "2026-11-30"
+      },
+      {
+        "id": 3,
+        "course_id": 1,
+        "number": 10,
+        "title": "Keamanan Input, PDO Prepared Statement & Upload File",
+        "description": "Pencegahan SQL injection, XSS escaping, serta validasi MIME berkas unggahan.",
+        "meeting_date": "2026-12-05"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "per_page": 20,
+      "total": 3
+    }
+  },
+  "materials": {
+    "data": [
+      {
+        "id": 201,
+        "course_id": 1,
+        "meeting_id": 1,
+        "meeting_number": 8,
+        "title": "Slide Pertemuan 8: Prinsip RESTful API",
+        "type": "file",
+        "file_name": "P08_REST_API.pdf",
+        "file_size": "2.4 MB",
+        "mime_type": "application/pdf",
+        "url": null,
+        "download_url": "/api/v1/materials/201/download",
+        "completed": true,
+        "created_at": "2026-11-22T09:00:00+07:00"
+      },
+      {
+        "id": 203,
+        "course_id": 1,
+        "meeting_id": 2,
+        "meeting_number": 9,
+        "title": "Video Rekaman Pembahasan Auth & Token",
+        "type": "link",
+        "file_name": null,
+        "file_size": null,
+        "mime_type": null,
+        "url": "https://video.unika.ac.id/07228204-p09",
+        "download_url": null,
+        "completed": false,
+        "created_at": "2026-11-30T14:00:00+07:00"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "per_page": 20,
+      "total": 2
+    }
+  },
+  "participants": {
+    "data": [
+      {
+        "id": 101,
+        "nim_nip": "24.N1.0026",
+        "name": "Dimas Rizky Fajar Pamungkas",
+        "email": "24n10026@student.unika.ac.id",
+        "role": "mahasiswa",
+        "initials": "DR"
+      },
+      {
+        "id": 102,
+        "nim_nip": "24.N2.0008",
+        "name": "Gabriel Kresnoputero W. B.",
+        "email": "24n20008@student.unika.ac.id",
+        "role": "mahasiswa",
+        "initials": "GK"
+      },
+      {
+        "id": 103,
+        "nim_nip": "24.N1.0043",
+        "name": "Adonai Shan Matthew",
+        "email": "24n10043@student.unika.ac.id",
+        "role": "mahasiswa",
+        "initials": "AM"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "per_page": 20,
+      "total": 3
+    }
+  }
+}

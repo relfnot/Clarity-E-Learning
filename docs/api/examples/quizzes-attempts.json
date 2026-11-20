@@ -1,0 +1,73 @@
+{
+  "quiz_detail": {
+    "data": {
+      "id": 401,
+      "course_id": 1,
+      "course_code": "07228204",
+      "course_name": "MANAJEMEN PROYEK 07",
+      "meeting_id": 3,
+      "title": "Quiz 2: Autentikasi JWT, REST API & Keamanan Web",
+      "open_at": "2026-12-05T08:00:00+07:00",
+      "close_at": "2026-12-07T23:59:00+07:00",
+      "duration_min": 30,
+      "max_attempts": 2,
+      "attempts_used": 1,
+      "shuffle": true,
+      "total_questions": 5,
+      "weight": 15.0
+    },
+    "meta": {}
+  },
+  "attempt_started": {
+    "data": {
+      "id": 801,
+      "quiz_id": 401,
+      "user_id": 101,
+      "attempt_number": 1,
+      "started_at": "2026-12-05T10:00:00+07:00",
+      "expires_at": "2026-12-05T10:30:00+07:00",
+      "submitted_at": null,
+      "score": null,
+      "status": "in_progress",
+      "questions": [
+        {
+          "id": 1,
+          "type": "pg",
+          "points": 20,
+          "position": 1,
+          "text": "Kode status HTTP mana yang paling tepat dikembalikan server ketika pengguna belum mengirimkan token autentikasi JWT yang valid?",
+          "options": [
+            { "id": 11, "label": "A", "text": "400 Bad Request" },
+            { "id": 12, "label": "B", "text": "401 Unauthorized" },
+            { "id": 13, "label": "C", "text": "403 Forbidden" },
+            { "id": 14, "label": "D", "text": "404 Not Found" }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "esai",
+          "points": 20,
+          "position": 2,
+          "text": "Jelaskan perbedaan antara kode status 401 dan 403 dalam otorisasi berbasis peran (mahasiswa vs dosen)!",
+          "options": []
+        }
+      ]
+    },
+    "meta": {}
+  },
+  "attempt_submitted": {
+    "data": {
+      "id": 801,
+      "quiz_id": 401,
+      "user_id": 101,
+      "attempt_number": 1,
+      "started_at": "2026-12-05T10:00:00+07:00",
+      "expires_at": "2026-12-05T10:30:00+07:00",
+      "submitted_at": "2026-12-05T10:21:45+07:00",
+      "score": 80.0,
+      "status": "submitted",
+      "xp_awarded": 40
+    },
+    "meta": {}
+  }
+}

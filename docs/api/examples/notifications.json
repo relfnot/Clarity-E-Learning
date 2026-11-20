@@ -1,0 +1,47 @@
+{
+  "notifications_list": {
+    "data": [
+      {
+        "id": 301,
+        "user_id": 101,
+        "type": "reminder",
+        "title": "Pengingat H-1: Tugas 4 REST API Auth & JWT",
+        "body": "Batas pengumpulan besok pukul 23:59 WIB. Kumpulkan tepat waktu untuk bonus +30 XP.",
+        "link": "/pages/mahasiswa/assignment.html?id=11",
+        "read_at": null,
+        "created_at": "2026-12-05T08:00:00+07:00"
+      },
+      {
+        "id": 302,
+        "user_id": 101,
+        "type": "grade",
+        "title": "Nilai Keluar: Rancangan Sistem Kota Pintar",
+        "body": "ANDRE KURNIAWAN PAMUDJI memberi nilai 92/100 pada tugas mata kuliah KOTA CERDAS 03.",
+        "link": "/pages/mahasiswa/grades.html?course_id=4",
+        "read_at": null,
+        "created_at": "2026-12-04T16:40:00+07:00"
+      },
+      {
+        "id": 303,
+        "user_id": 101,
+        "type": "announcement",
+        "title": "Pengumuman 07228204: Sesi Presensi Pertemuan 10 Dibuka",
+        "body": "Silakan lakukan check-in presensi sebelum pukul 15:00 WIB melalui menu Presensi.",
+        "link": "/pages/mahasiswa/attendance.html?course_id=1",
+        "read_at": null,
+        "created_at": "2026-12-05T07:55:00+07:00"
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "per_page": 20,
+      "total": 3
+    }
+  },
+  "unread_count": {
+    "data": {
+      "unread_count": 3
+    },
+    "meta": {}
+  }
+}

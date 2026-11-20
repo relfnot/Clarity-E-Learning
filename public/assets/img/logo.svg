@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Logo Clarity E-Learning">
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="#BE1A1A"/>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="#991313" stroke-width="2"/>
+  <circle cx="31" cy="33" r="18" fill="none" stroke="#FFFFFF" stroke-width="3.5"/>
+  <circle cx="31" cy="33" r="10.5" fill="none" stroke="#F8EBAB" stroke-width="3"/>
+  <circle cx="31" cy="33" r="4.2" fill="#FFFFFF"/>
+  <!-- Anak panah emas menembus titik tengah target -->
+  <line x1="52" y1="12" x2="32.5" y2="31.5" stroke="#F7D87F" stroke-width="3.5" stroke-linecap="round"/>
+  <polygon points="30,34 33,26 38,31" fill="#F7D87F"/>
+  <polygon points="50,10 56,10 52,14" fill="#FFFFFF"/>
+  <polygon points="54,14 54,8 50,12" fill="#FFFFFF"/>
+</svg>
