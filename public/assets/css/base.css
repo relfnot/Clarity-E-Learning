@@ -1,0 +1,206 @@
+/* ==========================================================================
+   Clarity E-Learning — Hallmark Base Reset & Typography Layer
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  font-size: 16px;
+  scrollbar-color: var(--color-muted) var(--color-paper);
+  scroll-padding-top: var(--space-2xl);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--color-accent);
+}
+
+::selection {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+a,
+button,
+select,
+summary,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-synthesis: none;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.15;
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+p:not([class]) {
+  max-width: 65ch;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+svg {
+  display: block;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.num,
+.figure,
+td.num,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 60rem) {
+  :root {
+    --gutter: 24px;
+  }
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --gutter: 16px;
+    --gap-columns: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *:not(.keep-motion),
+  *:not(.keep-motion)::before,
+  *:not(.keep-motion)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mode Gelap Opsional (Scope pada html[data-theme="dark"] > body) */
+html[data-theme="dark"] {
+  background-color: var(--color-dark-surface-deep);
+  color: var(--color-dark-ink);
+  scrollbar-color: var(--color-dark-muted) var(--color-dark-surface-deep);
+}
+
+html[data-theme="dark"] > body {
+  --color-paper: var(--color-dark-surface-deep);
+  --color-paper-2: var(--color-dark-card);
+  --color-paper-3: var(--color-dark-elevated);
+  --color-ink: var(--color-dark-ink);
+  --color-ink-2: var(--color-dark-ink-2);
+  --color-muted: var(--color-dark-muted);
+  --color-rule: var(--color-dark-border);
+  --color-rule-2: var(--color-dark-border-subtle);
+  --color-rule-strong: var(--color-dark-border-strong);
+
+  --color-focus: var(--color-gold);
+  --color-row-hover: var(--color-dark-elevated);
+  --color-card-hover: var(--color-dark-elevated);
+  --color-surface-hover: var(--color-dark-hover);
+  --color-primary-text: var(--color-gold);
+
+  --action-primary-surface: var(--color-gold);
+  --action-primary-hover-surface: var(--color-cream);
+  --action-primary-ink: var(--color-on-gold);
+  --action-primary-border: var(--color-gold-rule);
+
+  --action-outline-surface: var(--color-dark-elevated);
+  --action-outline-hover-surface: var(--color-dark-hover);
+  --action-outline-ink: var(--color-dark-ink);
+  --action-outline-border: var(--color-dark-border-strong);
+
+  --action-gold-surface: var(--color-dark-elevated);
+  --action-gold-hover-surface: var(--color-dark-hover);
+  --action-gold-ink: var(--color-dark-ink);
+  --action-gold-border: var(--color-dark-border-strong);
+
+  --badge-neutral-surface: var(--color-dark-elevated);
+  --badge-neutral-ink: var(--color-dark-ink-2);
+  --badge-neutral-border: var(--color-dark-border);
+
+  --color-sidebar-surface: var(--color-obsidian);
+  --color-sidebar-elevated: var(--color-dark-elevated);
+  --color-sidebar-card: var(--color-dark-card);
+  --color-sidebar-ink: var(--color-dark-ink-2);
+  --color-sidebar-ink-muted: var(--color-dark-muted);
+  --color-sidebar-ink-strong: var(--color-cream);
+  --color-sidebar-brand: var(--color-gold);
+  --color-sidebar-border: var(--color-dark-hover);
+
+  --auth-canvas-base: var(--color-dark-surface-deep);
+  --auth-canvas-grid: var(--color-dark-border-subtle);
+  --auth-canvas-gold-tint: var(--color-dark-elevated);
+  --auth-canvas-crimson-tint: var(--color-obsidian-2);
+}
