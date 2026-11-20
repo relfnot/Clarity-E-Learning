@@ -1,0 +1,22 @@
+{
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMSwicm9sZSI6Im1haGFzaXN3YSIsImlhdCI6MTc5NjQ0MjAwMCwiZXhwIjoxNzk2NDcwODAwfQ.dummy_signature_for_mock_only",
+    "token_type": "Bearer",
+    "expires_in": 28800,
+    "expires_at": "2026-12-05T18:00:00+07:00",
+    "user": {
+      "id": 101,
+      "nim_nip": "24.N1.0026",
+      "name": "Dimas Rizky Fajar Pamungkas",
+      "email": "24n10026@student.unika.ac.id",
+      "role": "mahasiswa",
+      "program_studi": "Sistem Informasi (S1)",
+      "semester": 5,
+      "department": "Fakultas Ilmu Komputer",
+      "initials": "DR",
+      "avatar_url": null,
+      "created_at": "2026-09-01T08:00:00+07:00"
+    }
+  },
+  "meta": {}
+}

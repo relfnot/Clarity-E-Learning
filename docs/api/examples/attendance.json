@@ -1,0 +1,71 @@
+{
+  "active_session": {
+    "data": {
+      "id": 601,
+      "course_id": 1,
+      "meeting_id": 3,
+      "meeting_number": 10,
+      "meeting_title": "Keamanan Input, PDO Prepared Statement & Upload File",
+      "opened_at": "2026-12-05T13:00:00+07:00",
+      "closes_at": "2026-12-05T15:00:00+07:00",
+      "passcode": "MANPRO10",
+      "status": "open"
+    },
+    "meta": {}
+  },
+  "check_in_response": {
+    "data": {
+      "id": 701,
+      "session_id": 601,
+      "user_id": 101,
+      "status": "hadir",
+      "checked_at": "2026-12-05T13:04:12+07:00",
+      "xp_awarded": 10
+    },
+    "meta": {}
+  },
+  "attendance_summary_student": {
+    "data": {
+      "course_id": 1,
+      "course_name": "MANAJEMEN PROYEK 07",
+      "total_meetings": 10,
+      "counts": {
+        "hadir": 9,
+        "izin": 1,
+        "sakit": 0,
+        "alpa": 0
+      },
+      "attendance_percent": 92.0,
+      "records": [
+        {
+          "id": 690,
+          "meeting_id": 1,
+          "meeting_number": 8,
+          "meeting_title": "Arsitektur REST API & Routing PHP Native",
+          "meeting_date": "2026-11-23",
+          "status": "hadir",
+          "checked_at": "2026-11-23T13:05:00+07:00"
+        },
+        {
+          "id": 695,
+          "meeting_id": 2,
+          "meeting_number": 9,
+          "meeting_title": "Autentikasi JWT & Middleware Role",
+          "meeting_date": "2026-11-30",
+          "status": "hadir",
+          "checked_at": "2026-11-30T13:02:19+07:00"
+        },
+        {
+          "id": 701,
+          "meeting_id": 3,
+          "meeting_number": 10,
+          "meeting_title": "Keamanan Input, PDO Prepared Statement & Upload File",
+          "meeting_date": "2026-12-05",
+          "status": "hadir",
+          "checked_at": "2026-12-05T13:04:12+07:00"
+        }
+      ]
+    },
+    "meta": {}
+  }
+}

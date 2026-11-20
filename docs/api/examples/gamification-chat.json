@@ -1,0 +1,98 @@
+{
+  "gamification_profile": {
+    "data": {
+      "user_id": 101,
+      "level": 7,
+      "title": "Scholar Tekun",
+      "xp": 1450,
+      "next_level_xp": 2000,
+      "rank_in_class": 2,
+      "badges": [
+        {
+          "id": 1,
+          "code": "ON_TIME_5",
+          "name": "Disiplin 5x",
+          "description": "Mengumpulkan 5 tugas berturut-turut sebelum batas waktu.",
+          "earned": true,
+          "earned_at": "2026-11-28T15:00:00+07:00"
+        },
+        {
+          "id": 2,
+          "code": "QUIZ_MASTER",
+          "name": "Penakluk Quiz",
+          "description": "Meraih nilai >= 85 pada 2 quiz berbeda.",
+          "earned": true,
+          "earned_at": "2026-12-02T11:20:00+07:00"
+        }
+      ]
+    },
+    "meta": {}
+  },
+  "leaderboard": {
+    "data": [
+      {
+        "rank": 1,
+        "user_id": 102,
+        "name": "Gabriel Kresnoputero W. B.",
+        "nim_nip": "24.N2.0008",
+        "xp": 1780,
+        "level": 8,
+        "title": "Arsitek Kode",
+        "is_anonymous": false,
+        "is_me": false
+      },
+      {
+        "rank": 2,
+        "user_id": 101,
+        "name": "Dimas Rizky Fajar Pamungkas",
+        "nim_nip": "24.N1.0026",
+        "xp": 1450,
+        "level": 7,
+        "title": "Scholar Tekun",
+        "is_anonymous": false,
+        "is_me": true
+      },
+      {
+        "rank": 3,
+        "user_id": 103,
+        "name": "Adonai Shan Matthew",
+        "nim_nip": "24.N1.0043",
+        "xp": 1390,
+        "level": 7,
+        "title": "Scholar Tekun",
+        "is_anonymous": false,
+        "is_me": false
+      }
+    ],
+    "meta": {
+      "course_id": 1
+    }
+  },
+  "chat_messages": {
+    "data": [
+      {
+        "id": 901,
+        "course_id": 1,
+        "sender_id": 1,
+        "sender_name": "T. BRENDA CHANDRAWATI",
+        "sender_role": "dosen",
+        "recipient_id": null,
+        "body": "Selamat siang rekan-rekan, jangan lupa kontrak API openapi.yaml dibekukan hari ini ya.",
+        "created_at": "2026-12-05T12:45:00+07:00"
+      },
+      {
+        "id": 902,
+        "course_id": 1,
+        "sender_id": 101,
+        "sender_name": "Dimas Rizky Fajar Pamungkas",
+        "sender_role": "mahasiswa",
+        "recipient_id": null,
+        "body": "Baik Bu Brenda, dokumentasi OpenAPI dan contoh JSON sudah kami push ke repository.",
+        "created_at": "2026-12-05T12:47:10+07:00"
+      }
+    ],
+    "meta": {
+      "last_id": 902
+    }
+  }
+}

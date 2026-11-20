@@ -1,0 +1,41 @@
+{
+  "data": [
+    {
+      "id": "class-1-2026-12-05",
+      "type": "lecture",
+      "course_id": 1,
+      "course_code": "07228204",
+      "course_name": "MANAJEMEN PROYEK 07",
+      "title": "Kuliah Pertemuan 10: Keamanan Input & PDO",
+      "start_at": "2026-12-05T13:00:00+07:00",
+      "end_at": "2026-12-05T15:00:00+07:00",
+      "location": "Ruang 8.1"
+    },
+    {
+      "id": "assignment-11",
+      "type": "assignment_deadline",
+      "course_id": 1,
+      "course_code": "07228204",
+      "course_name": "MANAJEMEN PROYEK 07",
+      "title": "Deadline Tugas 4: Implementasi REST API Auth & JWT",
+      "start_at": "2026-12-06T23:59:00+07:00",
+      "end_at": "2026-12-06T23:59:00+07:00",
+      "location": null
+    },
+    {
+      "id": "quiz-401",
+      "type": "quiz_window",
+      "course_id": 1,
+      "course_code": "07228204",
+      "course_name": "MANAJEMEN PROYEK 07",
+      "title": "Quiz 2: Autentikasi JWT, REST API & Keamanan Web",
+      "start_at": "2026-12-05T08:00:00+07:00",
+      "end_at": "2026-12-07T23:59:00+07:00",
+      "location": "Online (Durasi 30 Menit)"
+    }
+  ],
+  "meta": {
+    "from": "2026-12-01",
+    "to": "2026-12-31"
+  }
+}

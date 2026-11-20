@@ -1,0 +1,16 @@
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Teruskan header Authorization ke PHP (dibutuhkan Apache/CGI/FastCGI)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Arahkan seluruh request /api/v1/* ke front controller
+    RewriteRule ^api/v1(?:/(.*))?$ api/index.php [QSA,L]
+
+    # Kompatibilitas URL .html -> halaman produksi .php
+    RewriteRule ^pages/(login|dashboard|dashboard-dosen|403|404)\.html$ pages/$1.php [L]
+    RewriteRule ^(index|login|dashboard|dashboard-dosen|403|404)\.html$ $1.php [L]
+</IfModule>

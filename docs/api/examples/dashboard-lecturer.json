@@ -1,0 +1,48 @@
+{
+  "data": {
+    "lecturer": {
+      "id": 1,
+      "nim_nip": "5811995177",
+      "name": "T. BRENDA CHANDRAWATI",
+      "role": "dosen",
+      "department": "Fakultas Ilmu Komputer",
+      "initials": "TBC"
+    },
+    "summary": {
+      "active_courses_count": 2,
+      "total_students": 64,
+      "ungraded_submissions_count": 5,
+      "at_risk_students_count": 1
+    },
+    "recent_submissions": [
+      {
+        "id": 503,
+        "assignment_id": 11,
+        "assignment_title": "Tugas 4: Implementasi REST API Auth & JWT",
+        "course_code": "07228204",
+        "student_name": "Adonai Shan Matthew",
+        "nim_nip": "24.N1.0043",
+        "submitted_at": "2026-12-05T19:45:00+07:00",
+        "status": "tepat_waktu",
+        "score": null
+      }
+    ],
+    "at_risk_students": [
+      {
+        "user_id": 103,
+        "name": "Adonai Shan Matthew",
+        "nim_nip": "24.N1.0043",
+        "course_id": 3,
+        "course_code": "07228203",
+        "course_name": "ETIKA PROFESI 07",
+        "risk_level": "sedang",
+        "reasons": ["Nilai turun 22% pada Quiz 2"],
+        "last_login_at": "2026-12-03T18:10:00+07:00",
+        "current_avg": 66.0
+      }
+    ]
+  },
+  "meta": {
+    "semester_active": "Ganjil 2026/2027"
+  }
+}

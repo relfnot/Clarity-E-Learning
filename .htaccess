@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Teruskan header Authorization ke PHP
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Arahkan request /api/v1/* dari root repo ke public/api/index.php
+    RewriteRule ^api/v1(?:/(.*))?$ public/api/index.php [QSA,L]
+</IfModule>
