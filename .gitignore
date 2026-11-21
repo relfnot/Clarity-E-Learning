@@ -15,3 +15,5 @@ Thumbs.db
 composer.phar
 .hallmark/
 .agent/
+.obsidian/
+docs/Clarity_Vault/
