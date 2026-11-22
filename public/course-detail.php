@@ -13,7 +13,7 @@ $rootPath = dirname(__DIR__);
 <head>
   <?php require $rootPath . '/src/Views/partials/head.php'; ?>
 </head>
-<body class="overflow-x-clip" data-role="mahasiswa" data-base="<?= htmlspecialchars($basePrefix, ENT_QUOTES, 'UTF-8') ?>" data-page="courses" data-title="Detail Mata Kuliah" data-subtitle="Informasi perkuliahan, peserta kelas, dan progres akademik">
+<body class="overflow-x-clip" data-role="mahasiswa,dosen" data-base="<?= htmlspecialchars($basePrefix, ENT_QUOTES, 'UTF-8') ?>" data-page="courses" data-title="Detail Mata Kuliah" data-subtitle="Informasi perkuliahan, peserta kelas, dan progres akademik">
   <div id="page-content" class="space-y-6">
 
     <!-- Breadcrumb Navigasi -->

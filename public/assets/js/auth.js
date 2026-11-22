@@ -166,7 +166,7 @@
     if (!body) return true;
 
     var requiredRole = body.getAttribute('data-role');
-    if (!requiredRole || requiredRole === 'auth' || requiredRole === 'public') {
+    if (!requiredRole || requiredRole === 'public') {
       return true;
     }
 
@@ -187,7 +187,13 @@
     var cachedUser = getUser();
     var activeRole = (cachedUser && cachedUser.role) || (claims && claims.role) || null;
 
-    if (activeRole && activeRole !== requiredRole) {
+    function isRoleAllowed(role) {
+      if (!requiredRole || requiredRole === 'auth' || requiredRole === 'all') return true;
+      var allowed = requiredRole.split(',').map(function (r) { return r.trim(); });
+      return allowed.indexOf(role) !== -1;
+    }
+
+    if (activeRole && !isRoleAllowed(activeRole)) {
       window.location.replace(global.ClarityAPI.pageUrl('403.php'));
       return false;
     }
@@ -203,7 +209,7 @@
           localStorage.setItem(USER_KEY, JSON.stringify(freshUser));
         } catch (e) {}
 
-        if (freshUser.role !== requiredRole) {
+        if (!isRoleAllowed(freshUser.role)) {
           window.location.replace(global.ClarityAPI.pageUrl('403.php'));
           return;
         }

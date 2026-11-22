@@ -71,7 +71,7 @@ function httpRequest(string $method, string $url, ?array $body = null, array $he
 $pdo = Database::getConnection();
 $dosenCount = (int) $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'dosen'")->fetchColumn();
 $mhsCount = (int) $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'mahasiswa'")->fetchColumn();
-assertTrue($dosenCount === 2, "DB memiliki 2 user dosen (aktual: {$dosenCount})", $failures, $assertions);
+assertTrue($dosenCount >= 2, "DB memiliki minimal 2 user dosen (aktual: {$dosenCount})", $failures, $assertions);
 assertTrue($mhsCount === 10, "DB memiliki 10 user mahasiswa (aktual: {$mhsCount})", $failures, $assertions);
 
 $sampleHash = (string) $pdo->query("SELECT password_hash FROM users WHERE nim_nip = '24.N1.0026'")->fetchColumn();

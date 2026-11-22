@@ -208,16 +208,20 @@
     }
 
     var role = body.getAttribute('data-role');
-    if (!role || role === 'auth' || role === 'public') {
+    if (!role || role === 'public') {
       initTheme();
       return;
+    }
+
+    var authUser = global.ClarityAuth ? global.ClarityAuth.getUser() : null;
+    if (role === 'auth' || role === 'all' || role.indexOf(',') !== -1) {
+      role = (authUser && authUser.role) || 'mahasiswa';
     }
 
     var pageId = body.getAttribute('data-page') || 'dashboard';
     var pageTitle = body.getAttribute('data-title') || 'Clarity E-Learning';
     var pageSubtitle = body.getAttribute('data-subtitle') || 'Semester Ganjil 2026/2027';
 
-    var authUser = global.ClarityAuth ? global.ClarityAuth.getUser() : null;
     var user = authUser || {
       name: role === 'dosen' ? 'Dosen Pengampu' : 'Mahasiswa',
       initials: role === 'dosen' ? 'DS' : 'MH',
