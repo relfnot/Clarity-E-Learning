@@ -13,7 +13,7 @@ final class UsersSeeder
         $passwordHash = password_hash('rahasia123', PASSWORD_BCRYPT);
 
         $users = [
-            // 2 Dosen
+            // 4 Dosen
             [
                 'nim_nip' => '5811995177',
                 'name' => 'T. BRENDA CHANDRAWATI',
@@ -33,6 +33,26 @@ final class UsersSeeder
                 'semester' => null,
                 'department' => 'Fakultas Ilmu Komputer',
                 'initials' => 'SD',
+            ],
+            [
+                'nim_nip' => '5812019311',
+                'name' => 'ANDRE KURNIAWAN PAMUDJI',
+                'email' => 'andre.pamudji@unika.ac.id',
+                'role' => 'dosen',
+                'program_studi' => null,
+                'semester' => null,
+                'department' => 'Fakultas Ilmu Komputer',
+                'initials' => 'AKP',
+            ],
+            [
+                'nim_nip' => '5812018299',
+                'name' => 'YIMMY ISKANDAR',
+                'email' => 'yimmy.iskandar@unika.ac.id',
+                'role' => 'dosen',
+                'program_studi' => null,
+                'semester' => null,
+                'department' => 'Fakultas Ilmu Komputer',
+                'initials' => 'YI',
             ],
 
             // 10 Mahasiswa

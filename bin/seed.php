@@ -4,20 +4,28 @@ declare(strict_types=1);
 
 use App\Core\Database;
 use App\Core\Env;
+use Database\Seeds\CoursesSeeder;
 use Database\Seeds\UsersSeeder;
 
 $rootPath = dirname(__DIR__);
 require_once $rootPath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 require_once $rootPath . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'seeds' . DIRECTORY_SEPARATOR . 'UsersSeeder.php';
+require_once $rootPath . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'seeds' . DIRECTORY_SEPARATOR . 'CoursesSeeder.php';
 
 Env::load($rootPath);
 
 $pdo = Database::getConnection();
-$counts = UsersSeeder::run($pdo);
+$userCounts = UsersSeeder::run($pdo);
+$courseCounts = CoursesSeeder::run($pdo);
 
 echo sprintf(
     "[seed] Berhasil seed %d dosen dan %d mahasiswa (password demo: rahasia123).\n",
-    $counts['dosen'],
-    $counts['mahasiswa']
+    $userCounts['dosen'],
+    $userCounts['mahasiswa']
+);
+echo sprintf(
+    "[seed] Berhasil seed %d mata kuliah dan %d pendaftaran (enrollments).\n",
+    $courseCounts['courses'],
+    $courseCounts['enrollments']
 );
 echo "[seed] Tabel login_attempts dibersihkan.\n";
