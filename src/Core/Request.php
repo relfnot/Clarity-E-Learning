@@ -121,6 +121,46 @@ final class Request
         return $this->routeParams[$key] ?? $default;
     }
 
+    public function intParam(string $key): int
+    {
+        $raw = $this->param($key);
+        if ($raw === null || preg_match('/^\d+$/', $raw) !== 1 || (int) $raw <= 0) {
+            throw new HttpException(
+                'VALIDATION_ERROR',
+                "Parameter {$key} harus berupa bilangan bulat positif.",
+                400,
+                [$key => ["Parameter {$key} tidak valid."]]
+            );
+        }
+
+        return (int) $raw;
+    }
+
+    public function queryInt(string $key, int $default, int $min = 1, int $max = 100): int
+    {
+        $raw = $this->query($key);
+        if ($raw === null || $raw === '') {
+            return $default;
+        }
+        $val = (int) $raw;
+        if ($val < $min) {
+            return $min;
+        }
+        if ($val > $max) {
+            return $max;
+        }
+        return $val;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function file(string $key): ?array
+    {
+        $file = $_FILES[$key] ?? null;
+        return is_array($file) ? $file : null;
+    }
+
     /**
      * @param array<string, mixed>|null $user
      */
