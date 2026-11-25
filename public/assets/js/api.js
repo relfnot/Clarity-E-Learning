@@ -134,8 +134,73 @@
     });
   }
 
+  function download(path, fallbackFilename) {
+    var normalizedPath = path.charAt(0) === '/' ? path : '/' + path;
+    var url = getApiBaseUrl() + normalizedPath;
+    var headers = {};
+    var token = getStoredToken();
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token;
+    }
+
+    return fetch(url, { method: 'GET', headers: headers }).then(function (response) {
+      if (!response.ok) {
+        if (response.status === 401 && normalizedPath !== '/auth/login') {
+          clearStoredSession();
+          redirectToLogin('expired');
+        }
+        return response.json().catch(function () { return null; }).then(function (parsed) {
+          throw buildError(response.status, parsed);
+        });
+      }
+
+      var filename = fallbackFilename || 'unduhan';
+      var disposition = response.headers.get('Content-Disposition') || '';
+      var match = disposition.match(/filename\*?=(?:UTF-8'')?["']?([^"';\n]+)["']?/i);
+      if (match && match[1]) {
+        filename = decodeURIComponent(match[1].trim());
+      }
+
+      return response.blob().then(function (blob) {
+        var objectUrl = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () {
+          URL.revokeObjectURL(objectUrl);
+        }, 1000);
+        return filename;
+      });
+    });
+  }
+
+  function getSelectedCourseId() {
+    try {
+      var val = sessionStorage.getItem('clarity_selected_course_id');
+      return val ? String(val) : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function setSelectedCourseId(courseId) {
+    try {
+      if (courseId) {
+        sessionStorage.setItem('clarity_selected_course_id', String(courseId));
+      } else {
+        sessionStorage.removeItem('clarity_selected_course_id');
+      }
+    } catch (e) {}
+  }
+
   global.ClarityAPI = {
     request: request,
+    download: download,
+    getSelectedCourseId: getSelectedCourseId,
+    setSelectedCourseId: setSelectedCourseId,
     get: function (path, opts) {
       return request(path, Object.assign({}, opts, { method: 'GET' }));
     },

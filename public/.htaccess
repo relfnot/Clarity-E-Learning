@@ -11,6 +11,6 @@ DirectoryIndex index.php index.html
     RewriteRule ^api/v1(?:/(.*))?$ api/index.php [QSA,L]
 
     # Kompatibilitas URL .html -> halaman produksi .php
-    RewriteRule ^pages/(login|dashboard|dashboard-dosen|403|404)\.html$ pages/$1.php [L]
-    RewriteRule ^(index|login|dashboard|dashboard-dosen|403|404)\.html$ $1.php [L]
+    RewriteRule ^pages/(login|dashboard|dashboard-dosen|courses|course-detail|assignment|attendance|course-manage|material-upload|submissions|attendance-manage|403|404)\.html$ pages/$1.php [L]
+    RewriteRule ^(index|login|dashboard|dashboard-dosen|courses|course-detail|assignment|attendance|course-manage|material-upload|submissions|attendance-manage|403|404)\.html$ $1.php [L]
 </IfModule>

@@ -200,6 +200,138 @@ final class CourseRepository
         return $stmt !== false ? $stmt->fetchAll(PDO::FETCH_COLUMN) : [];
     }
 
+    public function isEnrolled(int $courseId, int $studentId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT 1 FROM course_enrollments WHERE course_id = :cid AND student_id = :sid AND status = 'active' LIMIT 1"
+        );
+        $stmt->execute(['cid' => $courseId, 'sid' => $studentId]);
+        return $stmt->fetchColumn() !== false;
+    }
+
+    public function findByCode(string $code): ?array
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM courses WHERE code = :code LIMIT 1');
+        $stmt->execute(['code' => $code]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return is_array($row) ? $row : null;
+    }
+
+    public function create(array $data): int
+    {
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO courses (code, name, description, semester, credits, lecturer_id, day, start_time, end_time, room)
+             VALUES (:code, :name, :description, :semester, :credits, :lecturer_id, :day, :start_time, :end_time, :room)'
+        );
+        $stmt->execute([
+            'code' => $data['code'],
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'semester' => $data['semester'],
+            'credits' => $data['credits'],
+            'lecturer_id' => $data['lecturer_id'],
+            'day' => $data['day'],
+            'start_time' => $data['start_time'],
+            'end_time' => $data['end_time'],
+            'room' => $data['room'],
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    public function update(int $courseId, array $data): void
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE courses
+             SET code = :code, name = :name, description = :description, semester = :semester,
+                 credits = :credits, day = :day, start_time = :start_time, end_time = :end_time, room = :room
+             WHERE id = :id'
+        );
+        $stmt->execute([
+            'id' => $courseId,
+            'code' => $data['code'],
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'semester' => $data['semester'],
+            'credits' => $data['credits'],
+            'day' => $data['day'],
+            'start_time' => $data['start_time'],
+            'end_time' => $data['end_time'],
+            'room' => $data['room'],
+        ]);
+    }
+
+    public function enrollStudent(int $courseId, int $studentId): void
+    {
+        $stmt = $this->pdo->prepare(
+            "INSERT INTO course_enrollments (course_id, student_id, status)
+             VALUES (:cid, :sid, 'active')
+             ON DUPLICATE KEY UPDATE status = 'active'"
+        );
+        $stmt->execute(['cid' => $courseId, 'sid' => $studentId]);
+    }
+
+    public function removeEnrollment(int $courseId, int $studentId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'DELETE FROM course_enrollments WHERE course_id = :cid AND student_id = :sid'
+        );
+        $stmt->execute(['cid' => $courseId, 'sid' => $studentId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function listMeetings(int $courseId): array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT m.*,
+                    (SELECT s.id FROM attendance_sessions s WHERE s.meeting_id = m.id ORDER BY s.id DESC LIMIT 1) AS latest_session_id,
+                    (SELECT s.status FROM attendance_sessions s WHERE s.meeting_id = m.id ORDER BY s.id DESC LIMIT 1) AS latest_session_status,
+                    (SELECT s.closes_at FROM attendance_sessions s WHERE s.meeting_id = m.id ORDER BY s.id DESC LIMIT 1) AS latest_session_closes_at
+             FROM meetings m
+             WHERE m.course_id = :cid
+             ORDER BY m.number ASC'
+        );
+        $stmt->execute(['cid' => $courseId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }
+
+    public function findMeetingById(int $meetingId): ?array
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM meetings WHERE id = :id LIMIT 1');
+        $stmt->execute(['id' => $meetingId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return is_array($row) ? $row : null;
+    }
+
+    public function findMeetingByNumber(int $courseId, int $number): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT * FROM meetings WHERE course_id = :cid AND number = :num LIMIT 1'
+        );
+        $stmt->execute(['cid' => $courseId, 'num' => $number]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return is_array($row) ? $row : null;
+    }
+
+    public function createMeeting(int $courseId, array $data): int
+    {
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO meetings (course_id, number, title, description, meeting_date)
+             VALUES (:cid, :number, :title, :description, :meeting_date)'
+        );
+        $stmt->execute([
+            'cid' => $courseId,
+            'number' => $data['number'],
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'meeting_date' => $data['meeting_date'],
+        ]);
+        return (int) $this->pdo->lastInsertId();
+    }
+
     /**
      * @param array<string, mixed> $row
      * @return array<string, mixed>

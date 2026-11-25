@@ -7,7 +7,9 @@ namespace App\Controllers;
 use App\Core\HttpException;
 use App\Core\Request;
 use App\Core\Response;
+use App\Core\Validator;
 use App\Repositories\CourseRepository;
+use App\Services\CourseService;
 
 final class CourseController
 {
@@ -116,5 +118,87 @@ final class CourseController
         $participants = $this->courseRepository->getParticipants($id);
 
         Response::json($participants, 200, ['total' => count($participants)]);
+    }
+
+    public function store(Request $request): never
+    {
+        $data = Validator::validate($request->body(), [
+            'code' => 'required|string|max:50',
+            'name' => 'required|string|max:150',
+            'description' => 'nullable|string|max:5000',
+            'semester' => 'required|string|max:50',
+            'credits' => 'required',
+            'day' => 'required|string|max:20',
+            'start_time' => 'required|string|max:10',
+            'end_time' => 'required|string|max:10',
+            'room' => 'required|string|max:50',
+        ]);
+
+        $course = (new CourseService($this->courseRepository))->createCourse($request->user() ?? [], $data);
+        Response::json($course, 201);
+    }
+
+    public function update(Request $request): never
+    {
+        $courseId = $request->intParam('id');
+        $data = Validator::validate($request->body(), [
+            'code' => 'required|string|max:50',
+            'name' => 'required|string|max:150',
+            'description' => 'nullable|string|max:5000',
+            'semester' => 'required|string|max:50',
+            'credits' => 'required',
+            'day' => 'required|string|max:20',
+            'start_time' => 'required|string|max:10',
+            'end_time' => 'required|string|max:10',
+            'room' => 'required|string|max:50',
+        ]);
+
+        $course = (new CourseService($this->courseRepository))->updateCourse($courseId, $request->user() ?? [], $data);
+        Response::json($course, 200);
+    }
+
+    public function enroll(Request $request): never
+    {
+        $courseId = $request->intParam('id');
+        $data = Validator::validate($request->body(), [
+            'nim_nip' => 'required|string|max:50',
+        ]);
+
+        $student = (new CourseService($this->courseRepository))->enrollByNim(
+            $courseId,
+            $request->user() ?? [],
+            (string) $data['nim_nip']
+        );
+        Response::json($student, 201);
+    }
+
+    public function unenroll(Request $request): never
+    {
+        $courseId = $request->intParam('id');
+        $userId = $request->intParam('user_id');
+
+        (new CourseService($this->courseRepository))->unenrollStudent($courseId, $userId, $request->user() ?? []);
+        Response::noContent();
+    }
+
+    public function meetings(Request $request): never
+    {
+        $courseId = $request->intParam('id');
+        $items = (new CourseService($this->courseRepository))->listMeetings($courseId, $request->user() ?? []);
+        Response::json($items, 200);
+    }
+
+    public function storeMeeting(Request $request): never
+    {
+        $courseId = $request->intParam('id');
+        $data = Validator::validate($request->body(), [
+            'number' => 'required',
+            'title' => 'required|string|max:200',
+            'description' => 'nullable|string|max:5000',
+            'meeting_date' => 'required|string|max:20',
+        ]);
+
+        $meeting = (new CourseService($this->courseRepository))->createMeeting($courseId, $request->user() ?? [], $data);
+        Response::json($meeting, 201);
     }
 }

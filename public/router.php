@@ -11,7 +11,7 @@ if (preg_match('#^/(?:Clarity_E-Learning/(?:public/)?)?api/v1(?:/.*)?$#i', $path
     return true;
 }
 
-if (preg_match('#^/(pages/)?(index|login|dashboard|dashboard-dosen|403|404)\.html$#', $path, $matches) === 1) {
+if (preg_match('#^/(pages/)?(index|login|dashboard|dashboard-dosen|courses|course-detail|assignment|attendance|course-manage|material-upload|submissions|attendance-manage|403|404)\.html$#', $path, $matches) === 1) {
     $targetPhp = __DIR__ . '/' . ($matches[1] ?? '') . $matches[2] . '.php';
     if (is_file($targetPhp)) {
         require $targetPhp;

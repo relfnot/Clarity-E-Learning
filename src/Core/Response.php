@@ -63,6 +63,50 @@ final class Response
         exit;
     }
 
+    public static function download(string $absolutePath, string $downloadName, string $mimeType = 'application/octet-stream'): never
+    {
+        if (!is_file($absolutePath) || !is_readable($absolutePath)) {
+            self::error('NOT_FOUND', 'Berkas tidak ditemukan di penyimpanan.', 404);
+        }
+
+        $safeName = preg_replace('/[^a-zA-Z0-9._\- ]+/', '_', $downloadName) ?: 'download';
+        $safeName = str_replace('"', '', $safeName);
+        $size = filesize($absolutePath);
+
+        if (!headers_sent()) {
+            http_response_code(200);
+            header('Content-Type: ' . $mimeType);
+            header('Content-Disposition: attachment; filename="' . $safeName . '"');
+            header('X-Content-Type-Options: nosniff');
+            header('Cache-Control: private, no-store');
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Expose-Headers: Content-Disposition');
+            if ($size !== false) {
+                header('Content-Length: ' . (string) $size);
+            }
+        }
+
+        readfile($absolutePath);
+        exit;
+    }
+
+    public static function csv(string $csvContent, string $downloadName): never
+    {
+        $safeName = preg_replace('/[^a-zA-Z0-9._\-]+/', '_', $downloadName) ?: 'export.csv';
+        if (!headers_sent()) {
+            http_response_code(200);
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename="' . $safeName . '"');
+            header('X-Content-Type-Options: nosniff');
+            header('Cache-Control: private, no-store');
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Expose-Headers: Content-Disposition');
+        }
+
+        echo "\xEF\xBB\xBF" . $csvContent;
+        exit;
+    }
+
     /**
      * @param array<string, string> $headers
      */

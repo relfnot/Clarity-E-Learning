@@ -32,11 +32,22 @@ $pdo = Database::getConnection();
 if ($isFresh) {
     echo "[migrate] Mode --fresh: menghapus tabel sebelumnya...\n";
     $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
-    $pdo->exec('DROP TABLE IF EXISTS course_enrollments');
-    $pdo->exec('DROP TABLE IF EXISTS courses');
-    $pdo->exec('DROP TABLE IF EXISTS login_attempts');
-    $pdo->exec('DROP TABLE IF EXISTS users');
-    $pdo->exec('DROP TABLE IF EXISTS schema_migrations');
+    $tablesToDrop = [
+        'attendance_records',
+        'attendance_sessions',
+        'submissions',
+        'assignments',
+        'materials',
+        'meetings',
+        'course_enrollments',
+        'courses',
+        'login_attempts',
+        'users',
+        'schema_migrations',
+    ];
+    foreach ($tablesToDrop as $table) {
+        $pdo->exec("DROP TABLE IF EXISTS `{$table}`");
+    }
     $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
 }
 
