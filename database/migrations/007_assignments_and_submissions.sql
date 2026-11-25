@@ -1,0 +1,40 @@
+CREATE TABLE IF NOT EXISTS assignments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    course_id BIGINT UNSIGNED NOT NULL,
+    meeting_id BIGINT UNSIGNED NULL,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NULL,
+    deadline DATETIME NOT NULL,
+    accept_file TINYINT(1) NOT NULL DEFAULT 1,
+    accept_link TINYINT(1) NOT NULL DEFAULT 1,
+    allow_late TINYINT(1) NOT NULL DEFAULT 1,
+    weight DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    max_score INT UNSIGNED NOT NULL DEFAULT 100,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_assignments_course_deadline (course_id, deadline),
+    CONSTRAINT fk_assignments_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    CONSTRAINT fk_assignments_meeting FOREIGN KEY (meeting_id) REFERENCES meetings(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS submissions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    assignment_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    file_path VARCHAR(255) NULL,
+    file_name VARCHAR(255) NULL,
+    file_size_bytes BIGINT UNSIGNED NULL,
+    mime_type VARCHAR(120) NULL,
+    link_url VARCHAR(1000) NULL,
+    submitted_at DATETIME NOT NULL,
+    is_late TINYINT(1) NOT NULL DEFAULT 0,
+    score DECIMAL(5,2) NULL,
+    feedback TEXT NULL,
+    graded_at DATETIME NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_submissions_assignment_user (assignment_id, user_id),
+    INDEX idx_submissions_assignment_late (assignment_id, is_late),
+    CONSTRAINT fk_submissions_assignment FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE,
+    CONSTRAINT fk_submissions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
