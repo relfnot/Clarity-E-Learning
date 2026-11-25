@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Core\Database;
 use App\Core\Env;
+use Database\Seeds\AcademicModulesSeeder;
 use Database\Seeds\CoursesSeeder;
 use Database\Seeds\UsersSeeder;
 
@@ -11,12 +12,14 @@ $rootPath = dirname(__DIR__);
 require_once $rootPath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 require_once $rootPath . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'seeds' . DIRECTORY_SEPARATOR . 'UsersSeeder.php';
 require_once $rootPath . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'seeds' . DIRECTORY_SEPARATOR . 'CoursesSeeder.php';
+require_once $rootPath . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'seeds' . DIRECTORY_SEPARATOR . 'AcademicModulesSeeder.php';
 
 Env::load($rootPath);
 
 $pdo = Database::getConnection();
 $userCounts = UsersSeeder::run($pdo);
 $courseCounts = CoursesSeeder::run($pdo);
+$moduleCounts = AcademicModulesSeeder::run($pdo, $rootPath);
 
 echo sprintf(
     "[seed] Berhasil seed %d dosen dan %d mahasiswa (password demo: rahasia123).\n",
@@ -27,5 +30,12 @@ echo sprintf(
     "[seed] Berhasil seed %d mata kuliah dan %d pendaftaran (enrollments).\n",
     $courseCounts['courses'],
     $courseCounts['enrollments']
+);
+echo sprintf(
+    "[seed] Berhasil seed %d pertemuan, %d materi, %d tugas, %d sesi presensi.\n",
+    $moduleCounts['meetings'],
+    $moduleCounts['materials'],
+    $moduleCounts['assignments'],
+    $moduleCounts['sessions']
 );
 echo "[seed] Tabel login_attempts dibersihkan.\n";
