@@ -6,8 +6,11 @@ use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
 use App\Controllers\CourseController;
+use App\Controllers\GradeController;
 use App\Controllers\HealthController;
 use App\Controllers\MaterialController;
+use App\Controllers\NotificationController;
+use App\Controllers\QuizController;
 use App\Controllers\SubmissionController;
 use App\Core\Env;
 use App\Core\ErrorHandler;
@@ -81,6 +84,32 @@ $router->post('/attendance-sessions/{id}/check-in', [AttendanceController::class
 $router->get('/courses/{id}/attendance/summary', [AttendanceController::class, 'courseSummary'], [$auth]);
 $router->get('/meetings/{id}/attendance', [AttendanceController::class, 'meetingAttendance'], [$auth, $dosenOnly]);
 $router->put('/attendance-records/{id}', [AttendanceController::class, 'updateRecord'], [$auth, $dosenOnly]);
+
+// 7. Quiz & Bank Soal (Timeline No. 13 · PIC: Gaby)
+$router->get('/courses/{id}/quizzes', [QuizController::class, 'index'], [$auth]);
+$router->post('/courses/{id}/quizzes', [QuizController::class, 'store'], [$auth, $dosenOnly]);
+$router->get('/quizzes/{id}', [QuizController::class, 'show'], [$auth]);
+$router->put('/quizzes/{id}', [QuizController::class, 'update'], [$auth, $dosenOnly]);
+$router->delete('/quizzes/{id}', [QuizController::class, 'destroy'], [$auth, $dosenOnly]);
+$router->get('/quizzes/{id}/questions', [QuizController::class, 'listQuestions'], [$auth, $dosenOnly]);
+$router->post('/quizzes/{id}/questions', [QuizController::class, 'storeQuestion'], [$auth, $dosenOnly]);
+$router->put('/questions/{id}', [QuizController::class, 'updateQuestion'], [$auth, $dosenOnly]);
+$router->delete('/questions/{id}', [QuizController::class, 'destroyQuestion'], [$auth, $dosenOnly]);
+
+// 8. Modul Nilai & Bobot Komponen (Timeline No. 14 · PIC: Gaby)
+$router->get('/courses/{id}/grade-weights', [GradeController::class, 'getWeights'], [$auth]);
+$router->put('/courses/{id}/grade-weights', [GradeController::class, 'updateWeights'], [$auth, $dosenOnly]);
+$router->put('/submissions/{id}/grade', [GradeController::class, 'gradeSubmission'], [$auth, $dosenOnly]);
+$router->put('/courses/{id}/grades/students/{user_id}/components', [GradeController::class, 'upsertComponentScore'], [$auth, $dosenOnly]);
+$router->get('/courses/{id}/grades/me', [GradeController::class, 'myGrades'], [$auth, $mahasiswaOnly]);
+$router->get('/courses/{id}/grades', [GradeController::class, 'classGrades'], [$auth, $dosenOnly]);
+
+// 9. Notifikasi & Pengumuman (Timeline No. 15 · PIC: Gaby)
+$router->get('/notifications', [NotificationController::class, 'index'], [$auth]);
+$router->get('/notifications/unread-count', [NotificationController::class, 'unreadCount'], [$auth]);
+$router->patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead'], [$auth]);
+$router->post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'], [$auth]);
+$router->post('/courses/{id}/announcements', [NotificationController::class, 'sendAnnouncement'], [$auth, $dosenOnly]);
 
 $request = Request::capture();
 $router->dispatch($request);
