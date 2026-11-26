@@ -17,3 +17,5 @@ composer.phar
 .agent/
 .obsidian/
 docs/Clarity_Vault/
+prd/
+*.zip

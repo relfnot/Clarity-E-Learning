@@ -33,6 +33,14 @@ if ($isFresh) {
     echo "[migrate] Mode --fresh: menghapus tabel sebelumnya...\n";
     $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
     $tablesToDrop = [
+        'notifications',
+        'course_component_scores',
+        'grade_weights',
+        'attempt_answers',
+        'quiz_attempts',
+        'options',
+        'questions',
+        'quizzes',
         'attendance_records',
         'attendance_sessions',
         'submissions',
