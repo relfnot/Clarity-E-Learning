@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Clarity E-Learning — Hallmark Design Tokens (Brand Palette Preservation)
-   Palet resmi DESIGN.md dipetakan ke skala token Hallmark
+   Clarity E-Learning — Design Tokens (Crisp White & Clarity Red System)
+   Palet putih bersih bernuansa netral sejuk dengan aksen Merah Clarity
    ========================================================================== */
 
 :root {
@@ -58,15 +58,18 @@
   --z-toast: 500;
   --z-tooltip: 600;
 
-  /* Geometri Permukaan */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-card: 12px;
-  --radius-shell: 20px;
+  /* Geometri Permukaan & Bayangan Lembut Minimalis */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-card: 16px;
+  --radius-banner: 20px;
+  --radius-shell: 24px;
   --radius-pill: 999px;
   --rule-hair: 1px;
   --rule-thick: 3px;
-  --shadow-card: none;
+  --shadow-card: 0 2px 12px rgba(28, 25, 27, 0.04);
+  --shadow-card-hover: 0 10px 24px rgba(200, 30, 30, 0.08);
+  --shadow-banner: 0 12px 28px rgba(200, 30, 30, 0.16);
   --tracking-display: -0.02em;
 
   /* Keluarga Font (DESIGN.md) */
@@ -76,163 +79,199 @@
   --font-sans: var(--font-body);
   --font-mono: var(--font-outlier);
 
-  /* Palet Brand Clarity (Warm Ivory Paper, Deep Crimson, Warm Gold, Espresso Ink) */
-  --color-paper-bg: #f6f4ee;
-  --color-paper: #f6f4ee;
-  --color-paper-2: #fcfbf8;
-  --color-paper-3: #efece3;
-  --color-ink: #181311;
-  --color-ink-2: #3b312d;
-  --color-muted: #5c504a;
-  --color-rule: #d6cfc2;
-  --color-rule-2: #e6e0d4;
-  --color-rule-strong: #b8ae9f;
+  /* Palet Crisp White + Clarity Red */
+  --color-paper-bg: #f8f7f9;
+  --color-paper: #f8f7f9;
+  --color-paper-2: #fefdfd;
+  --color-paper-3: #f3f1f4;
+  --color-ink: #1c191b;
+  --color-ink-2: #433c42;
+  --color-muted: #6b656e;
+  --color-rule: #e4dfe6;
+  --color-rule-2: #efecf1;
+  --color-rule-strong: #cfc7d2;
 
-  --color-accent: #be1a1a;
-  --color-accent-hover: #a11515;
-  --color-accent-deep: #8c1212;
-  --color-accent-ink: #fcfbf8;
-  --color-focus: #be1a1a;
+  --color-accent: #c81e1e;
+  --color-accent-hover: #a91818;
+  --color-accent-deep: #8d1313;
+  --color-accent-ink: #fefdfd;
+  --color-accent-soft: #fdf0f0;
+  --color-accent-soft-2: #fbe2e2;
+  --color-accent-soft-3: #f6c6c6;
+  --color-focus: #c81e1e;
 
-  --color-gold: #f7d87f;
+  --color-gold: #f8de82;
   --color-gold-hover: #ebd070;
   --color-gold-rule: #d4b04c;
-  --color-cream: #f8ebab;
-  --color-cream-rule: #dfc86f;
-  --color-on-gold: #181311;
+  --color-cream: #fdf0f0;
+  --color-cream-rule: #f3c8c8;
+  --color-on-gold: #1c191b;
 
-  --color-row-hover: #fdf9ed;
-  --color-card-hover: #fffdf8;
-  --color-obsidian: #261311;
-  --color-obsidian-2: #361b18;
-  --color-obsidian-rule: #522b26;
-  --color-obsidian-ink: #f6f4ee;
-  --color-obsidian-muted: #e3d6cf;
+  --color-row-hover: #fdf7f7;
+  --color-card-hover: #fefdfd;
+  --color-obsidian: #241315;
+  --color-obsidian-2: #341b1e;
+  --color-obsidian-rule: #4e2a2e;
+  --color-obsidian-ink: #fefdfd;
+  --color-obsidian-muted: #dfd5d7;
 
-  /* Kanvas & Showcase Halaman Login (Selaras Logo #be1a1a + #f7d87f + #f6f4ee) */
-  --auth-canvas-base: #f3efe4;
-  --auth-canvas-grid: rgba(153, 19, 19, 0.045);
-  --auth-canvas-gold-tint: rgba(247, 216, 127, 0.34);
-  --auth-canvas-crimson-tint: rgba(190, 26, 26, 0.09);
-  --auth-canvas-ring-gold: rgba(212, 176, 76, 0.28);
-  --auth-canvas-ring-crimson: rgba(190, 26, 26, 0.14);
-  --auth-brand-top: #991313;
-  --auth-brand-mid: #741010;
-  --auth-brand-bottom: #4b0d0d;
-  --auth-brand-ring-outer: rgba(248, 235, 171, 0.16);
-  --auth-brand-ring-inner: rgba(247, 216, 127, 0.28);
-  --auth-brand-core-fill: rgba(252, 251, 248, 0.08);
+  /* Variasi Soft Tint Kartu Mata Kuliah (Putih-Merah Lembut) */
+  --cover-tint-1: #fdf0f0;
+  --cover-tint-2: #f6f3f8;
+  --cover-tint-3: #fef2f0;
+  --cover-tint-4: #f4f6f9;
 
-  --color-success: #16794b;
-  --color-success-hover: #12613b;
-  --color-success-soft: #ccf0dd;
-  --color-success-text: #0d4a2d;
-  --color-success-border: #6bc497;
+  /* Kanvas Halaman Login (Putih Bersih + Panel Merah Clarity) */
+  --auth-canvas-base: #f8f7f9;
+  --auth-canvas-grid: rgba(200, 30, 30, 0.035);
+  --auth-canvas-gold-tint: rgba(251, 226, 226, 0.55);
+  --auth-canvas-crimson-tint: rgba(200, 30, 30, 0.08);
+  --auth-canvas-ring-gold: rgba(200, 30, 30, 0.14);
+  --auth-canvas-ring-crimson: rgba(200, 30, 30, 0.1);
+  --auth-brand-top: #d62828;
+  --auth-brand-mid: #c81e1e;
+  --auth-brand-bottom: #981414;
+  --auth-brand-ring-outer: rgba(254, 253, 253, 0.16);
+  --auth-brand-ring-inner: rgba(254, 253, 253, 0.24);
+  --auth-brand-core-fill: rgba(254, 253, 253, 0.09);
 
-  --color-warning: #c26a09;
-  --color-warning-hover: #9e5406;
-  --color-warning-soft: #fde396;
-  --color-warning-text: #573103;
-  --color-warning-border: #dfa832;
+  /* Warna Semantik Terkontrol */
+  --color-success: #15803d;
+  --color-success-hover: #166534;
+  --color-success-soft: #ecfdf3;
+  --color-success-text: #14532d;
+  --color-success-border: #bbf7d0;
 
-  --color-danger: #be1a1a;
-  --color-danger-hover: #991313;
-  --color-danger-soft: #fbd5d5;
-  --color-danger-text: #7d1010;
-  --color-danger-border: #e07a7a;
+  --color-warning: #b45309;
+  --color-warning-hover: #92400e;
+  --color-warning-soft: #fffbeb;
+  --color-warning-text: #78350f;
+  --color-warning-border: #fde68a;
 
-  --color-error: #be1a1a;
-  --color-info: #1d63b8;
-  --color-info-soft: #f2f7fd;
-  --color-info-text: #123458;
-  --color-info-border: #b6d4f4;
+  --color-danger: #c81e1e;
+  --color-danger-hover: #a91818;
+  --color-danger-soft: #fdf0f0;
+  --color-danger-text: #8d1313;
+  --color-danger-border: #f6c6c6;
 
-  /* Tombol (Merah Crimson Primer + Emas Hangat Sekunder + Ivory Outline) */
-  --action-primary-surface: #be1a1a;
-  --action-primary-hover-surface: #991313;
-  --action-primary-ink: #fcfbf8;
-  --action-primary-border: #991313;
+  --color-error: #c81e1e;
+  --color-info: #1d4ed8;
+  --color-info-soft: #eff6ff;
+  --color-info-text: #1e3a8a;
+  --color-info-border: #bfdbfe;
 
-  --action-crimson-surface: #be1a1a;
-  --action-crimson-hover-surface: #991313;
-  --action-crimson-ink: #fcfbf8;
-  --action-crimson-border: #991313;
+  /* Tombol */
+  --action-primary-surface: #c81e1e;
+  --action-primary-hover-surface: #a91818;
+  --action-primary-ink: #fefdfd;
+  --action-primary-border: #c81e1e;
 
-  --action-outline-surface: #fcfbf8;
-  --action-outline-hover-surface: #f1ece1;
-  --action-outline-ink: #181311;
-  --action-outline-border: #c4bba9;
+  --action-crimson-surface: #c81e1e;
+  --action-crimson-hover-surface: #a91818;
+  --action-crimson-ink: #fefdfd;
+  --action-crimson-border: #c81e1e;
 
-  --action-gold-surface: #f8de82;
-  --action-gold-hover-surface: #f2cf56;
-  --action-gold-ink: #261b05;
-  --action-gold-border: #cfa22b;
+  --action-outline-surface: #fefdfd;
+  --action-outline-hover-surface: #f8f6f8;
+  --action-outline-ink: #1c191b;
+  --action-outline-border: #e4dfe6;
 
-  /* Tag Status Terstruktur (Merah, Kuning, Hijau Jelas & Natural) */
-  --badge-danger-surface: #fbd5d5;
-  --badge-danger-ink: #7d1010;
-  --badge-danger-border: #e07a7a;
+  --action-gold-surface: #fdf0f0;
+  --action-gold-hover-surface: #fbe2e2;
+  --action-gold-ink: #a91818;
+  --action-gold-border: #f6c6c6;
 
-  --badge-warning-surface: #fde396;
-  --badge-warning-ink: #573103;
-  --badge-warning-border: #dfa832;
+  --banner-cta-surface: #fefdfd;
+  --banner-cta-hover: #f9e6e6;
+  --banner-cta-ink: #b41919;
 
-  --badge-gold-surface: #faecb8;
-  --badge-gold-ink: #423008;
-  --badge-gold-border: #d9b84a;
+  /* Tag Status Tanpa Sticker-Border Tebal */
+  --badge-danger-surface: #fdf0f0;
+  --badge-danger-ink: #991b1b;
+  --badge-danger-border: transparent;
 
-  --badge-success-surface: #ccf0dd;
-  --badge-success-ink: #0d4a2d;
-  --badge-success-border: #6bc497;
+  --badge-warning-surface: #fef3c7;
+  --badge-warning-ink: #92400e;
+  --badge-warning-border: transparent;
 
-  --badge-neutral-surface: #efece3;
-  --badge-neutral-ink: #3b312d;
-  --badge-neutral-border: #d6cfc2;
+  --badge-gold-surface: #fdf0f0;
+  --badge-gold-ink: #b41919;
+  --badge-gold-border: transparent;
 
-  /* Permukaan & Sidebar (Soft Slate DESIGN.md) */
+  --badge-success-surface: #dcfce7;
+  --badge-success-ink: #166534;
+  --badge-success-border: transparent;
+
+  --badge-neutral-surface: #f3f1f4;
+  --badge-neutral-ink: #433c42;
+  --badge-neutral-border: transparent;
+
+  /* Permukaan & Sidebar Putih Bersih */
   --color-surface: var(--color-paper-2);
   --color-surface-alt: var(--color-paper-3);
-  --color-surface-hover: #e7e2d7;
+  --color-surface-hover: #f3eff2;
   --color-border: var(--color-rule);
   --color-border-subtle: var(--color-rule-2);
 
   --color-text: var(--color-ink);
   --color-text-secondary: var(--color-ink-2);
   --color-text-muted: var(--color-muted);
-  --color-text-inverse: #fcfbf8;
+  --color-text-inverse: #fefdfd;
 
   --color-primary: var(--color-accent);
   --color-primary-hover: var(--color-accent-hover);
-  --color-primary-text: #991313;
-  --color-primary-soft: var(--color-cream);
+  --color-primary-text: #b41919;
+  --color-primary-soft: var(--color-accent-soft);
   --color-primary-border: var(--color-cream-rule);
 
-  --color-sidebar-surface: #f1ede4;
-  --color-sidebar-elevated: #e7e1d4;
-  --color-sidebar-card: #fcfbf8;
-  --color-sidebar-ink: #2b211e;
-  --color-sidebar-ink-muted: #655852;
-  --color-sidebar-ink-strong: #181311;
-  --color-sidebar-ink-active: #fcfbf8;
-  --color-sidebar-accent: #be1a1a;
-  --color-sidebar-brand: #be1a1a;
-  --color-sidebar-border: #d8d0c1;
+  --color-sidebar-surface: #fefdfd;
+  --color-sidebar-elevated: #f8f7f9;
+  --color-sidebar-card: #f8f7f9;
+  --color-sidebar-ink: #57515a;
+  --color-sidebar-ink-muted: #7b747f;
+  --color-sidebar-ink-strong: #1c191b;
+  --color-sidebar-ink-active: #fefdfd;
+  --color-sidebar-accent: #c81e1e;
+  --color-sidebar-brand: #c81e1e;
+  --color-sidebar-border: #ece9ee;
 
-  --color-backdrop: rgba(24, 19, 17, 0.56);
-  --color-dark-surface-deep: #120e0d;
-  --color-dark-card: #1b1514;
-  --color-dark-elevated: #241c1a;
-  --color-dark-hover: #332724;
-  --color-dark-border: #3d312e;
-  --color-dark-border-subtle: #2b2220;
-  --color-dark-border-strong: #544440;
-  --color-dark-ink: #f7f4ee;
-  --color-dark-ink-2: #dfd8cf;
-  --color-dark-muted: #b5aaa2;
+  --color-backdrop: rgba(28, 25, 27, 0.45);
+  --color-dark-surface-deep: #141113;
+  --color-dark-card: #1d181b;
+  --color-dark-elevated: #262023;
+  --color-dark-hover: #322a2e;
+  --color-dark-border: #3c3237;
+  --color-dark-border-subtle: #2b2327;
+  --color-dark-border-strong: #53464c;
+  --color-dark-ink: #f8f7f9;
+  --color-dark-ink-2: #e2dce0;
+  --color-dark-muted: #afa6ae;
+  --color-dark-accent-soft: #38191d;
+  --color-dark-accent-soft-2: #572127;
+  --color-dark-accent-soft-3: #7d2b32;
+  --color-dark-primary-text: #ffb8b8;
+  --color-dark-success: #4ade80;
+  --color-dark-success-soft: #143322;
+  --color-dark-success-text: #86efac;
+  --color-dark-success-border: #1e5638;
+  --color-dark-warning: #fbbf24;
+  --color-dark-warning-soft: #3b2a10;
+  --color-dark-warning-text: #fcd34d;
+  --color-dark-warning-border: #6b4c18;
+  --color-dark-danger-soft: #38191d;
+  --color-dark-danger-text: #ffb8b8;
+  --color-dark-danger-border: #7d2b32;
+  --color-dark-info: #60a5fa;
+  --color-dark-info-soft: #172a4a;
+  --color-dark-info-text: #93c5fd;
+  --color-dark-info-border: #284b82;
+  --shadow-dark-card: 0 2px 14px rgba(0, 0, 0, 0.35);
+  --shadow-dark-card-hover: 0 10px 26px rgba(0, 0, 0, 0.48);
+  --shadow-dark-banner: 0 12px 28px rgba(0, 0, 0, 0.42);
 
   /* Layout Shell */
-  --sidebar-width: 268px;
-  --topbar-height: 64px;
+  --sidebar-width: 248px;
+  --topbar-height: 68px;
   --bottom-nav-height: 60px;
 
   --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -247,16 +286,16 @@
   --popover-foreground: var(--color-ink);
   --primary: var(--color-accent);
   --primary-foreground: var(--color-accent-ink);
-  --secondary: var(--color-gold);
-  --secondary-foreground: var(--color-ink);
+  --secondary: var(--color-accent-soft);
+  --secondary-foreground: var(--color-primary-text);
   --muted: var(--color-paper-3);
   --muted-foreground: var(--color-muted);
-  --accent: var(--color-cream);
-  --accent-foreground: var(--color-ink);
+  --accent: var(--color-accent-soft);
+  --accent-foreground: var(--color-primary-text);
   --destructive: var(--color-danger);
   --destructive-foreground: var(--color-accent-ink);
   --border: var(--color-rule);
   --input: var(--color-rule);
   --ring: var(--color-focus);
-  --radius: 0.75rem;
+  --radius: 1rem;
 }

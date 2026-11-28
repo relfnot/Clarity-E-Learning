@@ -33,7 +33,7 @@ $rootPath = dirname(__DIR__);
 
   <script src="<?= $assetPrefix ?>assets/js/api.js?v=11"></script>
   <script src="<?= $assetPrefix ?>assets/js/auth.js?v=11"></script>
-  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=11"></script>
+  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=16"></script>
   <script src="<?= $assetPrefix ?>assets/js/error-page.js?v=11"></script>
 </body>
 </html>

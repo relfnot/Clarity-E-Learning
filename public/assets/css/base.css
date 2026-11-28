@@ -11,10 +11,18 @@
 html,
 body {
   overflow-x: clip;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 html {
   font-size: 16px;
+  color-scheme: light;
   scrollbar-color: var(--color-muted) var(--color-paper);
   scroll-padding-top: var(--space-2xl);
   scroll-behavior: smooth;
@@ -31,6 +39,13 @@ body {
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   caret-color: var(--color-accent);
+  transition: opacity var(--dur-micro) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
 ::selection {
@@ -149,6 +164,7 @@ td.num,
 
 /* Mode Gelap Opsional (Scope pada html[data-theme="dark"] > body) */
 html[data-theme="dark"] {
+  color-scheme: dark;
   background-color: var(--color-dark-surface-deep);
   color: var(--color-dark-ink);
   scrollbar-color: var(--color-dark-muted) var(--color-dark-surface-deep);
@@ -165,39 +181,79 @@ html[data-theme="dark"] > body {
   --color-rule-2: var(--color-dark-border-subtle);
   --color-rule-strong: var(--color-dark-border-strong);
 
-  --color-focus: var(--color-gold);
+  --color-focus: var(--color-accent);
   --color-row-hover: var(--color-dark-elevated);
   --color-card-hover: var(--color-dark-elevated);
   --color-surface-hover: var(--color-dark-hover);
-  --color-primary-text: var(--color-gold);
+  --color-accent-soft: var(--color-dark-accent-soft);
+  --color-accent-soft-2: var(--color-dark-accent-soft-2);
+  --color-accent-soft-3: var(--color-dark-accent-soft-3);
+  --color-primary-text: var(--color-dark-primary-text);
+  --color-primary-soft: var(--color-dark-accent-soft);
+  --color-primary-border: var(--color-dark-accent-soft-3);
+  --color-cream: var(--color-dark-accent-soft-2);
+  --color-cream-rule: var(--color-dark-accent-soft-3);
 
-  --action-primary-surface: var(--color-gold);
-  --action-primary-hover-surface: var(--color-cream);
-  --action-primary-ink: var(--color-on-gold);
-  --action-primary-border: var(--color-gold-rule);
+  --color-success: var(--color-dark-success);
+  --color-success-soft: var(--color-dark-success-soft);
+  --color-success-text: var(--color-dark-success-text);
+  --color-success-border: var(--color-dark-success-border);
+  --color-warning: var(--color-dark-warning);
+  --color-warning-soft: var(--color-dark-warning-soft);
+  --color-warning-text: var(--color-dark-warning-text);
+  --color-warning-border: var(--color-dark-warning-border);
+  --color-danger-soft: var(--color-dark-danger-soft);
+  --color-danger-text: var(--color-dark-danger-text);
+  --color-danger-border: var(--color-dark-danger-border);
+  --color-info: var(--color-dark-info);
+  --color-info-soft: var(--color-dark-info-soft);
+  --color-info-text: var(--color-dark-info-text);
+  --color-info-border: var(--color-dark-info-border);
+
+  --action-primary-surface: var(--color-accent);
+  --action-primary-hover-surface: var(--color-accent-hover);
+  --action-primary-ink: var(--color-accent-ink);
+  --action-primary-border: var(--color-accent);
 
   --action-outline-surface: var(--color-dark-elevated);
   --action-outline-hover-surface: var(--color-dark-hover);
   --action-outline-ink: var(--color-dark-ink);
   --action-outline-border: var(--color-dark-border-strong);
 
-  --action-gold-surface: var(--color-dark-elevated);
+  --action-gold-surface: var(--color-obsidian-2);
   --action-gold-hover-surface: var(--color-dark-hover);
-  --action-gold-ink: var(--color-dark-ink);
-  --action-gold-border: var(--color-dark-border-strong);
+  --action-gold-ink: var(--color-dark-primary-text);
+  --action-gold-border: var(--color-obsidian-rule);
 
+  --badge-danger-surface: var(--color-dark-danger-soft);
+  --badge-danger-ink: var(--color-dark-danger-text);
+  --badge-warning-surface: var(--color-dark-warning-soft);
+  --badge-warning-ink: var(--color-dark-warning-text);
+  --badge-gold-surface: var(--color-dark-accent-soft);
+  --badge-gold-ink: var(--color-dark-primary-text);
+  --badge-success-surface: var(--color-dark-success-soft);
+  --badge-success-ink: var(--color-dark-success-text);
   --badge-neutral-surface: var(--color-dark-elevated);
   --badge-neutral-ink: var(--color-dark-ink-2);
-  --badge-neutral-border: var(--color-dark-border);
+  --badge-neutral-border: transparent;
 
-  --color-sidebar-surface: var(--color-obsidian);
+  --shadow-card: var(--shadow-dark-card);
+  --shadow-card-hover: var(--shadow-dark-card-hover);
+  --shadow-banner: var(--shadow-dark-banner);
+
+  --cover-tint-1: var(--color-obsidian-2);
+  --cover-tint-2: var(--color-dark-elevated);
+  --cover-tint-3: var(--color-obsidian);
+  --cover-tint-4: var(--color-dark-elevated);
+
+  --color-sidebar-surface: var(--color-dark-card);
   --color-sidebar-elevated: var(--color-dark-elevated);
-  --color-sidebar-card: var(--color-dark-card);
+  --color-sidebar-card: var(--color-dark-elevated);
   --color-sidebar-ink: var(--color-dark-ink-2);
   --color-sidebar-ink-muted: var(--color-dark-muted);
-  --color-sidebar-ink-strong: var(--color-cream);
-  --color-sidebar-brand: var(--color-gold);
-  --color-sidebar-border: var(--color-dark-hover);
+  --color-sidebar-ink-strong: var(--color-dark-ink);
+  --color-sidebar-brand: var(--color-accent-ink);
+  --color-sidebar-border: var(--color-dark-border);
 
   --auth-canvas-base: var(--color-dark-surface-deep);
   --auth-canvas-grid: var(--color-dark-border-subtle);

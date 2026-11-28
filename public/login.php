@@ -13,7 +13,7 @@ $rootPath = dirname(__DIR__);
 <head>
   <?php require $rootPath . '/src/Views/partials/head.php'; ?>
 </head>
-<body class="overflow-x-clip" data-role="auth" data-base="<?= htmlspecialchars($basePrefix, ENT_QUOTES, 'UTF-8') ?>">
+<body class="overflow-x-clip" data-role="public" data-base="<?= htmlspecialchars($basePrefix, ENT_QUOTES, 'UTF-8') ?>">
   <main class="auth-page-canvas">
     <div class="auth-shell hallmark-reveal grid grid-cols-1 lg:grid-cols-12">
 
@@ -111,9 +111,9 @@ $rootPath = dirname(__DIR__);
     </div>
   </main>
 
-  <script src="<?= $assetPrefix ?>assets/js/api.js?v=11"></script>
-  <script src="<?= $assetPrefix ?>assets/js/auth.js?v=11"></script>
-  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=11"></script>
-  <script src="<?= $assetPrefix ?>assets/js/login.js?v=11"></script>
+  <script src="<?= $assetPrefix ?>assets/js/api.js?v=14"></script>
+  <script src="<?= $assetPrefix ?>assets/js/auth.js?v=14"></script>
+  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=16"></script>
+  <script src="<?= $assetPrefix ?>assets/js/login.js?v=14"></script>
 </body>
 </html>

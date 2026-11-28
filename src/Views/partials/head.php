@@ -13,6 +13,41 @@ $prefix = ($basePrefix ?? '.') === '..' ? '../' : '';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="<?= $resolvedDesc ?>">
+<script>
+  (function () {
+    var root = document.documentElement;
+    var isDark = false;
+    try {
+      isDark = localStorage.getItem('clarity_theme') === 'dark';
+    } catch (e) {}
+    if (isDark) {
+      root.setAttribute('data-theme', 'dark');
+      root.style.backgroundColor = '#141113';
+      root.style.colorScheme = 'dark';
+    } else {
+      root.style.backgroundColor = '#f8f7f9';
+      root.style.colorScheme = 'light';
+    }
+    root.classList.add('clarity-booting');
+    var revealed = false;
+    window.__clarityReveal = function () {
+      if (revealed) return;
+      revealed = true;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          root.classList.remove('clarity-booting');
+          root.style.removeProperty('background-color');
+          root.style.removeProperty('color-scheme');
+        });
+      });
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(window.__clarityReveal, 160);
+    });
+    setTimeout(window.__clarityReveal, 450);
+  })();
+</script>
+<style>html.clarity-booting body{opacity:0}</style>
 <title><?= $resolvedTitle ?> | Clarity E-Learning</title>
 <link rel="icon" type="image/svg+xml" href="<?= $prefix ?>assets/img/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,6 +82,6 @@ $prefix = ($basePrefix ?? '.') === '..' ? '../' : '';
   };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/basecoat-css@1.1.0/dist/js/all.min.js" defer></script>
-<link rel="stylesheet" href="<?= $prefix ?>assets/css/tokens.css?v=11">
-<link rel="stylesheet" href="<?= $prefix ?>assets/css/base.css?v=11">
-<link rel="stylesheet" href="<?= $prefix ?>assets/css/components.css?v=11">
+<link rel="stylesheet" href="<?= $prefix ?>assets/css/tokens.css?v=17">
+<link rel="stylesheet" href="<?= $prefix ?>assets/css/base.css?v=17">
+<link rel="stylesheet" href="<?= $prefix ?>assets/css/components.css?v=17">

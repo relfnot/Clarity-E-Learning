@@ -1,11 +1,12 @@
-/* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: full
- * paper: oklch(96.6% 0.011 85) · accent: oklch(49.8% 0.188 27) · display: Plus Jakarta Sans · body: Plus Jakarta Sans
- * nav: fixed left sidebar + top bar · signature: academic deadline & course ledger · states: default, hover, focus-visible, active, disabled, loading, empty, error
- * axes: light/grotesk-heavy/warm · posture: restrained · contrast: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4 · weakest: S, unified top stat ledger and deadline workbench with strict 1px surface rules */
+/* Hallmark · shape: app screen · genre: playful · theme: brand · redesign: full
+ * paper: oklch(97.5% 0.004 310) · accent: oklch(49.5% 0.195 26) · display: Plus Jakarta Sans · body: Plus Jakarta Sans
+ * nav: white left sidebar with red active pill + search topbar · signature: red welcome banner with mascot, course progress cards, and mini activity calendar · states: default, hover, focus-visible, active, disabled, loading, empty, error
+ * axes: light/grotesk-clean/crisp-red · posture: playful-minimal · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · cut bordered sticker badges and heavy beige outlines to match crisp white-and-red e-learning ergonomics */
+/* Hallmark · dismissed 23 · Clarity Red welcome banner is the intentional brand anchor on crisp white canvas per user reference */
 
 /* ==========================================================================
-   Clarity E-Learning — Hallmark App Component Layer
+   Clarity E-Learning — Crisp White & Clarity Red Component Layer
    ========================================================================== */
 
 .skip-link {
@@ -28,7 +29,6 @@
   outline-offset: 2px;
 }
 
-/* Semantic Color & Typography Helpers */
 .text-ink {
   color: var(--color-ink);
 }
@@ -54,7 +54,7 @@
 }
 
 /* ==========================================================================
-   Buttons & Interactive Controls (8 States, High Contrast)
+   Buttons & Interactive Controls (8 States, Clean Jakob Affordance)
    ========================================================================== */
 
 .clarity-btn {
@@ -133,14 +133,14 @@
 }
 
 .clarity-btn-outline {
-  background-color: var(--color-paper);
-  border-color: var(--color-rule-strong);
+  background-color: var(--action-outline-surface);
+  border-color: var(--color-rule);
   color: var(--action-outline-ink);
 }
 
 .clarity-btn-outline:hover:not(:disabled) {
-  background-color: var(--color-paper-3);
-  border-color: var(--color-ink-2);
+  background-color: var(--action-outline-hover-surface);
+  border-color: var(--color-rule-strong);
   color: var(--color-ink);
 }
 
@@ -153,11 +153,78 @@
 
 .clarity-btn-gold:hover:not(:disabled) {
   background-color: var(--action-gold-hover-surface);
-  border-color: var(--action-gold-ink);
+  border-color: var(--color-accent);
   color: var(--action-gold-ink);
 }
 
-/* Compact Icon Button (Topbar & Password Toggle) */
+/* Inverted Crisp White CTA inside Clarity Red Welcome Banner */
+.btn-banner-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--radius-md);
+  border: var(--rule-hair) solid var(--banner-cta-surface);
+  background-color: var(--banner-cta-surface);
+  color: var(--banner-cta-ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-banner-white:hover {
+  background-color: var(--banner-cta-hover);
+  color: var(--banner-cta-ink);
+  text-decoration: none;
+}
+
+.btn-banner-white:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: 2px;
+}
+
+.btn-banner-white:active {
+  transform: translateY(1px);
+}
+
+.btn-banner-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  border: var(--rule-hair) solid var(--auth-brand-ring-inner);
+  background-color: var(--auth-brand-core-fill);
+  color: var(--color-accent-ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-banner-ghost:hover {
+  background-color: var(--auth-brand-ring-outer);
+  text-decoration: none;
+}
+
+.btn-banner-ghost:focus-visible {
+  outline: 2px solid var(--color-accent-ink);
+  outline-offset: 2px;
+}
+
+.btn-banner-ghost:active {
+  transform: translateY(1px);
+}
+
 .clarity-icon-btn {
   position: relative;
   display: inline-flex;
@@ -166,9 +233,9 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
-  border: var(--rule-hair) solid var(--color-rule);
+  border: var(--rule-hair) solid var(--color-rule-2);
   background-color: var(--color-paper-2);
-  color: var(--color-ink);
+  color: var(--color-ink-2);
   text-decoration: none;
   cursor: pointer;
   transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
@@ -176,7 +243,7 @@
 
 .clarity-icon-btn:hover:not(:disabled) {
   background-color: var(--color-paper-3);
-  border-color: var(--color-rule-strong);
+  border-color: var(--color-rule);
   color: var(--color-ink);
   text-decoration: none;
 }
@@ -195,7 +262,7 @@
   cursor: not-allowed;
 }
 
-/* Filter Tabs (Segmented Recessed Paper Well) */
+/* Segmented Filter Tabs (Minimal Soft Track) */
 .filter-tab-group {
   display: inline-flex;
   align-items: center;
@@ -203,29 +270,27 @@
   padding: var(--space-2xs);
   border-radius: var(--radius-md);
   background-color: var(--color-paper-3);
-  border: var(--rule-hair) solid var(--color-rule-2);
 }
 
 .filter-tab-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 32px;
+  min-height: 36px;
   padding: var(--space-2xs) var(--space-sm);
   border-radius: var(--radius-sm);
-  border: var(--rule-hair) solid transparent;
+  border: 0;
   background-color: transparent;
   color: var(--color-muted);
   font-size: var(--text-sm);
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .filter-tab-btn:hover:not(.is-active):not(:disabled) {
-  background-color: var(--color-paper);
-  border-color: transparent;
+  background-color: var(--color-paper-2);
   color: var(--color-ink);
 }
 
@@ -245,26 +310,26 @@
 
 .filter-tab-btn.is-active {
   background-color: var(--color-paper-2);
-  border-color: var(--color-accent);
   color: var(--color-primary-text);
   font-weight: 700;
+  box-shadow: var(--shadow-card);
 }
 
 /* ==========================================================================
-   Surfaces, Ledger, Cards & Interactive Hover Containers
+   Surfaces, Cards & Interactive Lists (Crisp White + Minimal Shadow)
    ========================================================================== */
 
 .clarity-card {
   background-color: var(--color-paper-2);
   color: var(--color-ink);
-  border: var(--rule-hair) solid var(--color-rule);
+  border: var(--rule-hair) solid var(--color-rule-2);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
 }
 
 .clarity-well {
   background-color: var(--color-paper-3);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   padding: var(--space-md);
 }
 
@@ -278,7 +343,7 @@
   flex-wrap: wrap;
 }
 
-/* Hairline Stat Ledger (No Line Wrapping, Clear Scale) */
+/* Stat Ledger (Clean Typographic Metrics) */
 .stat-ledger {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -288,6 +353,12 @@
 @media (min-width: 640px) {
   .stat-ledger {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .stat-ledger.stat-ledger-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
@@ -314,7 +385,7 @@
 
 .stat-label {
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-muted);
   white-space: nowrap;
 }
@@ -350,13 +421,12 @@
 
 .clarity-hover-card {
   cursor: pointer;
-  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .clarity-hover-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-accent);
-  background-color: var(--color-card-hover);
+  border-color: var(--color-accent-soft-3);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .clarity-hover-card:focus-visible {
@@ -385,11 +455,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2xs);
-  min-height: 32px;
+  min-height: 36px;
   padding: var(--space-2xs) var(--space-xs);
   border-radius: var(--radius-sm);
   font-size: var(--text-sm);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary-text);
   text-decoration: none;
   white-space: nowrap;
@@ -397,8 +467,8 @@
 }
 
 .clarity-inline-link:hover {
-  background-color: var(--color-cream);
-  color: var(--color-on-gold);
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary-text);
   text-decoration: none;
 }
 
@@ -411,7 +481,6 @@
   transform: translateY(1px);
 }
 
-/* Metadata Row with Hairline Dividers (No Middle Dots) */
 .meta-row {
   display: flex;
   flex-wrap: wrap;
@@ -429,36 +498,31 @@
 
 .meta-item + .meta-item {
   padding-left: var(--space-xs);
-  border-left: var(--rule-hair) solid var(--color-rule);
+  border-left: var(--rule-hair) solid var(--color-rule-2);
 }
 
-/* Academic Course Code Badge */
 .course-code-pill {
   display: inline-flex;
   align-items: center;
-  padding: var(--space-2xs) var(--space-xs);
+  padding: var(--space-3xs) var(--space-xs);
   border-radius: var(--radius-sm);
-  background-color: var(--color-paper-3);
-  border: var(--rule-hair) solid var(--color-rule-2);
+  background-color: var(--color-accent-soft);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 700;
-  color: var(--color-ink-2);
+  color: var(--color-primary-text);
   font-variant-numeric: tabular-nums;
 }
 
-/* ==========================================================================
-   Structured Editorial Tags (No Decorative Prefix Dots)
-   ========================================================================== */
-
+/* Quiet Borderless Semantic Status Tags (Table & Result Screens Only) */
 .clarity-tag {
   display: inline-flex;
   align-items: center;
   padding: var(--space-2xs) var(--space-xs);
   border-radius: var(--radius-sm);
-  border: var(--rule-hair) solid transparent;
+  border: 0;
   font-size: var(--text-xs);
-  font-weight: 700;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   line-height: 1.3;
   white-space: nowrap;
@@ -467,35 +531,303 @@
 .clarity-tag-danger {
   background-color: var(--badge-danger-surface);
   color: var(--badge-danger-ink);
-  border-color: var(--badge-danger-border);
 }
 
 .clarity-tag-warning {
   background-color: var(--badge-warning-surface);
   color: var(--badge-warning-ink);
-  border-color: var(--badge-warning-border);
 }
 
 .clarity-tag-info {
   background-color: var(--badge-gold-surface);
   color: var(--badge-gold-ink);
-  border-color: var(--badge-gold-border);
 }
 
 .clarity-tag-success {
   background-color: var(--badge-success-surface);
   color: var(--badge-success-ink);
-  border-color: var(--badge-success-border);
 }
 
 .clarity-tag-neutral {
   background-color: var(--badge-neutral-surface);
   color: var(--badge-neutral-ink);
-  border-color: var(--badge-neutral-border);
 }
 
 /* ==========================================================================
-   Fixed Full-Height Sidebar & Solid Sticky Topbar
+   Playful Minimal Dashboard Primitives (White + Clarity Red Hierarchy)
+   ========================================================================== */
+
+.clarity-welcome-banner {
+  position: relative;
+  border-radius: var(--radius-banner);
+  background-color: var(--auth-brand-mid);
+  color: var(--color-accent-ink);
+  padding: var(--space-lg) var(--space-xl-s);
+  box-shadow: var(--shadow-banner);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-md);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .clarity-welcome-banner {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.clarity-welcome-banner::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background-color: var(--auth-brand-core-fill);
+  pointer-events: none;
+}
+
+.clarity-welcome-mascot {
+  position: relative;
+  z-index: var(--z-base);
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+@media (min-width: 640px) {
+  .clarity-welcome-mascot {
+    width: 128px;
+    height: 128px;
+    align-self: center;
+  }
+}
+
+/* Course Progress Cards (Soft Cover + Title + Slim Red Progress) */
+.course-tile-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--radius-card);
+  background-color: var(--color-paper-2);
+  border: var(--rule-hair) solid var(--color-rule-2);
+  box-shadow: var(--shadow-card);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.course-tile-card:hover {
+  border-color: var(--color-accent-soft-3);
+  box-shadow: var(--shadow-card-hover);
+  text-decoration: none;
+}
+
+.course-tile-card:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.course-tile-card:active {
+  transform: translateY(1px);
+}
+
+.course-tile-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 92px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.course-tile-cover-1 {
+  background-color: var(--cover-tint-1);
+}
+
+.course-tile-cover-2 {
+  background-color: var(--cover-tint-2);
+}
+
+.course-tile-cover-3 {
+  background-color: var(--cover-tint-3);
+}
+
+.course-tile-cover-4 {
+  background-color: var(--cover-tint-4);
+}
+
+.course-progress-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-paper-3);
+  overflow: hidden;
+}
+
+.course-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
+  transform-origin: left center;
+  animation: bar-scale-in 640ms var(--ease-out) both;
+}
+
+/* Mini Monthly Activity Heatmap (Right Rail Calendar) */
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-2xs);
+  text-align: center;
+}
+
+.mini-cal-head {
+  padding-block: var(--space-2xs);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.mini-cal-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.mini-cal-cell:hover {
+  background-color: var(--color-paper-3);
+  text-decoration: none;
+}
+
+.mini-cal-cell:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.mini-cal-cell.is-outside {
+  color: var(--color-muted);
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+.mini-cal-cell.lvl-1 {
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary-text);
+}
+
+.mini-cal-cell.lvl-2 {
+  background-color: var(--color-accent-soft-2);
+  color: var(--color-primary-text);
+}
+
+.mini-cal-cell.lvl-3 {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+  font-weight: 700;
+}
+
+.mini-cal-cell.is-today {
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+  font-weight: 800;
+}
+
+.mini-cal-cell.is-today.lvl-3 {
+  box-shadow: 0 0 0 2px var(--color-paper-2), 0 0 0 4px var(--color-accent);
+}
+
+.mini-cal-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--space-2xs);
+}
+
+/* Floating Task List Items (Clean Icon Box + Text + Chevron) */
+.task-float-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.task-float-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-card);
+  background-color: var(--color-paper-2);
+  border: var(--rule-hair) solid var(--color-rule-2);
+  box-shadow: var(--shadow-card);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.task-float-item:hover {
+  background-color: var(--color-row-hover);
+  border-color: var(--color-accent-soft-3);
+  text-decoration: none;
+}
+
+.task-float-item:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.task-float-item:active {
+  transform: translateY(1px);
+}
+
+.task-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.task-icon-red {
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary-text);
+}
+
+.task-icon-amber {
+  background-color: var(--badge-warning-surface);
+  color: var(--badge-warning-ink);
+}
+
+.task-icon-green {
+  background-color: var(--badge-success-surface);
+  color: var(--badge-success-ink);
+}
+
+.task-icon-slate {
+  background-color: var(--color-paper-3);
+  color: var(--color-ink-2);
+}
+
+/* ==========================================================================
+   Crisp White Left Sidebar + Clean Search Topbar Shell (Jakob's Law)
    ========================================================================== */
 
 .clarity-shell {
@@ -544,38 +876,28 @@
   justify-content: space-between;
   gap: var(--space-xs);
   height: var(--topbar-height);
-  padding: 0 var(--space-md);
-  border-bottom: var(--rule-hair) solid var(--color-sidebar-border);
+  padding: 0 var(--space-lg);
   flex-shrink: 0;
 }
 
 .clarity-sidebar-brand {
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-weight: 800;
-  color: var(--color-sidebar-brand);
+  color: var(--color-ink);
   letter-spacing: var(--tracking-display);
-}
-
-.clarity-sidebar-subtitle {
-  font-size: var(--text-xs);
-  font-weight: 500;
-  color: var(--color-sidebar-ink-muted);
 }
 
 .clarity-sidebar-nav {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--space-md) var(--space-sm);
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-sidebar-border) transparent;
+  padding: var(--space-md);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.clarity-sidebar-section-label {
-  padding: 0 var(--space-sm) var(--space-xs);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--color-sidebar-ink-muted);
+.clarity-sidebar-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .clarity-sidebar-link {
@@ -583,20 +905,20 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
   min-height: 44px;
   border-radius: var(--radius-md);
   color: var(--color-sidebar-ink);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
   transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .clarity-sidebar-link:hover {
-  background-color: var(--color-sidebar-elevated);
-  color: var(--color-sidebar-ink-strong);
+  background-color: var(--color-paper-3);
+  color: var(--color-ink);
   text-decoration: none;
 }
 
@@ -613,14 +935,13 @@
 .clarity-sidebar-link.is-active:hover {
   background-color: var(--color-sidebar-accent);
   color: var(--color-sidebar-ink-active);
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: var(--shadow-card);
 }
 
 .clarity-sidebar-footer {
-  padding: var(--space-sm);
+  padding: var(--space-md);
   border-top: var(--rule-hair) solid var(--color-sidebar-border);
-  background-color: var(--color-sidebar-elevated);
-  color: var(--color-sidebar-ink-strong);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -632,58 +953,21 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
+  padding: var(--space-sm);
   border-radius: var(--radius-md);
   background-color: var(--color-sidebar-card);
-  border: var(--rule-hair) solid var(--color-sidebar-border);
   color: var(--color-sidebar-ink-strong);
-}
-
-.nav-count-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  height: 22px;
-  padding: 0 var(--space-xs);
-  border-radius: var(--radius-pill);
-  background-color: var(--badge-warning-surface);
-  border: var(--rule-hair) solid var(--badge-warning-border);
-  color: var(--badge-warning-ink);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.notif-count-badge {
-  position: absolute;
-  top: var(--space-2xs);
-  right: var(--space-2xs);
-  min-width: 18px;
-  height: 18px;
-  padding: 0 var(--space-2xs);
-  border-radius: var(--radius-pill);
-  background-color: var(--color-accent);
-  color: var(--color-accent-ink);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-variant-numeric: tabular-nums;
 }
 
 .avatar-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-pill);
-  background-color: var(--badge-gold-surface);
-  border: var(--rule-hair) solid var(--badge-gold-border);
-  color: var(--badge-gold-ink);
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary-text);
   font-size: var(--text-xs);
   font-weight: 700;
   flex-shrink: 0;
@@ -703,25 +987,80 @@
   z-index: var(--z-sticky-nav);
   height: var(--topbar-height);
   padding: 0 var(--space-md);
-  background-color: var(--color-paper-2);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
+  background-color: var(--color-paper);
+  border-bottom: var(--rule-hair) solid var(--color-rule-2);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-sm);
+  gap: var(--space-md);
 }
 
-.clarity-term-chip {
-  display: none;
-  align-items: center;
-  padding: var(--space-xs) var(--space-sm);
+.clarity-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 340px;
+}
+
+.clarity-search-icon {
+  position: absolute;
+  left: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
+.clarity-search-input {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md) var(--space-xs) var(--space-xl);
   border-radius: var(--radius-md);
-  background-color: var(--color-paper-3);
   border: var(--rule-hair) solid var(--color-rule-2);
-  font-size: var(--text-xs);
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.clarity-search-input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+}
+
+.clarity-search-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + var(--space-2xs));
+  background-color: var(--color-paper-2);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card-hover);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+}
+
+.clarity-search-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
   font-weight: 600;
-  color: var(--color-ink-2);
-  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.clarity-search-option:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary-text);
+  text-decoration: none;
+}
+
+.clarity-search-option:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
 }
 
 .clarity-profile-link {
@@ -737,7 +1076,7 @@
 }
 
 .clarity-profile-link:hover {
-  background-color: var(--color-paper-3);
+  background-color: var(--color-paper-2);
   text-decoration: none;
 }
 
@@ -753,7 +1092,7 @@
   bottom: 0;
   height: var(--bottom-nav-height);
   background-color: var(--color-paper-2);
-  border-top: var(--rule-hair) solid var(--color-rule);
+  border-top: var(--rule-hair) solid var(--color-rule-2);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   z-index: var(--z-sticky);
@@ -769,6 +1108,11 @@
   font-weight: 500;
   color: var(--color-muted);
   text-decoration: none;
+}
+
+.clarity-bottom-link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
 }
 
 .clarity-bottom-link.is-active {
@@ -805,14 +1149,8 @@
   }
 }
 
-@media (min-width: 1280px) {
-  .clarity-term-chip {
-    display: inline-flex;
-  }
-}
-
 /* ==========================================================================
-   Auth Screen Canvas & Brand Showcase (Logo Crimson, Gold Rings & Owl Vector)
+   Auth Screen Canvas & Brand Showcase (Crisp White + Clarity Red)
    ========================================================================== */
 
 .auth-page-canvas {
@@ -824,44 +1162,7 @@
   justify-content: center;
   padding: var(--space-md);
   background-color: var(--auth-canvas-base);
-  background-image:
-    linear-gradient(to right, var(--auth-canvas-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--auth-canvas-grid) 1px, transparent 1px);
-  background-size: 48px 48px;
   overflow: hidden;
-}
-
-.auth-page-canvas::before,
-.auth-page-canvas::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  background-repeat: no-repeat;
-}
-
-.auth-page-canvas::before {
-  width: 780px;
-  height: 780px;
-  top: -260px;
-  left: -200px;
-  background-image:
-    radial-gradient(circle at center, var(--auth-canvas-gold-tint) 0, transparent 58%),
-    radial-gradient(circle at center, transparent 0, transparent 210px, var(--auth-canvas-ring-gold) 211px, transparent 213px),
-    radial-gradient(circle at center, transparent 0, transparent 310px, var(--auth-canvas-ring-crimson) 311px, transparent 313px);
-  animation: canvas-orbit-a 14s var(--ease-in-out) infinite;
-}
-
-.auth-page-canvas::after {
-  width: 720px;
-  height: 720px;
-  right: -220px;
-  bottom: -240px;
-  background-image:
-    radial-gradient(circle at center, var(--auth-canvas-crimson-tint) 0, transparent 60%),
-    radial-gradient(circle at center, transparent 0, transparent 190px, var(--auth-canvas-ring-crimson) 191px, transparent 193px),
-    radial-gradient(circle at center, transparent 0, transparent 285px, var(--auth-canvas-ring-gold) 286px, transparent 288px);
-  animation: canvas-orbit-b 18s var(--ease-in-out) infinite;
 }
 
 @media (min-width: 640px) {
@@ -882,9 +1183,10 @@
   width: 100%;
   max-width: 880px;
   border-radius: var(--radius-shell);
-  border: var(--rule-hair) solid var(--color-rule);
+  border: var(--rule-hair) solid var(--color-rule-2);
   background-color: var(--color-paper-2);
   color: var(--color-ink);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
@@ -963,29 +1265,29 @@
 }
 
 /* ==========================================================================
-   Dashboard Bars, Tables & Visual Meters
+   Bars, Tables & Alerts
    ========================================================================== */
 
 .xp-bar-track {
   width: 144px;
   height: 8px;
-  border-radius: var(--space-2xs);
+  border-radius: var(--radius-sm);
   background-color: var(--color-paper-3);
   overflow: hidden;
 }
 
 .xp-bar-fill {
   height: 100%;
-  border-radius: var(--space-2xs);
-  background-color: var(--color-accent-hover);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
   transform-origin: left center;
   animation: bar-scale-in 640ms var(--ease-out) both;
 }
 
 .grade-bar-track {
   position: relative;
-  height: 12px;
-  border-radius: var(--space-2xs);
+  height: 10px;
+  border-radius: var(--radius-sm);
   background-color: var(--color-paper-3);
   overflow: hidden;
 }
@@ -995,7 +1297,7 @@
   top: 0;
   bottom: 0;
   left: 0;
-  border-radius: var(--space-2xs);
+  border-radius: var(--radius-sm);
   background-color: var(--color-rule);
   transform-origin: left center;
   animation: bar-scale-in 640ms var(--ease-out) both;
@@ -1004,7 +1306,7 @@
 .grade-bar-self {
   position: relative;
   height: 100%;
-  border-radius: var(--space-2xs);
+  border-radius: var(--radius-sm);
   background-color: var(--color-accent);
   transform-origin: left center;
   animation: bar-scale-in 720ms var(--ease-out) 120ms both;
@@ -1066,16 +1368,12 @@
   vertical-align: middle;
 }
 
-/* ==========================================================================
-   Alerts, Inputs, Progress Rings, Skeleton & Toast
-   ========================================================================== */
-
 .clarity-alert {
   display: flex;
   align-items: flex-start;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   border: var(--rule-hair) solid transparent;
   font-size: var(--text-sm);
   font-weight: 500;
@@ -1165,7 +1463,7 @@
 }
 
 /* ==========================================================================
-   Motion Primitives & Entrance Choreography (Hallmark --ease-out)
+   Motion Primitives
    ========================================================================== */
 
 @keyframes hallmark-rise {
@@ -1203,7 +1501,7 @@
 
 @keyframes field-flash {
   0% {
-    background-color: var(--color-cream);
+    background-color: var(--color-accent-soft);
   }
   100% {
     background-color: var(--color-paper-2);
@@ -1233,30 +1531,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes canvas-orbit-a {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translate3d(38px, 28px, 0) scale(1.06);
-    opacity: 1;
-  }
-}
-
-@keyframes canvas-orbit-b {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translate3d(-42px, -30px, 0) scale(1.08);
-    opacity: 1;
   }
 }
 
@@ -1338,32 +1612,11 @@
   justify-content: space-between;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   background-color: var(--color-obsidian);
   color: var(--color-obsidian-ink);
   font-size: var(--text-sm);
-  border: var(--rule-hair) solid var(--color-gold-rule);
-}
-
-.demo-account-pill {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2xs);
-  min-height: 44px;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  border: var(--rule-hair) solid var(--color-rule);
-  background-color: var(--color-paper-2);
-  color: var(--color-ink);
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.demo-account-pill.is-selected {
-  border-color: var(--color-accent);
-  background-color: var(--color-cream);
+  border: var(--rule-hair) solid var(--color-obsidian-rule);
 }
 
 .error-display-code {
@@ -1372,6 +1625,273 @@
   line-height: 1;
   color: var(--color-primary-text);
   font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+
+/* ==========================================================================
+   Kalender Akademik & Deadline (Timeline No. 18)
+   ========================================================================== */
+
+.cal-grid-wrap {
+  border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: var(--radius-card);
+  background-color: var(--color-paper-2);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.cal-grid-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-bottom: var(--rule-hair) solid var(--color-rule-2);
+  background-color: var(--color-paper-3);
+}
+
+.cal-weekday {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-ink-2);
+  text-align: center;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.cal-day {
+  min-height: 112px;
+  padding: var(--space-xs);
+  border-right: var(--rule-hair) solid var(--color-rule-2);
+  border-bottom: var(--rule-hair) solid var(--color-rule-2);
+  background-color: var(--color-paper-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.cal-day:nth-child(7n) {
+  border-right: 0;
+}
+
+.cal-day:hover {
+  background-color: var(--color-row-hover);
+}
+
+.cal-day:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.cal-day.is-outside {
+  background-color: var(--color-paper-3);
+  color: var(--color-muted);
+}
+
+.cal-day.is-today {
+  background-color: var(--color-accent-soft);
+}
+
+.cal-day.is-selected {
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+  background-color: var(--color-card-hover);
+}
+
+.cal-day-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 var(--space-2xs);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-ink);
+  align-self: flex-start;
+}
+
+.cal-day.is-outside .cal-day-num {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.cal-day.is-today .cal-day-num {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.cal-event-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius-sm);
+  border: 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.cal-event-pill:hover {
+  text-decoration: none;
+}
+
+.cal-event-lecture {
+  background-color: var(--color-info-soft);
+  color: var(--color-info-text);
+}
+
+.cal-event-assignment {
+  background-color: var(--badge-danger-surface);
+  color: var(--badge-danger-ink);
+}
+
+.cal-event-quiz {
+  background-color: var(--badge-warning-surface);
+  color: var(--badge-warning-ink);
+}
+
+.cal-legend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 36px;
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  border: 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+
+.cal-legend-pill.is-muted {
+  opacity: 0.45;
+}
+
+.cal-legend-pill:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Quiz Pengerjaan, Navigator Soal & Timer (Timeline No. 20 & 21)
+   ========================================================================== */
+
+.quiz-timer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz-timer-badge.is-warning {
+  background-color: var(--badge-warning-surface);
+  color: var(--badge-warning-ink);
+}
+
+.quiz-timer-badge.is-danger {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.quiz-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-xs);
+}
+
+.quiz-num-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  border: var(--rule-hair) solid var(--color-rule);
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.quiz-num-btn:hover {
+  background-color: var(--color-paper-3);
+  border-color: var(--color-rule-strong);
+}
+
+.quiz-num-btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.quiz-num-btn:active {
+  transform: translateY(1px);
+}
+
+.quiz-num-btn.is-answered {
+  background-color: var(--badge-success-surface);
+  border-color: var(--badge-success-surface);
+  color: var(--badge-success-ink);
+}
+
+.quiz-num-btn.is-flagged {
+  background-color: var(--badge-warning-surface);
+  border-color: var(--badge-warning-surface);
+  color: var(--badge-warning-ink);
+}
+
+.quiz-num-btn.is-current {
+  border-width: 2px;
+  border-color: var(--color-accent);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+
+.quiz-option-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  min-height: 48px;
+  border-radius: var(--radius-md);
+  border: var(--rule-hair) solid var(--color-rule);
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.quiz-option-card:hover {
+  background-color: var(--color-row-hover);
+  border-color: var(--color-accent-soft-3);
+}
+
+.quiz-option-card.is-selected {
+  background-color: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+
+.quiz-option-card input[type="radio"] {
+  margin-top: var(--space-2xs);
+  accent-color: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

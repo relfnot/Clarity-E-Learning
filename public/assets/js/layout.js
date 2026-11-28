@@ -1,13 +1,12 @@
 /* ==========================================================================
-   Clarity E-Learning — Layout Shell Fixed Sidebar + Sticky Topbar
-   Tailwind CSS + Basecoat UI + DESIGN.md
+   Clarity E-Learning — Shell Putih Minimalis & Navigasi Hukum Jakob
    ========================================================================== */
 
 (function (global) {
   'use strict';
 
   var ICONS = {
-    home: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+    home: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
     book: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
     file: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
     quiz: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
@@ -22,6 +21,7 @@
     menu: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>',
     close: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
     sun: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>',
+    search: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
     logout: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>'
   };
 
@@ -63,14 +63,15 @@
     if (role === 'dosen') {
       return {
         primary: [
-          { id: 'dashboard', label: 'Dashboard Dosen', href: pageHref('dashboard-dosen.php'), icon: 'home' },
+          { id: 'dashboard', label: 'Dashboard', href: pageHref('dashboard-dosen.php'), icon: 'home' },
           { id: 'course-manage', label: 'Kelola Mata Kuliah', href: pageHref('course-manage.php'), icon: 'book' },
           { id: 'material-upload', label: 'Upload Materi', href: pageHref('material-upload.php'), icon: 'upload' },
           { id: 'quiz-builder', label: 'Buat Quiz & Soal', href: pageHref('quiz-builder.php'), icon: 'quiz' },
-          { id: 'submissions', label: 'Daftar Pengumpulan', href: pageHref('submissions.php'), icon: 'file', badge: '4' },
+          { id: 'submissions', label: 'Pengumpulan Tugas', href: pageHref('submissions.php'), icon: 'file' },
           { id: 'grading', label: 'Penilaian Tugas', href: pageHref('grading.php'), icon: 'chart' },
           { id: 'attendance-manage', label: 'Kelola Presensi', href: pageHref('attendance-manage.php'), icon: 'check' },
-          { id: 'announcement', label: 'Kirim Pengumuman', href: pageHref('announcement.php'), icon: 'megaphone' }
+          { id: 'calendar', label: 'Kalender Akademik', href: pageHref('calendar.php'), icon: 'calendar' },
+          { id: 'announcement', label: 'Pengumuman', href: pageHref('announcement.php'), icon: 'megaphone' }
         ],
         bottom: [
           { id: 'dashboard', label: 'Beranda', href: pageHref('dashboard-dosen.php'), icon: 'home' },
@@ -85,20 +86,19 @@
       primary: [
         { id: 'dashboard', label: 'Dashboard', href: pageHref('dashboard.php'), icon: 'home' },
         { id: 'courses', label: 'Mata Kuliah', href: pageHref('courses.php'), icon: 'book' },
-        { id: 'assignment', label: 'Tugas', href: pageHref('assignment.php'), icon: 'file', badge: '2' },
+        { id: 'assignment', label: 'Tugas', href: pageHref('assignment.php'), icon: 'file' },
         { id: 'quiz', label: 'Quiz', href: pageHref('quiz-intro.php'), icon: 'quiz' },
         { id: 'attendance', label: 'Presensi', href: pageHref('attendance.php'), icon: 'check' },
-        { id: 'calendar', label: 'Kalender & Deadline', href: pageHref('calendar.php'), icon: 'calendar' },
+        { id: 'calendar', label: 'Kalender', href: pageHref('calendar.php'), icon: 'calendar' },
         { id: 'grades', label: 'Nilai', href: pageHref('grades.php'), icon: 'chart' },
-        { id: 'chat', label: 'Diskusi & Kontak', href: pageHref('chat.php'), icon: 'chat' },
-        { id: 'profile', label: 'Profil & Gamifikasi', href: pageHref('profile.php'), icon: 'award' },
-        { id: 'notifications', label: 'Notifikasi', href: pageHref('notifications.php'), icon: 'bell', badge: '3' }
+        { id: 'chat', label: 'Diskusi', href: pageHref('chat.php'), icon: 'chat' },
+        { id: 'profile', label: 'Profil', href: pageHref('profile.php'), icon: 'award' }
       ],
       bottom: [
         { id: 'dashboard', label: 'Beranda', href: pageHref('dashboard.php'), icon: 'home' },
         { id: 'courses', label: 'Matkul', href: pageHref('courses.php'), icon: 'book' },
         { id: 'assignment', label: 'Tugas', href: pageHref('assignment.php'), icon: 'file' },
-        { id: 'profile', label: 'Profil', href: pageHref('profile.php'), icon: 'award' }
+        { id: 'calendar', label: 'Kalender', href: pageHref('calendar.php'), icon: 'calendar' }
       ]
     };
   }
@@ -108,12 +108,9 @@
       var isActive = item.id === activePage;
       var activeClass = isActive ? ' is-active' : '';
       var ariaCurrent = isActive ? ' aria-current="page"' : '';
-      var badgeHtml = item.badge
-        ? '<span class="nav-count-badge">' + escapeHtml(item.badge) + '</span>'
-        : '';
       return '<li><a class="clarity-sidebar-link' + activeClass + '" href="' + escapeHtml(item.href) + '"' + ariaCurrent + '>' +
         '<span class="flex items-center gap-3 min-w-0">' + (ICONS[item.icon] || '') + '<span class="truncate">' + escapeHtml(item.label) + '</span></span>' +
-        badgeHtml + '</a></li>';
+        '</a></li>';
     }).join('');
   }
 
@@ -199,6 +196,62 @@
     });
   }
 
+  function bindQuickSearch(menus, role) {
+    var input = document.getElementById('topbar-quick-search');
+    var dropdown = document.getElementById('topbar-search-dropdown');
+    if (!input || !dropdown) return;
+
+    function renderMatches() {
+      var q = input.value.trim().toLowerCase();
+      if (!q) {
+        dropdown.hidden = true;
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      var matches = (menus.primary || []).filter(function (m) {
+        return m.label.toLowerCase().indexOf(q) !== -1;
+      });
+
+      var searchCoursesHref = pageHref(role === 'dosen' ? 'course-manage.php' : 'courses.php') +
+        (role === 'mahasiswa' ? '?search=' + encodeURIComponent(input.value.trim()) : '');
+
+      var html = matches.slice(0, 5).map(function (m) {
+        return '<a class="clarity-search-option" href="' + escapeHtml(m.href) + '">' +
+          '<span>' + escapeHtml(m.label) + '</span>' +
+          '<span class="text-xs text-muted">Menu</span></a>';
+      }).join('');
+
+      html += '<a class="clarity-search-option" href="' + escapeHtml(searchCoursesHref) + '">' +
+        '<span>Cari mata kuliah "' + escapeHtml(input.value.trim()) + '"</span>' +
+        '<span class="text-xs text-accent">Enter</span></a>';
+
+      dropdown.innerHTML = html;
+      dropdown.hidden = false;
+    }
+
+    input.addEventListener('input', renderMatches);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        dropdown.hidden = true;
+        return;
+      }
+      if (e.key === 'Enter') {
+        var first = dropdown.querySelector('a.clarity-search-option');
+        if (first) {
+          e.preventDefault();
+          window.location.href = first.getAttribute('href');
+        }
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.hidden = true;
+      }
+    });
+  }
+
   function injectShell() {
     var body = document.body;
     if (!body) return;
@@ -210,6 +263,9 @@
     var role = body.getAttribute('data-role');
     if (!role || role === 'public') {
       initTheme();
+      if (typeof global.__clarityReveal === 'function') {
+        global.__clarityReveal();
+      }
       return;
     }
 
@@ -220,7 +276,6 @@
 
     var pageId = body.getAttribute('data-page') || 'dashboard';
     var pageTitle = body.getAttribute('data-title') || 'Clarity E-Learning';
-    var pageSubtitle = body.getAttribute('data-subtitle') || 'Semester Ganjil 2026/2027';
 
     var user = authUser || {
       name: role === 'dosen' ? 'Dosen Pengampu' : 'Mahasiswa',
@@ -233,7 +288,12 @@
     var state = getQueryParam('state') || 'normal';
 
     var contentEl = document.getElementById('page-content');
-    if (!contentEl) return;
+    if (!contentEl) {
+      if (typeof global.__clarityReveal === 'function') {
+        global.__clarityReveal();
+      }
+      return;
+    }
 
     var stateReplacement = getStateHtml(state, pageTitle, role);
     if (stateReplacement) {
@@ -255,12 +315,12 @@
       '  <div class="clarity-sidebar-header">' +
       '    <a class="flex items-center gap-2.5 no-underline hover:no-underline" href="' + escapeHtml(homeHref) + '">' +
       '      <img class="w-9 h-9 shrink-0" src="' + escapeHtml(logoSrc) + '" alt="Logo Clarity" width="36" height="36">' +
-      '      <span class="clarity-sidebar-brand">Clarity</span>' +
+      '      <span class="clarity-sidebar-brand">Clarity.</span>' +
       '    </a>' +
       '    <button type="button" class="clarity-mobile-only clarity-icon-btn" id="sidebar-close-btn" aria-label="Tutup menu">' + ICONS.close + '</button>' +
       '  </div>' +
       '  <nav class="clarity-sidebar-nav" aria-label="Menu ' + (role === 'dosen' ? 'Dosen' : 'Mahasiswa') + '">' +
-      '    <ul class="space-y-1 list-none p-0 m-0">' + renderNavItems(menus.primary, pageId) + '</ul>' +
+      '    <ul class="space-y-1.5 list-none p-0 m-0">' + renderNavItems(menus.primary, pageId) + '</ul>' +
       '  </nav>' +
       '  <div class="clarity-sidebar-footer">' +
       '    <div class="clarity-sidebar-usercard">' +
@@ -276,20 +336,25 @@
 
     var topbarHtml =
       '<header class="clarity-topbar">' +
-      '  <div class="flex items-center gap-3 min-w-0">' +
+      '  <div class="flex items-center gap-3 min-w-0 flex-1">' +
       '    <button type="button" class="clarity-mobile-only clarity-icon-btn shrink-0" id="topbar-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="app-sidebar">' + ICONS.menu + '</button>' +
-      '    <div class="min-w-0">' +
-      '      <div class="text-lg font-bold text-ink truncate">' + escapeHtml(pageTitle) + '</div>' +
+      '    <div class="clarity-search-wrap hidden sm:block">' +
+      '      <span class="clarity-search-icon">' + ICONS.search + '</span>' +
+      '      <label for="topbar-quick-search" class="sr-only">Cari mata kuliah atau menu cepat</label>' +
+      '      <input id="topbar-quick-search" type="search" class="clarity-search-input" placeholder="Cari mata kuliah atau menu…" autocomplete="off">' +
+      '      <div id="topbar-search-dropdown" class="clarity-search-dropdown" hidden></div>' +
+      '    </div>' +
+      '    <div class="min-w-0 sm:hidden">' +
+      '      <div class="text-base font-bold text-ink truncate">' + escapeHtml(pageTitle) + '</div>' +
       '    </div>' +
       '  </div>' +
       '  <div class="flex items-center gap-2 shrink-0">' +
-      '    <span class="clarity-term-chip">Ganjil 2026/2027</span>' +
       '    <button type="button" class="clarity-icon-btn" id="theme-toggle-btn" aria-label="Ubah mode terang atau gelap" title="Ubah Tema">' + ICONS.sun + '</button>' +
-      '    <a class="clarity-icon-btn" href="' + escapeHtml(notifHref) + '" aria-label="Notifikasi">' + ICONS.bell + '<span class="notif-count-badge">3</span></a>' +
+      '    <a class="clarity-icon-btn" href="' + escapeHtml(notifHref) + '" aria-label="Notifikasi">' + ICONS.bell + '</a>' +
       '    <a class="clarity-profile-link" href="' + escapeHtml(profileHref) + '">' +
       '      <span class="avatar-chip" aria-hidden="true" data-shell-user-initials>' + escapeHtml(user.initials || 'CL') + '</span>' +
       '      <span class="hidden md:block text-left">' +
-      '        <span class="block text-sm font-semibold leading-tight max-w-[170px] truncate" data-shell-user-name>' + escapeHtml(user.name) + '</span>' +
+      '        <span class="block text-sm font-semibold leading-tight max-w-[160px] truncate" data-shell-user-name>' + escapeHtml(user.name) + '</span>' +
       '        <span class="block text-xs text-muted" data-shell-user-role>' + escapeHtml(formatRoleSubtext(user, role)) + '</span>' +
       '      </span>' +
       '    </a>' +
@@ -328,8 +393,12 @@
 
     updateUserDisplay(user, role);
     bindSidebarEvents();
+    bindQuickSearch(menus, role);
     bindLogoutEvent();
     initTheme();
+    if (typeof global.__clarityReveal === 'function') {
+      global.__clarityReveal();
+    }
 
     window.addEventListener('clarity:user-loaded', function (ev) {
       if (ev && ev.detail) {
@@ -427,8 +496,8 @@
     var offset = circ - (percent / 100) * circ;
     return '<div class="progress-ring-wrap" style="width:' + s + 'px;height:' + s + 'px">' +
       '<svg width="' + s + '" height="' + s + '" viewBox="0 0 ' + s + ' ' + s + '" aria-label="Progress ' + percent + '%">' +
-      '  <circle cx="' + (s / 2) + '" cy="' + (s / 2) + '" r="' + r + '" fill="none" stroke="var(--color-surface-alt)" stroke-width="' + stroke + '"/>' +
-      '  <circle class="progress-ring-meter" cx="' + (s / 2) + '" cy="' + (s / 2) + '" r="' + r + '" fill="none" stroke="var(--color-primary)" stroke-width="' + stroke + '" stroke-linecap="round" stroke-dasharray="' + circ.toFixed(1) + '" stroke-dashoffset="' + offset.toFixed(1) + '" style="--ring-circ:' + circ.toFixed(1) + '" transform="rotate(-90 ' + (s / 2) + ' ' + (s / 2) + ')"/>' +
+      '  <circle cx="' + (s / 2) + '" cy="' + (s / 2) + '" r="' + r + '" fill="none" stroke="var(--color-paper-3)" stroke-width="' + stroke + '"/>' +
+      '  <circle class="progress-ring-meter" cx="' + (s / 2) + '" cy="' + (s / 2) + '" r="' + r + '" fill="none" stroke="var(--color-accent)" stroke-width="' + stroke + '" stroke-linecap="round" stroke-dasharray="' + circ.toFixed(1) + '" stroke-dashoffset="' + offset.toFixed(1) + '" style="--ring-circ:' + circ.toFixed(1) + '" transform="rotate(-90 ' + (s / 2) + ' ' + (s / 2) + ')"/>' +
       '</svg>' +
       '<span class="progress-ring-text" data-target-percent="' + percent + '">' + percent + '%</span>' +
       '</div>';
