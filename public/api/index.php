@@ -5,11 +5,13 @@ declare(strict_types=1);
 use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
+use App\Controllers\CalendarController;
 use App\Controllers\CourseController;
 use App\Controllers\GradeController;
 use App\Controllers\HealthController;
 use App\Controllers\MaterialController;
 use App\Controllers\NotificationController;
+use App\Controllers\QuizAttemptController;
 use App\Controllers\QuizController;
 use App\Controllers\SubmissionController;
 use App\Core\Env;
@@ -85,6 +87,9 @@ $router->get('/courses/{id}/attendance/summary', [AttendanceController::class, '
 $router->get('/meetings/{id}/attendance', [AttendanceController::class, 'meetingAttendance'], [$auth, $dosenOnly]);
 $router->put('/attendance-records/{id}', [AttendanceController::class, 'updateRecord'], [$auth, $dosenOnly]);
 
+// 6b. Kalender & Deadline (Timeline No. 18)
+$router->get('/calendar', [CalendarController::class, 'index'], [$auth]);
+
 // 7. Quiz & Bank Soal (Timeline No. 13 · PIC: Gaby)
 $router->get('/courses/{id}/quizzes', [QuizController::class, 'index'], [$auth]);
 $router->post('/courses/{id}/quizzes', [QuizController::class, 'store'], [$auth, $dosenOnly]);
@@ -95,6 +100,15 @@ $router->get('/quizzes/{id}/questions', [QuizController::class, 'listQuestions']
 $router->post('/quizzes/{id}/questions', [QuizController::class, 'storeQuestion'], [$auth, $dosenOnly]);
 $router->put('/questions/{id}', [QuizController::class, 'updateQuestion'], [$auth, $dosenOnly]);
 $router->delete('/questions/{id}', [QuizController::class, 'destroyQuestion'], [$auth, $dosenOnly]);
+
+// 7b. Percobaan Quiz & Penilaian Esai (Timeline No. 20)
+$router->post('/quizzes/{id}/attempts', [QuizAttemptController::class, 'start'], [$auth, $mahasiswaOnly]);
+$router->get('/quizzes/{id}/attempts/me', [QuizAttemptController::class, 'myAttempts'], [$auth, $mahasiswaOnly]);
+$router->get('/quizzes/{id}/attempts', [QuizAttemptController::class, 'index'], [$auth, $dosenOnly]);
+$router->get('/attempts/{id}', [QuizAttemptController::class, 'show'], [$auth]);
+$router->put('/attempts/{id}/answers', [QuizAttemptController::class, 'saveAnswers'], [$auth, $mahasiswaOnly]);
+$router->post('/attempts/{id}/submit', [QuizAttemptController::class, 'submit'], [$auth, $mahasiswaOnly]);
+$router->put('/answers/{id}/grade', [QuizAttemptController::class, 'gradeAnswer'], [$auth, $dosenOnly]);
 
 // 8. Modul Nilai & Bobot Komponen (Timeline No. 14 · PIC: Gaby)
 $router->get('/courses/{id}/grade-weights', [GradeController::class, 'getWeights'], [$auth]);

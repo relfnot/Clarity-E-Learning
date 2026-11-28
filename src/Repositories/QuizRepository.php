@@ -71,6 +71,28 @@ final class QuizRepository
         return (int) $stmt->fetchColumn();
     }
 
+    public function findActiveAttemptId(int $quizId, int $userId): ?int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT id FROM quiz_attempts
+             WHERE quiz_id = :quiz_id AND user_id = :user_id AND status = 'in_progress'
+             ORDER BY id DESC LIMIT 1"
+        );
+        $stmt->execute(['quiz_id' => $quizId, 'user_id' => $userId]);
+        $val = $stmt->fetchColumn();
+        return $val !== false ? (int) $val : null;
+    }
+
+    public function findBestScoreByUser(int $quizId, int $userId): ?float
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT MAX(score) FROM quiz_attempts WHERE quiz_id = :quiz_id AND user_id = :user_id AND score IS NOT NULL'
+        );
+        $stmt->execute(['quiz_id' => $quizId, 'user_id' => $userId]);
+        $val = $stmt->fetchColumn();
+        return $val !== false && $val !== null ? round((float) $val, 2) : null;
+    }
+
     /**
      * @param array<string, mixed> $data
      */

@@ -41,10 +41,15 @@ final class QuizService
         $userId = (int) $user['id'];
 
         return array_map(function (array $row) use ($role, $userId): array {
+            $qId = (int) $row['id'];
             $attemptsUsed = $role === 'mahasiswa'
-                ? $this->quizzes->countAttemptsByUser((int) $row['id'], $userId)
+                ? $this->quizzes->countAttemptsByUser($qId, $userId)
                 : 0;
-            return $this->formatQuiz($row, $role, $attemptsUsed, null);
+            $extra = $role === 'mahasiswa' ? [
+                'active_attempt_id' => $this->quizzes->findActiveAttemptId($qId, $userId),
+                'best_score' => $this->quizzes->findBestScoreByUser($qId, $userId),
+            ] : [];
+            return $this->formatQuiz($row, $role, $attemptsUsed, null, $extra);
         }, $rows);
     }
 
@@ -66,6 +71,10 @@ final class QuizService
         $attemptsUsed = $role === 'mahasiswa'
             ? $this->quizzes->countAttemptsByUser($quizId, $userId)
             : 0;
+        $extra = $role === 'mahasiswa' ? [
+            'active_attempt_id' => $this->quizzes->findActiveAttemptId($quizId, $userId),
+            'best_score' => $this->quizzes->findBestScoreByUser($quizId, $userId),
+        ] : [];
 
         // Soal & kunci jawaban hanya diberikan kepada dosen pengampu; tidak pernah bocor ke mahasiswa
         $questions = null;
@@ -74,7 +83,7 @@ final class QuizService
             $questions = array_map(fn (array $q): array => $this->formatQuestion($q, true), $rawQuestions);
         }
 
-        return $this->formatQuiz($quiz, $role, $attemptsUsed, $questions);
+        return $this->formatQuiz($quiz, $role, $attemptsUsed, $questions, $extra);
     }
 
     /**
@@ -404,10 +413,17 @@ final class QuizService
     /**
      * @param array<string, mixed> $row
      * @param array<int, array<string, mixed>>|null $questions
+     * @param array<string, mixed> $extra
      * @return array<string, mixed>
      */
-    private function formatQuiz(array $row, string $role, int $attemptsUsed, ?array $questions): array
+    private function formatQuiz(array $row, string $role, int $attemptsUsed, ?array $questions, array $extra = []): array
     {
+        $tz = DateTimeHelper::timezone();
+        $nowTs = DateTimeHelper::now()->getTimestamp();
+        $openTs = !empty($row['open_at']) ? (new DateTimeImmutable((string) $row['open_at'], $tz))->getTimestamp() : 0;
+        $closeTs = !empty($row['close_at']) ? (new DateTimeImmutable((string) $row['close_at'], $tz))->getTimestamp() : 0;
+        $availabilityStatus = $nowTs < $openTs ? 'belum_buka' : ($nowTs > $closeTs ? 'ditutup' : 'tersedia');
+
         $data = [
             'id' => (int) ($row['id'] ?? 0),
             'course_id' => (int) ($row['course_id'] ?? 0),
@@ -426,7 +442,13 @@ final class QuizService
             'total_questions' => (int) ($row['total_questions'] ?? 0),
             'total_points' => round((float) ($row['total_points'] ?? 0), 2),
             'weight' => round((float) ($row['weight'] ?? 0), 2),
+            'availability_status' => $availabilityStatus,
         ];
+
+        if ($role === 'mahasiswa') {
+            $data['active_attempt_id'] = $extra['active_attempt_id'] ?? null;
+            $data['best_score'] = $extra['best_score'] ?? null;
+        }
 
         if ($role === 'dosen') {
             $data['attempts_count'] = (int) ($row['attempts_count'] ?? 0);
