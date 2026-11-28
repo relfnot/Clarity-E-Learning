@@ -1,9 +1,16 @@
+Options -Indexes
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
     # Teruskan header Authorization ke PHP
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Blokir akses HTTP langsung ke folder/file sensitif
+    RewriteRule ^(?:src|config|database|storage|bin|vendor|tests)(?:/|$) - [F,L]
+    RewriteRule ^\.env(?:\.|$) - [F,L]
 
     # Arahkan request /api/v1/* dari root repo ke public/api/index.php
     RewriteRule ^api/v1(?:/(.*))?$ public/api/index.php [QSA,L]

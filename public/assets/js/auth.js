@@ -162,6 +162,10 @@
   }
 
   function guardPage() {
+    if (/\/login\.(php|html)$/i.test(window.location.pathname || '')) {
+      return true;
+    }
+
     var body = document.body;
     if (!body) return true;
 
