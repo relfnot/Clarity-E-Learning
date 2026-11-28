@@ -90,7 +90,7 @@ final class CourseController
 
     /**
      * GET /courses/{id}/participants
-     * Daftar peserta kelas mahasiswa.
+     * Daftar peserta kelas mahasiswa dengan filter pencarian & pagination.
      */
     public function participants(Request $request): never
     {
@@ -99,25 +99,17 @@ final class CourseController
             throw new HttpException('UNAUTHENTICATED', 'Silakan login terlebih dahulu.', 401);
         }
 
-        $id = (int) $request->param('id');
-        if ($id <= 0) {
-            throw new HttpException('VALIDATION_ERROR', 'ID mata kuliah tidak valid.', 400);
-        }
+        $id = $request->intParam('id');
+        (new CourseService($this->courseRepository))->requireCourseAccess($id, $user);
 
-        // Pastikan mata kuliah ada dan user memiliki akses
-        $course = $this->courseRepository->findById(
-            $id,
-            (int) $user['id'],
-            (string) $user['role']
-        );
+        $searchRaw = $request->query('search') ?? $request->query('q');
+        $search = is_string($searchRaw) && trim($searchRaw) !== '' ? trim($searchRaw) : null;
+        $page = $request->queryInt('page', 1, 1, 1000);
+        $perPage = $request->queryInt('per_page', 20, 1, 100);
 
-        if ($course === null) {
-            throw new HttpException('NOT_FOUND', 'Mata kuliah tidak ditemukan atau Anda tidak memiliki akses.', 404);
-        }
+        $result = $this->courseRepository->listParticipantsPaginated($id, $search, $page, $perPage);
 
-        $participants = $this->courseRepository->getParticipants($id);
-
-        Response::json($participants, 200, ['total' => count($participants)]);
+        Response::json($result['data'], 200, $result['meta']);
     }
 
     public function store(Request $request): never

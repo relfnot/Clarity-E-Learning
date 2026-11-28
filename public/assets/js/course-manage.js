@@ -95,7 +95,7 @@
       '    <span class="clarity-tag clarity-tag-info">' + H.esc(c.enrolled_count) + ' peserta</span>' +
       '  </div>' +
       '  <h2 class="text-xl font-extrabold text-ink m-0">' + H.esc(c.name) + '</h2>' +
-      '  <p class="text-sm text-muted m-0">' + H.esc(c.day) + ', ' + H.esc(c.start_time) + ' - ' + H.esc(c.end_time) + ' WIB · ' + H.esc(c.room) + '</p>' +
+      '  <p class="text-sm text-muted m-0">' + H.esc(c.day) + ', ' + H.esc(c.start_time) + ' - ' + H.esc(c.end_time) + ' WIB | ' + H.esc(c.room) + '</p>' +
       '</div>' +
       '<div class="flex flex-wrap gap-2 shrink-0">' +
       '  <a class="clarity-btn clarity-btn-outline clarity-btn-sm" href="' + window.ClarityAPI.pageUrl('material-upload.php') + '?course_id=' + c.id + '">Upload Materi</a>' +
@@ -196,7 +196,7 @@
           items.forEach(function (mt) {
             html += '<div class="px-6 py-4 flex items-center justify-between gap-3">' +
               '<div><div class="font-bold text-ink">Pertemuan ' + H.esc(mt.number) + ': ' + H.esc(mt.title) + '</div>' +
-              '<div class="text-xs text-muted">' + H.esc(H.formatDateOnly(mt.meeting_date)) + (mt.description ? ' · ' + H.esc(mt.description) : '') + '</div></div>' +
+              '<div class="text-xs text-muted">' + H.esc(H.formatDateOnly(mt.meeting_date)) + (mt.description ? ' | ' + H.esc(mt.description) : '') + '</div></div>' +
               '<a class="clarity-btn clarity-btn-outline clarity-btn-sm shrink-0" href="' + window.ClarityAPI.pageUrl('attendance-manage.php') + '?course_id=' + cid + '&meeting_id=' + mt.id + '">Presensi</a>' +
               '</div>';
           });
@@ -265,7 +265,7 @@
             html += '<div class="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">' +
               '<div class="min-w-0 space-y-1">' +
               '  <div class="font-bold text-ink">' + H.esc(a.title) + '</div>' +
-              '  <div class="text-xs text-muted">Batas: ' + H.esc(H.formatDateTime(a.deadline)) + ' · Bobot ' + H.esc(a.weight) + '%</div>' +
+              '  <div class="text-xs text-muted">Batas: ' + H.esc(H.formatDateTime(a.deadline)) + ' | Bobot ' + H.esc(a.weight) + '%</div>' +
               '</div>' +
               '<div class="flex items-center gap-2 shrink-0">' +
               '  <a class="clarity-btn clarity-btn-outline clarity-btn-sm" href="' + window.ClarityAPI.pageUrl('submissions.php') + '?course_id=' + cid + '&assignment_id=' + a.id + '">Pengumpulan</a>' +
@@ -319,36 +319,81 @@
       });
   }
 
-  function loadParticipantsTab() {
+  var partPage = 1;
+  var partSearch = '';
+  var partSearchTimer = null;
+
+  function loadParticipantsTab(page, search) {
+    if (typeof page === 'number') partPage = page;
+    if (typeof search === 'string') partSearch = search;
     var cid = activeCourse.id;
     panelEl.innerHTML = H.renderLoading('Memuat daftar peserta...');
-    window.ClarityAPI.get('/courses/' + cid + '/participants?per_page=100')
+    var qs = '?page=' + partPage + '&per_page=10' + (partSearch ? '&search=' + encodeURIComponent(partSearch) : '');
+
+    window.ClarityAPI.get('/courses/' + cid + '/participants' + qs)
       .then(function (res) {
         var items = Array.isArray(res.data) ? res.data : [];
+        var meta = res.meta || {};
+        var total = typeof meta.total === 'number' ? meta.total : items.length;
+        var currentPage = meta.page || 1;
+        var totalPages = meta.total_pages || 1;
+
         var html = '<div class="clarity-card p-6 space-y-4">' +
-          '<form id="enroll-form" class="flex flex-col sm:flex-row sm:items-end gap-3">' +
-          '  <div class="flex-1 sm:max-w-xs"><label for="enroll-nim" class="block text-sm font-semibold text-ink mb-1">Daftarkan Mahasiswa (NIM)</label>' +
-          '  <input id="enroll-nim" type="text" class="clarity-input w-full" placeholder="Contoh: 24.N1.0004" required></div>' +
-          '  <button type="submit" class="clarity-btn clarity-btn-primary clarity-btn-sm">Tambahkan Peserta</button>' +
-          '</form>';
+          '<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-2 border-b border-[var(--color-border-subtle)]">' +
+          '  <form id="enroll-form" class="flex flex-col sm:flex-row sm:items-end gap-3 flex-1">' +
+          '    <div class="flex-1 sm:max-w-xs"><label for="enroll-nim" class="block text-sm font-semibold text-ink mb-1">Daftarkan Mahasiswa (NIM)</label>' +
+          '    <input id="enroll-nim" type="text" class="clarity-input w-full" placeholder="Contoh: 24.N1.0004" required></div>' +
+          '    <button type="submit" class="clarity-btn clarity-btn-primary clarity-btn-sm">Tambahkan Peserta</button>' +
+          '  </form>' +
+          '  <div class="w-full lg:w-72">' +
+          '    <label for="mg-part-search" class="block text-sm font-semibold text-ink mb-1">Cari Peserta</label>' +
+          '    <input id="mg-part-search" type="search" class="clarity-input w-full" value="' + H.esc(partSearch) + '" placeholder="Cari nama atau NIM...">' +
+          '  </div>' +
+          '</div>';
 
         if (items.length === 0) {
-          html += '<p class="text-sm text-muted m-0">Belum ada mahasiswa terdaftar di kelas ini.</p>';
+          html += H.renderEmpty(
+            partSearch ? 'Peserta Tidak Ditemukan' : 'Belum Ada Peserta',
+            partSearch ? 'Tidak ada mahasiswa yang cocok dengan kata kunci pencarian.' : 'Belum ada mahasiswa terdaftar di kelas ini.'
+          );
         } else {
           html += '<div class="overflow-x-auto"><table class="clarity-table w-full">' +
-            '<thead><tr><th>NIM</th><th>Nama</th><th>Program Studi</th><th>Aksi</th></tr></thead><tbody>';
+            '<thead><tr><th>NIM</th><th>Nama</th><th>Peran</th><th>Program Studi</th><th>Aksi</th></tr></thead><tbody>';
           items.forEach(function (u) {
             html += '<tr>' +
-              '<td class="font-mono text-sm">' + H.esc(u.nim || u.nim_nip || '') + '</td>' +
-              '<td class="font-semibold text-ink">' + H.esc(u.name) + '</td>' +
+              '<td class="font-mono text-sm">' + H.esc(u.nim_nip || u.nim || '') + '</td>' +
+              '<td class="font-semibold text-ink">' + H.esc(u.name) + '<div class="text-xs text-muted font-normal">' + H.esc(u.email || '') + '</div></td>' +
+              '<td><span class="clarity-tag clarity-tag-neutral">Mahasiswa</span></td>' +
               '<td class="text-sm text-muted">' + H.esc(u.program_studi || '-') + '</td>' +
               '<td><button type="button" class="clarity-btn clarity-btn-outline clarity-btn-sm" data-unenroll="' + u.id + '">Keluarkan</button></td>' +
               '</tr>';
           });
-          html += '</tbody></table></div>';
+          html += '</tbody></table></div>' +
+            '<div class="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm">' +
+            '  <div class="text-muted">Total <strong class="text-ink">' + total + '</strong> peserta terdaftar</div>' +
+            '  <div class="flex items-center gap-2">' +
+            '    <button type="button" class="clarity-btn clarity-btn-outline clarity-btn-sm" id="mg-part-prev"' + (currentPage <= 1 ? ' disabled' : '') + '>Sebelumnya</button>' +
+            '    <span class="text-xs font-semibold text-ink px-2">Halaman ' + currentPage + ' / ' + totalPages + '</span>' +
+            '    <button type="button" class="clarity-btn clarity-btn-outline clarity-btn-sm" id="mg-part-next"' + (currentPage >= totalPages ? ' disabled' : '') + '>Berikutnya</button>' +
+            '  </div>' +
+            '</div>';
         }
         html += '</div>';
         panelEl.innerHTML = html;
+
+        var searchEl = document.getElementById('mg-part-search');
+        if (searchEl) {
+          searchEl.addEventListener('input', function () {
+            clearTimeout(partSearchTimer);
+            partSearchTimer = setTimeout(function () {
+              loadParticipantsTab(1, searchEl.value.trim());
+            }, 300);
+          });
+        }
+        var prevBtn = document.getElementById('mg-part-prev');
+        var nextBtn = document.getElementById('mg-part-next');
+        if (prevBtn) prevBtn.addEventListener('click', function () { loadParticipantsTab(currentPage - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { loadParticipantsTab(currentPage + 1); });
 
         document.getElementById('enroll-form').addEventListener('submit', function (e) {
           e.preventDefault();
@@ -356,7 +401,11 @@
           window.ClarityAPI.post('/courses/' + cid + '/enrollments', { nim_nip: nim })
             .then(function () {
               if (window.ClarityUI) window.ClarityUI.showToast('Mahasiswa berhasil didaftarkan.', 'success');
-              loadParticipantsTab();
+              if (activeCourse) {
+                activeCourse.enrolled_count = (Number(activeCourse.enrolled_count) || 0) + 1;
+                renderCourseInfo(activeCourse);
+              }
+              loadParticipantsTab(1);
             })
             .catch(function (err) {
               if (window.ClarityUI) window.ClarityUI.showToast((err && err.message) || 'Gagal mendaftarkan mahasiswa.', 'danger');
@@ -369,7 +418,14 @@
             window.ClarityAPI.del('/courses/' + cid + '/enrollments/' + b.getAttribute('data-unenroll'))
               .then(function () {
                 if (window.ClarityUI) window.ClarityUI.showToast('Peserta dikeluarkan.', 'info');
-                loadParticipantsTab();
+                if (activeCourse && Number(activeCourse.enrolled_count) > 0) {
+                  activeCourse.enrolled_count = Number(activeCourse.enrolled_count) - 1;
+                  renderCourseInfo(activeCourse);
+                }
+                loadParticipantsTab(currentPage);
+              })
+              .catch(function (err) {
+                if (window.ClarityUI) window.ClarityUI.showToast((err && err.message) || 'Gagal mengeluarkan peserta.', 'danger');
               });
           });
         });
@@ -377,7 +433,7 @@
       .catch(function (err) {
         panelEl.innerHTML = H.renderError(err && err.message, 'btn-retry-mg-part');
         var r = document.getElementById('btn-retry-mg-part');
-        if (r) r.addEventListener('click', loadParticipantsTab);
+        if (r) r.addEventListener('click', function () { loadParticipantsTab(partPage); });
       });
   }
 
@@ -392,7 +448,7 @@
     if (tab === 'materials') loadMaterialsTab();
     else if (tab === 'meetings') loadMeetingsTab();
     else if (tab === 'assignments') loadAssignmentsTab();
-    else loadParticipantsTab();
+    else { partPage = 1; partSearch = ''; loadParticipantsTab(1, ''); }
   }
 
   document.querySelectorAll('[data-manage-tab]').forEach(function (btn) {

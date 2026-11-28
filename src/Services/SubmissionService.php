@@ -188,7 +188,8 @@ final class SubmissionService
         array $user,
         ?string $statusFilter,
         int $page,
-        int $perPage
+        int $perPage,
+        ?string $search = null
     ): array {
         $assignment = $this->assignments->findById($assignmentId);
         if ($assignment === null) {
@@ -207,6 +208,7 @@ final class SubmissionService
             'dinilai' => 0,
         ];
 
+        $searchLower = $search !== null && trim($search) !== '' ? mb_strtolower(trim($search), 'UTF-8') : null;
         $formattedAll = [];
         foreach ($roster as $row) {
             $item = $this->formatRosterSubmissionRow($row, $assignmentId);
@@ -214,9 +216,17 @@ final class SubmissionService
             if (isset($summary[$st])) {
                 $summary[$st]++;
             }
-            if ($statusFilter === null || $statusFilter === '' || $st === $statusFilter) {
-                $formattedAll[] = $item;
+            if ($statusFilter !== null && $statusFilter !== '' && $st !== $statusFilter) {
+                continue;
             }
+            if ($searchLower !== null) {
+                $nameLower = mb_strtolower((string) ($item['student_name'] ?? ''), 'UTF-8');
+                $nimLower = mb_strtolower((string) ($item['nim_nip'] ?? ''), 'UTF-8');
+                if (!str_contains($nameLower, $searchLower) && !str_contains($nimLower, $searchLower)) {
+                    continue;
+                }
+            }
+            $formattedAll[] = $item;
         }
 
         $totalFiltered = count($formattedAll);
@@ -229,6 +239,7 @@ final class SubmissionService
                 'page' => $page,
                 'per_page' => $perPage,
                 'total' => $totalFiltered,
+                'total_pages' => $totalFiltered > 0 ? (int) ceil($totalFiltered / $perPage) : 1,
                 'summary' => $summary,
             ],
         ];
@@ -238,9 +249,13 @@ final class SubmissionService
      * @param array<string, mixed> $user
      * @return array{csv: string, filename: string}
      */
-    public function exportCsvForLecturer(int $assignmentId, array $user, ?string $statusFilter): array
-    {
-        $result = $this->listForLecturer($assignmentId, $user, $statusFilter, 1, 500);
+    public function exportCsvForLecturer(
+        int $assignmentId,
+        array $user,
+        ?string $statusFilter,
+        ?string $search = null
+    ): array {
+        $result = $this->listForLecturer($assignmentId, $user, $statusFilter, 1, 500, $search);
         $lines = ['NIM,Nama Mahasiswa,Status,Waktu Pengumpulan,Tautan,Berkas,Nilai'];
 
         foreach ($result['items'] as $row) {

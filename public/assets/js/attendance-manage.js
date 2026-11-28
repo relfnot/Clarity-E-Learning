@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Clarity E-Learning — Kelola Presensi Dosen
+   Clarity E-Learning — Kelola Presensi Dosen (Item 17)
    ========================================================================== */
 
 (function () {
@@ -12,6 +12,149 @@
   if (!courseSelect || !meetingSelect || !sessionEl || !rosterEl) return;
 
   var H = window.ClarityHelpers;
+  var STATUS_LABELS = { hadir: 'Hadir', izin: 'Izin', sakit: 'Sakit', alpa: 'Alpa' };
+
+  var rosterState = {
+    allItems: [],
+    statusFilter: '',
+    search: ''
+  };
+
+  function computeRosterCounts(items) {
+    var counts = { hadir: 0, izin: 0, sakit: 0, alpaBelum: 0 };
+    items.forEach(function (row) {
+      if (row.status === 'hadir') counts.hadir++;
+      else if (row.status === 'izin') counts.izin++;
+      else if (row.status === 'sakit') counts.sakit++;
+      else counts.alpaBelum++;
+    });
+    return counts;
+  }
+
+  function renderRosterTable() {
+    var items = rosterState.allItems;
+    if (items.length === 0) {
+      rosterEl.innerHTML = H.renderEmpty('Belum Ada Peserta', 'Belum ada mahasiswa terdaftar pada mata kuliah ini.');
+      return;
+    }
+
+    var counts = computeRosterCounts(items);
+    var filtered = items.filter(function (row) {
+      if (rosterState.statusFilter && row.status !== rosterState.statusFilter) {
+        return false;
+      }
+      if (rosterState.search) {
+        var q = rosterState.search.toLowerCase();
+        var nameMatch = String(row.student_name || '').toLowerCase().indexOf(q) !== -1;
+        var nimMatch = String(row.nim_nip || '').toLowerCase().indexOf(q) !== -1;
+        return nameMatch || nimMatch;
+      }
+      return true;
+    });
+
+    var ledgerHtml = '<div class="stat-ledger mb-6">' +
+      '<div class="stat-cell"><div class="stat-label">Hadir</div><div class="stat-value text-success">' + H.esc(counts.hadir) + '</div></div>' +
+      '<div class="stat-cell"><div class="stat-label">Izin</div><div class="stat-value text-ink">' + H.esc(counts.izin) + '</div></div>' +
+      '<div class="stat-cell"><div class="stat-label">Sakit</div><div class="stat-value text-warning">' + H.esc(counts.sakit) + '</div></div>' +
+      '<div class="stat-cell"><div class="stat-label">Alpa / Belum</div><div class="stat-value text-accent">' + H.esc(counts.alpaBelum) + '</div></div>' +
+      '</div>';
+
+    var filterDefs = [
+      { key: '', label: 'Semua' },
+      { key: 'hadir', label: 'Hadir' },
+      { key: 'izin', label: 'Izin' },
+      { key: 'sakit', label: 'Sakit' },
+      { key: 'alpa', label: 'Alpa' },
+      { key: 'belum', label: 'Belum' }
+    ];
+
+    var filterBtns = filterDefs.map(function (f) {
+      var active = rosterState.statusFilter === f.key;
+      return '<button type="button" class="filter-tab-btn' + (active ? ' is-active' : '') + '" data-am-filter="' + f.key + '" aria-pressed="' + (active ? 'true' : 'false') + '">' + H.esc(f.label) + '</button>';
+    }).join('');
+
+    var cardHtml = '<article class="clarity-card overflow-hidden">' +
+      '<div class="clarity-section-head flex-wrap gap-3">' +
+      '  <h2 class="text-base font-bold text-ink m-0">Daftar Kehadiran Peserta (' + items.length + ')</h2>' +
+      '  <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto">' +
+      '    <div class="filter-tab-group overflow-x-auto" role="group" aria-label="Filter status kehadiran">' + filterBtns + '</div>' +
+      '    <div class="w-full sm:w-56">' +
+      '      <label for="am-roster-search" class="sr-only">Cari NIM atau nama mahasiswa</label>' +
+      '      <input id="am-roster-search" type="search" class="clarity-input text-sm" value="' + H.esc(rosterState.search) + '" placeholder="Cari NIM atau nama...">' +
+      '    </div>' +
+      '  </div>' +
+      '</div>';
+
+    if (filtered.length === 0) {
+      cardHtml += '<div class="p-6">' + H.renderEmpty('Tidak Ada Data Cocok', 'Tidak ada mahasiswa dengan status atau pencarian tersebut.') + '</div>';
+    } else {
+      cardHtml += '<div class="overflow-x-auto"><table class="clarity-table w-full">' +
+        '<thead><tr><th>NIM</th><th>Nama Mahasiswa</th><th>Status</th><th>Waktu Check-in</th><th>Ubah Status</th></tr></thead><tbody>';
+
+      filtered.forEach(function (row) {
+        var canEdit = row.id !== null;
+        cardHtml += '<tr>' +
+          '<td class="font-mono text-sm">' + H.esc(row.nim_nip) + '</td>' +
+          '<td class="font-semibold text-ink">' + H.esc(row.student_name) + '</td>' +
+          '<td>' + H.attendanceStatusBadge(row.status) + '</td>' +
+          '<td class="text-sm text-muted">' + H.esc(row.checked_at ? H.formatDateTime(row.checked_at) : '-') + '</td>' +
+          '<td>' +
+          (canEdit
+            ? '<label class="sr-only" for="rec-' + row.id + '">Status untuk ' + H.esc(row.student_name) + '</label>' +
+              '<select id="rec-' + row.id + '" class="clarity-input text-sm py-1.5" data-record-status="' + row.id + '">' +
+              ['hadir', 'izin', 'sakit', 'alpa'].map(function (st) {
+                return '<option value="' + st + '"' + (row.status === st ? ' selected' : '') + '>' + H.esc(STATUS_LABELS[st]) + '</option>';
+              }).join('') +
+              '</select>'
+            : '<span class="text-xs text-muted">Menunggu sesi ditutup / check-in</span>') +
+          '</td></tr>';
+      });
+      cardHtml += '</tbody></table></div>';
+    }
+    cardHtml += '</article>';
+
+    rosterEl.innerHTML = ledgerHtml + cardHtml;
+
+    rosterEl.querySelectorAll('[data-am-filter]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        rosterState.statusFilter = btn.getAttribute('data-am-filter') || '';
+        renderRosterTable();
+      });
+    });
+
+    var searchEl = document.getElementById('am-roster-search');
+    if (searchEl) {
+      searchEl.addEventListener('input', function () {
+        var cursorPos = searchEl.selectionStart;
+        rosterState.search = searchEl.value;
+        renderRosterTable();
+        var nextSearchEl = document.getElementById('am-roster-search');
+        if (nextSearchEl) {
+          nextSearchEl.focus();
+          if (typeof cursorPos === 'number') {
+            nextSearchEl.setSelectionRange(cursorPos, cursorPos);
+          }
+        }
+      });
+    }
+
+    rosterEl.querySelectorAll('[data-record-status]').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        var rid = sel.getAttribute('data-record-status');
+        var newStatus = sel.value;
+        sel.disabled = true;
+        window.ClarityAPI.put('/attendance-records/' + rid, { status: newStatus })
+          .then(function () {
+            if (window.ClarityUI) window.ClarityUI.showToast('Status kehadiran diperbarui.', 'success');
+            loadMeetingAttendance();
+          })
+          .catch(function (err) {
+            if (window.ClarityUI) window.ClarityUI.showToast((err && err.message) || 'Gagal memperbarui status.', 'danger');
+            sel.disabled = false;
+          });
+      });
+    });
+  }
 
   function loadMeetingAttendance() {
     var mid = meetingSelect.value;
@@ -68,7 +211,7 @@
           (session.passcode ? '<span class="course-code-pill">Kode: ' + H.esc(session.passcode) + '</span>' : '') +
           '  </div>' +
           '  <div class="text-sm text-muted">Dibuka: ' + H.esc(H.formatDateTime(session.opened_at)) +
-          (session.closes_at ? ' · Batas: ' + H.esc(H.formatDateTime(session.closes_at)) : '') + '</div>' +
+          (session.closes_at ? ' | Batas: ' + H.esc(H.formatDateTime(session.closes_at)) : '') + '</div>' +
           '</div>' +
           (isOpen
             ? '<button type="button" id="btn-close-att-session" class="clarity-btn clarity-btn-crimson clarity-btn-sm shrink-0">Tutup Sesi (Tandai Alpa yang Belum)</button>'
@@ -92,53 +235,8 @@
           });
         }
 
-        if (items.length === 0) {
-          rosterEl.innerHTML = H.renderEmpty('Belum Ada Peserta', 'Belum ada mahasiswa terdaftar pada mata kuliah ini.');
-          return;
-        }
-
-        var html = '<article class="clarity-card overflow-hidden">' +
-          '<div class="clarity-section-head"><h2 class="text-base font-bold text-ink m-0">Daftar Kehadiran Peserta (' + items.length + ')</h2></div>' +
-          '<div class="overflow-x-auto"><table class="clarity-table w-full">' +
-          '<thead><tr><th>NIM</th><th>Nama Mahasiswa</th><th>Status</th><th>Waktu Check-in</th><th>Ubah Status</th></tr></thead><tbody>';
-
-        items.forEach(function (row) {
-          var canEdit = row.id !== null;
-          html += '<tr>' +
-            '<td class="font-mono text-sm">' + H.esc(row.nim_nip) + '</td>' +
-            '<td class="font-semibold text-ink">' + H.esc(row.student_name) + '</td>' +
-            '<td>' + H.attendanceStatusBadge(row.status) + '</td>' +
-            '<td class="text-sm text-muted">' + H.esc(row.checked_at ? H.formatDateTime(row.checked_at) : '-') + '</td>' +
-            '<td>' +
-            (canEdit
-              ? '<label class="sr-only" for="rec-' + row.id + '">Status untuk ' + H.esc(row.student_name) + '</label>' +
-                '<select id="rec-' + row.id + '" class="clarity-input text-sm py-1.5" data-record-status="' + row.id + '">' +
-                ['hadir', 'izin', 'sakit', 'alpa'].map(function (st) {
-                  return '<option value="' + st + '"' + (row.status === st ? ' selected' : '') + '>' + st.toUpperCase() + '</option>';
-                }).join('') +
-                '</select>'
-              : '<span class="text-xs text-muted">Menunggu sesi ditutup / check-in</span>') +
-            '</td></tr>';
-        });
-        html += '</tbody></table></div></article>';
-        rosterEl.innerHTML = html;
-
-        rosterEl.querySelectorAll('[data-record-status]').forEach(function (sel) {
-          sel.addEventListener('change', function () {
-            var rid = sel.getAttribute('data-record-status');
-            var newStatus = sel.value;
-            sel.disabled = true;
-            window.ClarityAPI.put('/attendance-records/' + rid, { status: newStatus })
-              .then(function () {
-                if (window.ClarityUI) window.ClarityUI.showToast('Status kehadiran diperbarui.', 'success');
-                loadMeetingAttendance();
-              })
-              .catch(function (err) {
-                if (window.ClarityUI) window.ClarityUI.showToast((err && err.message) || 'Gagal memperbarui status.', 'danger');
-                sel.disabled = false;
-              });
-          });
-        });
+        rosterState.allItems = items;
+        renderRosterTable();
       })
       .catch(function (err) {
         sessionEl.innerHTML = H.renderError(err && err.message, 'btn-retry-am');
@@ -172,11 +270,21 @@
       })
       .catch(function (err) {
         sessionEl.innerHTML = H.renderError(err && err.message, 'btn-retry-am-mt');
+        var r = document.getElementById('btn-retry-am-mt');
+        if (r) r.addEventListener('click', function () { loadMeetings(cid); });
       });
   }
 
-  courseSelect.addEventListener('change', function () { loadMeetings(courseSelect.value); });
-  meetingSelect.addEventListener('change', loadMeetingAttendance);
+  courseSelect.addEventListener('change', function () {
+    rosterState.statusFilter = '';
+    rosterState.search = '';
+    loadMeetings(courseSelect.value);
+  });
+  meetingSelect.addEventListener('change', function () {
+    rosterState.statusFilter = '';
+    rosterState.search = '';
+    loadMeetingAttendance();
+  });
 
   function init() {
     window.ClarityAPI.get('/courses?per_page=50')
@@ -199,6 +307,8 @@
       })
       .catch(function (err) {
         sessionEl.innerHTML = H.renderError(err && err.message, 'btn-retry-am-init');
+        var r = document.getElementById('btn-retry-am-init');
+        if (r) r.addEventListener('click', init);
       });
   }
 

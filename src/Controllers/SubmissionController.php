@@ -39,11 +39,13 @@ final class SubmissionController
         $assignmentId = $request->intParam('id');
         $statusRaw = $request->query('status');
         $status = is_string($statusRaw) && trim($statusRaw) !== '' ? trim($statusRaw) : null;
+        $searchRaw = $request->query('search') ?? $request->query('q');
+        $search = is_string($searchRaw) && trim($searchRaw) !== '' ? trim($searchRaw) : null;
         $format = $request->query('format');
 
         $service = new SubmissionService();
         if ($format === 'csv') {
-            $export = $service->exportCsvForLecturer($assignmentId, $request->user() ?? [], $status);
+            $export = $service->exportCsvForLecturer($assignmentId, $request->user() ?? [], $status, $search);
             Response::csv($export['csv'], $export['filename']);
         }
 
@@ -55,7 +57,8 @@ final class SubmissionController
             $request->user() ?? [],
             $status,
             $page,
-            $perPage
+            $perPage,
+            $search
         );
         Response::json($result['items'], 200, $result['meta']);
     }

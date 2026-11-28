@@ -28,7 +28,7 @@ $rootPath = dirname(__DIR__);
 
   <script src="<?= $assetPrefix ?>assets/js/api.js?v=12"></script>
   <script src="<?= $assetPrefix ?>assets/js/auth.js?v=12"></script>
-  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=12"></script>
+  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=16"></script>
   <script src="<?= $assetPrefix ?>assets/js/ui-helpers.js?v=12"></script>
   <script src="<?= $assetPrefix ?>assets/js/attendance.js?v=12"></script>
 </body>

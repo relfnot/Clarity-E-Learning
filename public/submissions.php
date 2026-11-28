@@ -32,22 +32,30 @@ $rootPath = dirname(__DIR__);
     <section id="sub-summary-container" aria-live="polite"></section>
 
     <section class="clarity-card overflow-hidden">
-      <div class="clarity-section-head">
-        <h2 class="text-base font-bold text-ink m-0">Tabel Pengumpulan Peserta</h2>
-        <div class="filter-tab-group" role="group" aria-label="Filter Status Pengumpulan">
-          <button type="button" class="filter-tab-btn is-active" data-sub-status="" aria-pressed="true">Semua</button>
-          <button type="button" class="filter-tab-btn" data-sub-status="tepat_waktu" aria-pressed="false">Tepat Waktu</button>
-          <button type="button" class="filter-tab-btn" data-sub-status="terlambat" aria-pressed="false">Terlambat</button>
-          <button type="button" class="filter-tab-btn" data-sub-status="belum" aria-pressed="false">Belum</button>
+      <div class="clarity-section-head flex-wrap gap-3">
+        <h1 class="text-base font-bold text-ink m-0">Tabel Pengumpulan Peserta</h1>
+        <div class="flex flex-col md:flex-row md:items-center gap-3 w-full xl:w-auto">
+          <div class="filter-tab-group overflow-x-auto" role="group" aria-label="Filter Status Pengumpulan">
+            <button type="button" class="filter-tab-btn is-active" data-sub-status="" aria-pressed="true">Semua</button>
+            <button type="button" class="filter-tab-btn" data-sub-status="tepat_waktu" aria-pressed="false">Tepat Waktu</button>
+            <button type="button" class="filter-tab-btn" data-sub-status="terlambat" aria-pressed="false">Terlambat</button>
+            <button type="button" class="filter-tab-btn" data-sub-status="dinilai" aria-pressed="false">Dinilai</button>
+            <button type="button" class="filter-tab-btn" data-sub-status="belum" aria-pressed="false">Belum</button>
+          </div>
+          <div class="w-full md:w-60">
+            <label for="sub-search-input" class="sr-only">Cari NIM atau nama mahasiswa</label>
+            <input id="sub-search-input" type="search" class="clarity-input text-sm" placeholder="Cari NIM atau nama...">
+          </div>
         </div>
       </div>
       <div id="sub-table-container" aria-live="polite"></div>
+      <div id="sub-pagination-container"></div>
     </section>
   </div>
 
   <script src="<?= $assetPrefix ?>assets/js/api.js?v=12"></script>
   <script src="<?= $assetPrefix ?>assets/js/auth.js?v=12"></script>
-  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=12"></script>
+  <script src="<?= $assetPrefix ?>assets/js/layout.js?v=16"></script>
   <script src="<?= $assetPrefix ?>assets/js/ui-helpers.js?v=12"></script>
   <script src="<?= $assetPrefix ?>assets/js/submissions.js?v=12"></script>
 </body>

@@ -164,31 +164,103 @@ final class CourseRepository
      */
     public function getParticipants(int $courseId): array
     {
-        $sql = 'SELECT 
-                    u.id, u.nim_nip AS nim, u.name, u.email, u.program_studi, u.initials, u.role,
+        $result = $this->listParticipantsPaginated($courseId, null, 1, 100);
+        return $result['data'];
+    }
+
+    /**
+     * @return array{data: array<int, array<string, mixed>>, meta: array<string, mixed>}
+     */
+    public function listParticipantsPaginated(
+        int $courseId,
+        ?string $search = null,
+        int $page = 1,
+        int $perPage = 20
+    ): array {
+        $conditions = ['ce.course_id = :course_id', "ce.status = 'active'"];
+        $params = ['course_id' => $courseId];
+
+        if ($search !== null && trim($search) !== '') {
+            $term = '%' . trim($search) . '%';
+            $conditions[] = '(u.name LIKE :s_name OR u.nim_nip LIKE :s_nim OR u.email LIKE :s_email OR u.program_studi LIKE :s_prodi)';
+            $params['s_name'] = $term;
+            $params['s_nim'] = $term;
+            $params['s_email'] = $term;
+            $params['s_prodi'] = $term;
+        }
+
+        $whereClause = 'WHERE ' . implode(' AND ', $conditions);
+
+        $countStmt = $this->pdo->prepare(
+            "SELECT COUNT(*)
+             FROM course_enrollments ce
+             JOIN users u ON u.id = ce.student_id
+             {$whereClause}"
+        );
+        $countStmt->execute($params);
+        $total = (int) $countStmt->fetchColumn();
+
+        $page = max(1, $page);
+        $perPage = max(1, min(100, $perPage));
+        $offset = ($page - 1) * $perPage;
+
+        $sql = "SELECT
+                    u.id, u.nim_nip, u.nim_nip AS nim, u.name, u.email, u.program_studi, u.initials, u.role,
                     ce.enrolled_at, ce.status
                 FROM course_enrollments ce
                 JOIN users u ON u.id = ce.student_id
-                WHERE ce.course_id = :course_id
-                ORDER BY u.nim_nip ASC';
+                {$whereClause}
+                ORDER BY u.nim_nip ASC, u.name ASC
+                LIMIT {$perPage} OFFSET {$offset}";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['course_id' => $courseId]);
+        $stmt->execute($params);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 
-        return array_map(static function (array $r): array {
+        $data = array_map(static function (array $r): array {
             return [
                 'id' => (int) $r['id'],
                 'nim' => (string) $r['nim'],
+                'nim_nip' => (string) $r['nim_nip'],
                 'name' => (string) $r['name'],
                 'email' => (string) $r['email'],
                 'program_studi' => (string) ($r['program_studi'] ?? 'Sistem Informasi (S1)'),
                 'initials' => (string) ($r['initials'] ?? 'M'),
-                'role' => (string) $r['role'],
+                'role' => (string) ($r['role'] ?: 'mahasiswa'),
                 'enrolled_at' => (string) $r['enrolled_at'],
                 'status' => (string) $r['status'],
             ];
         }, $rows);
+
+        $lecStmt = $this->pdo->prepare(
+            'SELECT u.id, u.nim_nip, u.name, u.email, u.department, u.initials, u.role
+             FROM courses c
+             JOIN users u ON u.id = c.lecturer_id
+             WHERE c.id = :cid
+             LIMIT 1'
+        );
+        $lecStmt->execute(['cid' => $courseId]);
+        $lecRow = $lecStmt->fetch(PDO::FETCH_ASSOC);
+        $lecturer = is_array($lecRow) ? [
+            'id' => (int) $lecRow['id'],
+            'nim_nip' => (string) $lecRow['nim_nip'],
+            'name' => (string) $lecRow['name'],
+            'email' => (string) $lecRow['email'],
+            'department' => (string) ($lecRow['department'] ?? ''),
+            'initials' => (string) ($lecRow['initials'] ?? 'DS'),
+            'role' => (string) ($lecRow['role'] ?: 'dosen'),
+        ] : null;
+
+        return [
+            'data' => $data,
+            'meta' => [
+                'page' => $page,
+                'per_page' => $perPage,
+                'total' => $total,
+                'total_pages' => $total > 0 ? (int) ceil($total / $perPage) : 1,
+                'lecturer' => $lecturer,
+            ],
+        ];
     }
 
     /**

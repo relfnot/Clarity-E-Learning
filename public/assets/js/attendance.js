@@ -23,9 +23,15 @@
         var counts = d.counts || { hadir: 0, izin: 0, sakit: 0, alpa: 0 };
         var openSessions = Array.isArray(d.open_sessions) ? d.open_sessions : [];
         var records = Array.isArray(d.records) ? d.records : [];
+        var pct = d.attendance_percent || 0;
+        var tagCls = pct >= 75 ? 'clarity-tag-success' : (pct > 0 ? 'clarity-tag-warning' : 'clarity-tag-neutral');
 
         if (summaryEl) {
-          summaryEl.textContent = 'Kehadiran: ' + (d.attendance_percent || 0) + '% dari ' + (d.total_meetings || 0) + ' pertemuan';
+          summaryEl.innerHTML = '<div class="flex items-center gap-2 flex-wrap">' +
+            '<span class="text-sm text-muted">Persentase Kehadiran:</span>' +
+            '<span class="clarity-tag ' + tagCls + '">' + H.esc(pct) + '%</span>' +
+            '<span class="text-xs text-muted">(' + H.esc(d.total_meetings || 0) + ' pertemuan)</span>' +
+            '</div>';
         }
 
         var html = '';
@@ -39,12 +45,13 @@
           html += '<div class="space-y-3">';
           openSessions.forEach(function (s) {
             var alreadyChecked = Boolean(s.my_status);
-            html += '<article class="clarity-well p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">' +
-              '<div class="space-y-1">' +
-              '  <div class="font-bold text-ink">Pertemuan ' + H.esc(s.meeting_number) + ': ' + H.esc(s.meeting_title) + '</div>' +
-              '  <div class="text-xs text-muted">Dibuka: ' + H.esc(H.formatDateTime(s.opened_at)) +
-              (s.closes_at ? ' · Ditutup: ' + H.esc(H.formatDateTime(s.closes_at)) : '') + '</div>' +
-              '</div>';
+            html += '<article class="clarity-well p-4 space-y-3">' +
+              '<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">' +
+              '  <div class="space-y-1">' +
+              '    <div class="font-bold text-ink">Pertemuan ' + H.esc(s.meeting_number) + ': ' + H.esc(s.meeting_title) + '</div>' +
+              '    <div class="text-xs text-muted">Dibuka: ' + H.esc(H.formatDateTime(s.opened_at)) +
+              (s.closes_at ? ' | Ditutup: ' + H.esc(H.formatDateTime(s.closes_at)) : '') + '</div>' +
+              '  </div>';
 
             if (alreadyChecked) {
               html += '<div class="flex items-center gap-2 shrink-0">' + H.attendanceStatusBadge(s.my_status) + '<span class="text-xs text-muted">Sudah tercatat</span></div>';
@@ -57,7 +64,9 @@
                 '<button type="submit" class="clarity-btn clarity-btn-primary clarity-btn-sm">Check-in Hadir</button>' +
                 '</form>';
             }
-            html += '</article>';
+            html += '</div>' +
+              '<div data-checkin-feedback="' + s.id + '" aria-live="polite" hidden></div>' +
+              '</article>';
           });
           html += '</div>';
         }
@@ -84,7 +93,7 @@
               '<td class="font-semibold">Pertemuan ' + H.esc(r.meeting_number || '-') + '</td>' +
               '<td>' + H.esc(r.meeting_title || '-') + '</td>' +
               '<td>' + H.attendanceStatusBadge(r.status) + '</td>' +
-              '<td class="text-sm text-muted">' + H.esc(H.formatDateTime(r.checked_at)) + '</td>' +
+              '<td class="text-sm text-muted">' + H.esc(r.checked_at ? H.formatDateTime(r.checked_at) : '-') + '</td>' +
               '</tr>';
           });
           html += '</tbody></table></div>';
@@ -98,7 +107,12 @@
             e.preventDefault();
             var sid = form.getAttribute('data-checkin-form');
             var passcodeEl = document.getElementById('passcode-' + sid);
+            var fbEl = contentEl.querySelector('[data-checkin-feedback="' + sid + '"]');
             var btn = form.querySelector('button[type="submit"]');
+            if (fbEl) {
+              fbEl.hidden = true;
+              fbEl.innerHTML = '';
+            }
             btn.disabled = true;
 
             window.ClarityAPI.post('/attendance-sessions/' + sid + '/check-in', {
@@ -107,8 +121,18 @@
               if (window.ClarityUI) window.ClarityUI.showToast('Presensi berhasil dicatat sebagai Hadir.', 'success');
               loadCourseAttendance(cid);
             }).catch(function (err) {
-              if (window.ClarityUI) window.ClarityUI.showToast((err && err.message) || 'Gagal melakukan check-in.', 'danger');
+              var msg = (err && err.message) || 'Gagal melakukan check-in.';
+              if (window.ClarityUI) window.ClarityUI.showToast(msg, 'danger');
+              if (fbEl) {
+                fbEl.hidden = false;
+                fbEl.innerHTML = '<div class="clarity-alert clarity-alert-danger" role="alert">' + H.esc(msg) + '</div>';
+              }
               btn.disabled = false;
+
+              var isSessionClosedOrDuplicate = err && (err.status === 409 || (err.status === 422 && err.details && err.details.session));
+              if (isSessionClosedOrDuplicate) {
+                setTimeout(function () { loadCourseAttendance(cid); }, 900);
+              }
             });
           });
         });
